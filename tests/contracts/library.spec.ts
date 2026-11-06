@@ -8,6 +8,7 @@ import { LIMITS } from '../../src/domain/limits';
 
 const library: Library = JSON.parse(fs.readFileSync('public/library/manifest.json', 'utf8'));
 const backgrounds: ProvidedBackground[] = JSON.parse(fs.readFileSync('public/backgrounds/manifest.json', 'utf8')).assets;
+const illustrated: ProvidedBackground[] = JSON.parse(fs.readFileSync('public/backgrounds-illustrated/manifest.json', 'utf8')).assets;
 const templates: TemplateItem[] = JSON.parse(fs.readFileSync('public/templates/manifest.json', 'utf8')).templates;
 const names = (query: string, kind: 'all' | 'shape' = 'all') => searchLibrary(library.assets, { query, kind }).map(item => item.id);
 
@@ -36,6 +37,29 @@ test('제공 배경 24종: 해시·크기·16:9·라이선스 정보', async () 
     expect(item.width * 720).toBe(item.height * 1280);
     expect(readPngText(bytes, 'License')).toBeTruthy();
     expect(fs.existsSync(`public${item.thumbnail}`)).toBe(true);
+  }
+});
+
+// 생성 도구의 크기 그대로라 정확한 16:9가 아니다(0.05% 차이). 화면과 출력은 가운데 맞춰 자른다.
+test('그림 배경 16종: 해시·크기·비율·출처 정보·작은 미리보기', async () => {
+  expect(illustrated.length).toBe(16);
+  expect(new Set([...illustrated, ...backgrounds].map(item => item.id)).size).toBe(40);
+  for (const item of illustrated) {
+    const bytes = new Uint8Array(fs.readFileSync(`public${item.image}`));
+    expect(await sha256Hex(bytes)).toBe(item.pngSha256);
+    expect(readImageHeader(bytes)).toEqual({ mime: 'image/png', width: item.width, height: item.height, animated: false });
+    expect(bytes.length).toBeLessThan(LIMITS.assetBytesMax);
+    expect(Math.max(item.width, item.height)).toBeLessThanOrEqual(LIMITS.assetSideMax);
+    expect(Math.abs(item.width / item.height - 16 / 9) / (16 / 9)).toBeLessThan(LIMITS.imageAspectTolerance);
+    // MIT 고지 문구가 없어야 출력물에 Microsoft 고지를 잘못 넣지 않는다(export/notices.ts).
+    const notice = readPngText(bytes, 'License');
+    expect(notice).toContain('AI-generated');
+    expect(notice).not.toContain('MIT License');
+    // 패널이 원본을 받으면 카드를 그리는 데만 39MB를 쓴다.
+    expect(item.thumbnail).not.toBe(item.image);
+    const thumbnail = new Uint8Array(fs.readFileSync(`public${item.thumbnail}`));
+    expect(readImageHeader(thumbnail)).toMatchObject({ width: 320, height: 180 });
+    expect(thumbnail.length).toBeLessThan(300 * 1024);
   }
 });
 

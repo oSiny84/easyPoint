@@ -20,7 +20,11 @@ export const libraryUrl = (path: string) => `${import.meta.env?.BASE_URL ?? '/'}
 const once = <T,>(load: () => Promise<T>) => { let value: Promise<T> | undefined; return () => (value ??= load().catch(error => { value = undefined; throw error; })); };
 const fetchJson = async <T,>(path: string): Promise<T> => { const response = await fetch(libraryUrl(path)); if (!response.ok) throw new Error(String(response.status)); return response.json() as Promise<T>; };
 export const loadLibrary = once(() => fetchJson<Library>('/library/manifest.json'));
-export const loadBackgrounds = once(async () => (await fetchJson<{ assets: ProvidedBackground[] }>('/backgrounds/manifest.json')).assets);
+// 그림 배경을 먼저 보여 준다. 두 묶음은 만드는 도구가 달라 manifest를 따로 둔다.
+export const loadBackgrounds = once(async () => {
+  const [illustrated, provided] = await Promise.all(['/backgrounds-illustrated/manifest.json', '/backgrounds/manifest.json'].map(path => fetchJson<{ assets: ProvidedBackground[] }>(path)));
+  return [...illustrated.assets, ...provided.assets];
+});
 export const loadTemplates = once(async () => (await fetchJson<{ templates: TemplateItem[] }>('/templates/manifest.json')).templates);
 
 const normalize = (text: string) => text.normalize('NFKC').toLowerCase().trim();

@@ -6,6 +6,7 @@
 
 **현재 상태**
 
+- GPT가 만든 그림 배경 16종을 배경 패널에 연결했다. 패널에서 기존 24종보다 먼저 나오고, 16장 모두 저장·다시 열기·PPT·PDF 시험을 통과했다. 파일 크기는 [ILLUSTRATED_BACKGROUNDS_READY.md](ILLUSTRATED_BACKGROUNDS_READY.md)에 있다. 배포 결과는 24MB에서 64MB로, 실행 파일은 16MB에서 56MB로 커졌다. 실행 파일은 프리릴리스 `v0.0.2`로 올렸다.
 - 집 PC용 단일 실행 파일을 만들었다(`npm run exe` → `artifacts/release/CanvaCraft.exe`). 더블클릭하면 브라우저로 앱이 열리고 Node.js가 필요 없다. 자동 시험을 통과했고 사용자 PC에서 실행됐다. 다른 PC와 알림 영역 아이콘 메뉴는 사용자 확인을 받지 않았다. GitHub에 프리릴리스 `v0.0.1`로 올렸다.
 - Phase 10의 자동 점검과 산출물을 마쳤다. 배포본으로 대표 시나리오 7개를 통과했고 결과는 [통합 시험 보고서](INTEGRATION_REPORT_2026-11-06.md)에 있다. 사용 설명과 배포 패키지 절차도 만들었다. **어린이 사용성 관찰은 미실시이고 공개 배포도 하지 않았다.**
 - Phase 9를 구현하고 자동 시험을 통과했다. 상단 발표 버튼으로 전체 화면 발표(이전·다음·끝내기)를 하고, 내려받기 창에서 진행률·취소·다시 받기·경고를 볼 수 있다. 사용자가 발표와 패널 그림 끌어 넣기를 실제 브라우저에서 확인했다(2026-11-06).
@@ -15,7 +16,7 @@
 - 사용자가 자동 저장, 다시 열기, 둘째 탭 읽기 전용, 글꼴 변경을 실제 브라우저에서 확인했다(2026-11-06). 실제 저장 공간 부족은 확인하지 않았다.
 - 이번 배치는 UI_REFERENCE.md와 맞춘 것이며 실제 Canva 편집기와 일치하는지 검증한 것은 아니다.
 - Phase 2의 사람·기기 확인 8개는 아직 미검증이다.
-- git 저장소가 있다(origin: easyPoint, 2026-11-06 16시경 커밋 `phase8`). Phase 9·10과 실행 파일은 작업 브랜치 `phase9-10`에 있고 main에는 합치지 않았다. 저장소는 공개 상태이고, 실행 파일은 프리릴리스로 공개했다. 웹 호스트 배포는 하지 않았다.
+- git 저장소가 있다(origin: easyPoint, 2026-11-06 16시경 커밋 `phase8`). Phase 9·10과 실행 파일은 main에 합쳤다. 그림 배경 16종은 브랜치 `illustrated-backgrounds`에 있고 main에는 합치지 않았다. 저장소는 공개 상태이고, 실행 파일은 프리릴리스로 공개했다. 웹 호스트 배포는 하지 않았다.
 
 **진행률**
 
@@ -26,10 +27,9 @@
 **다음 액션**
 
 1. `CanvaCraft.exe`를 집 PC에서 실행해 보기 (사용자)
-2. `phase9-10` 브랜치를 main에 합칠지 결정 (사용자)
-3. 터치 기기 확인, 어린이 사용성 관찰 (사용자, 보호자·교사 입회)
-4. 웹 호스트 선택, 이름·화면 권리 검토. 실행 파일은 검토 전에 공개된 상태다 (사용자, [RELEASE.md](RELEASE.md))
-5. RAM 8GB 기기에서 사진이 많은 문서 확인 (사용자)
+2. 터치 기기 확인, 어린이 사용성 관찰 (사용자, 보호자·교사 입회)
+3. 웹 호스트 선택, 이름·화면 권리 검토. 실행 파일은 검토 전에 공개된 상태다 (사용자, [RELEASE.md](RELEASE.md))
+4. RAM 8GB 기기에서 사진이 많은 문서 확인 (사용자)
 
 **위험 요소**
 
@@ -64,7 +64,7 @@
 | 슬라이드 순서 | 완료. 마우스 끌기와 장 메뉴. 터치는 장 메뉴로 옮긴다 | 아니다. 터치 끌기는 필요하면 추가 |
 | 사진 입력 | 완료. 재인코딩·위치 정보 제거·방향 보정, 잘못된 파일 7종 거부 시험 통과 | 주의. 실제 카메라 사진은 사용자 확인, OS 캡처 복사는 미확인 |
 | 요소 라이브러리 | 완료. 120종 검색·탭·분류·도형 색·최근 사용, 변조 파일 거부. 요소와 넣은 사진은 누르면 가운데에, 끌어다 놓으면 놓은 곳에 들어간다(마우스·펜) | 주의. 그림이 아이들에게 맞는지 사용자 확인 필요 |
-| 배경 | 완료. 단색·제공 24종(분류·검색)·사진. 현재 장만 바뀌고 내용 보존 | 아니다 |
+| 배경 | 완료. 단색·제공 40종(그림 16종·기존 24종, 분류·검색)·사진. 현재 장만 바뀌고 내용 보존 | 아니다 |
 | 시작 템플릿 | 12종을 새 작품으로 연다. 지금 작품은 자동 저장한 뒤 넘어간다. 12종 모두 PPT 2종·PDF 생성 확인 | 주의. 사진 자리는 안내 그림을 지우고 사진을 넣는 방식이다 |
 | 글씨 입력 | 완료. CDP 한글 조합, 조합 중 Enter·Esc·슬라이드 이동, 빈 글씨 규칙, 배율 50·100·150% 위치 시험 통과 | 아니다. 실제 입력기의 조합 중 Enter·Esc를 사용자가 확인 |
 | 그리기 | 완료. 펜·색·굵기, 획 지우개, 슬라이드 밖 이탈·입력 취소·둘째 손가락·Esc, 배율 50·100·150%, 300획 장 프레임 간격 p95 16.8ms | 주의. 실제 펜·터치 기기 미확인 |
@@ -123,7 +123,7 @@ npm.cmd run dev
 | `src/state/autosave.ts` | 저장 예약·직렬화·재시도. DOM을 쓰지 않는다 |
 | `src/storage` | 원본 파일(ZIP) 읽기·쓰기, IndexedDB 작품·요약·사진 저장(`database.ts`), Web Locks(`locks.ts`), 파일 이름 |
 | `src/assets` | 이미지 헤더 읽기, `importAsset`(사진 입력), `library.ts`(라이브러리 읽기·검색·검증), 사진 Blob 보관 |
-| `public/library`, `public/backgrounds`, `public/templates` | 내장 그림 120종, 제공 배경 24종, 시작 템플릿 12종(GPT 준비). 재생성 도구는 `asset-pipeline`, `background-pipeline`, `template-pipeline`. 배포 때 원본·검수 파일은 `scripts/prune-dist.mjs`가 뺀다 |
+| `public/library`, `public/backgrounds`, `public/backgrounds-illustrated`, `public/templates` | 내장 그림 120종, 제공 배경 24종, 그림 배경 16종, 시작 템플릿 12종(GPT 준비). 재생성 도구는 `asset-pipeline`, `background-pipeline`, `template-pipeline`. 배포 때 원본·검수 파일은 `scripts/prune-dist.mjs`가 뺀다 |
 | `src/rendering` | `layoutText`, 글꼴 등록표, `renderSlide` |
 | `src/export` | `exportPptx`, `exportPdf`, `finishPptx`, `notices.ts`(MIT 고지) |
 | `src/app` | 편집 화면 조립과 세션·자동 저장 연결(`App.tsx`), 작품 목록(`Home.tsx`), 발표(`Presenter.tsx`), 상단 바, 도구 모음, 패널 내용(`panels.tsx`) |
@@ -147,7 +147,7 @@ Phase 2 결정과 근거는 [PHASE2_RESULTS.md](PHASE2_RESULTS.md) §1에 있다
 - 발표는 `renderSlide`로 스냅샷을 그리며 문서를 바꾸지 않는다. 고해상도 캔버스는 지금 장과 앞뒤 장만 유지한다. 키 입력은 `Presenter`가 창 캡처 단계에서 끊어 편집 단축키가 닿지 않게 한다.
 - 저장은 `createAutosave`가 작품당 한 번에 하나만 돌린다. 작품 전환·원본 열기는 `afterSaved`를 거친다. 저장 잠금 순서는 catalog → 작품이고, 공유 잠금을 쥔 채 배타 잠금을 기다리지 않는다. 고아 사진 삭제는 배타 catalog 안에서만 한다.
 - 사용자에게 Phase 2 전체 완료라고 보고하지 않는다. 문서 분담이나 병렬 작업을 시작하지 않는다.
-- `public/backgrounds-illustrated`(이미지 생성 도구로 만든 배경, 시험 1장)는 GPT가 작업 중으로 보이며 인계 문서가 없어 앱에 연결하지 않았다. 배포 결과에서는 `scripts/prune-dist.mjs`가 뺀다. 연결할 때 그 줄을 지운다.
+- 그림 배경은 1672×941이라 정확한 16:9가 아니다. 화면과 출력은 가운데 맞춰 자르고, 편집용 PPT는 JPEG로 다시 만든다. 새 그림을 넣으면 `illustrated-background-pipeline/thumbnails.cjs`로 미리보기를 만든다. 원본 PNG를 패널 카드에 쓰면 카드를 그리는 데만 약 39MB를 받는다.
 - `dist/index.html`의 보안 정책은 `scripts/prune-dist.mjs`가 넣는다. 외부 자원을 새로 쓰거나 글꼴을 `data:`로 넣으면 배포본에서만 막힌다. 그래서 `npm run test:release`가 개발 서버 시험과 별도로 필요하다.
 - 시험 시 Playwright로 큰 파일을 숫자 배열로 넘기지 않는다. 약 10MB 파일 두 개에서 실행 컨텍스트가 끊겼고 base64로 바꾸자 통과했다.
 

@@ -1,0 +1,12 @@
+{
+  "id": "15-paper-city",
+  "label": "색종이로 만든 우리 동네",
+  "category": "학교",
+  "prompt": "Use case stylized-concept. ONE full-bleed 16:9 landscape presentation background for children 1536x864. Beautiful handmade cut-paper miniature neighborhood, intricate paper craft with gentle real shadows and fibrous paper texture. Tiny coral and teal houses, a mustard school building without lettering, pastel trees, little paper bicycle, winding path cluster only along bottom 20%. Sun as layered golden paper circle at upper right, tiny clouds far top corners. Center upper majority is clean pale powder blue textured paper sky, huge open space for text/photos. Keep x22–78%, y20–72% light empty and uncluttered. Sophisticated editorial craft art, cheerful community atmosphere, excellent dimensional construction, no generic flat vector. No words, letters, numbers, logo, watermark, UI, charts, collage or sample text. Opaque.",
+  "safeRect": {
+    "x": 282,
+    "y": 144,
+    "width": 716,
+    "height": 290
+  }
+}

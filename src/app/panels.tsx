@@ -71,7 +71,7 @@ const matches = (item: { label: string; category: string; tags: string[] }, quer
   return words.every(word => haystack.includes(word));
 };
 
-// 제공 배경 24종. 분류를 고르거나 검색해서 찾고, 고르면 지금 장의 배경만 바뀐다.
+// 제공 배경(그림 16종, 기존 24종). 분류를 고르거나 검색해서 찾고, 고르면 지금 장의 배경만 바뀐다.
 export function ProvidedBackgrounds({ onPick, onError }: { onPick: (background: ProvidedBackground) => void; onError: (message: string) => void }) {
   const backgrounds = useLoaded(loadBackgrounds, onError);
   const [query, setQuery] = useState('');

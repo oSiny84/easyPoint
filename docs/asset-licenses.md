@@ -10,5 +10,6 @@
 - 내장 캐릭터·스티커 96종: Microsoft Fluent Emoji, MIT. Copyright (c) Microsoft Corporation. 원문은 public/library/licenses/fluent-emoji-MIT.txt, 항목별 출처는 public/library/manifest.json에 있다. 앱의 요소 패널에서 사용 조건을 볼 수 있다.
 - 내장 도형 24종: 이 프로젝트에서 직접 정의한 기하학 그림, CC0(public/library/licenses/original-shapes-CC0.txt).
 - 제공 배경 24종: 직접 구성한 그림은 CC0, Fluent Emoji 그림을 포함한 배경에는 MIT가 함께 적용된다(public/backgrounds/licenses, docs/BACKGROUNDS_READY.md).
+- 그림 배경 16종: OpenAI 이미지 생성 도구로 이 프로젝트를 위해 만들었고 외부 참고 그림은 넣지 않았다. MIT·CC0가 아니며 PNG License 청크의 글은 출처 설명이다. 독점 저작권을 주장하는 글이 아니고, 권리 검토는 하지 않았다(public/backgrounds-illustrated, docs/ILLUSTRATED_BACKGROUNDS_READY.md). 앱의 `그림 출처와 사용 조건` 고지와 출력물의 MIT 고지에는 넣지 않는다.
 - 시작 템플릿 12종: 직접 구성한 레이아웃은 CC0, 포함된 Microsoft 그림은 MIT(public/templates/licenses, docs/TEMPLATES_READY.md).
 - 출력물의 고지: 편집용 PPT와 원본 파일은 PNG 안의 라이선스 정보를 그대로 유지한다. 모양 그대로 PPT는 첫 장 노트, PDF는 첨부 파일 licenses.txt에 MIT 고지 전문을 넣는다(contracts.md §8).

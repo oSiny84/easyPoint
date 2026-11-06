@@ -4,8 +4,8 @@ import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 const REVIEW = ['preview.html', 'validation.json', 'browser-validation.json'];
 const paths = [
   'dist/library/svg', 'dist/backgrounds/svg',
-  // 앱에 연결하지 않은 작업 중 자산은 배포하지 않는다. 연결할 때 이 줄을 뺀다.
-  'dist/backgrounds-illustrated',
+  // 그림 배경의 생성 프롬프트는 앱에 필요 없다.
+  'dist/backgrounds-illustrated/prompts',
   // 템플릿은 .canvacraft 파일과 작은 미리보기만 있으면 열 수 있다.
   'dist/templates/assets', 'dist/templates/projects', 'dist/templates/previews',
   ...['library', 'backgrounds', 'templates'].flatMap(pack => REVIEW.map(name => `dist/${pack}/${name}`)),

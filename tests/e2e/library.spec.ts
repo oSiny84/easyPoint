@@ -280,12 +280,13 @@ test('배경 패널: 분류와 검색으로 찾는다', async ({ page }) => {
   if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   const panel = page.getByRole('region', { name: '배경 패널' });
   const cards = panel.locator('.background-card');
-  await expect(cards).toHaveCount(24);
+  await expect(cards).toHaveCount(40);
   await panel.getByRole('button', { name: '계절' }).click();
-  await expect(cards).toHaveCount(4);
+  await expect(cards).toHaveCount(8);
   await panel.getByRole('button', { name: '계절' }).click();
   await panel.getByRole('searchbox', { name: '배경 검색' }).fill('우주');
   await expect(panel.getByRole('button', { name: '배경 우주 탐험' })).toBeVisible();
+  await expect(panel.getByRole('button', { name: '배경 달토끼의 우주 여행' })).toBeVisible();
   await panel.getByRole('searchbox', { name: '배경 검색' }).fill('없는배경xyz');
   await expect(panel).toContainText('찾는 배경이 없어요');
 });
@@ -454,6 +455,79 @@ test('라이브러리 그림·사진·배경 작품의 저장·열기·PPT·PDF 
   expect(pdf.catalog.has(PDFName.of('Names'))).toBe(true);
   expect(errors).toEqual([]); expect(external).toEqual([]);
   void ids;
+});
+
+test('그림 배경 16종: 패널은 작은 미리보기만 받고, 고른 배경은 저장·다시 열기·PPT·PDF까지 유지된다', async ({ page, browser }) => {
+  test.setTimeout(240_000);
+  await fs.mkdir(OUT, { recursive: true });
+  const { assets } = JSON.parse(await fs.readFile('public/backgrounds-illustrated/manifest.json', 'utf8')) as { assets: { label: string; pngSha256: string; recommendedTextColor: string }[] };
+  const originals: string[] = [], errors: string[] = [];
+  page.on('request', request => { if (request.url().includes('/backgrounds-illustrated/png/')) originals.push(request.url()); });
+  page.on('pageerror', error => errors.push(error.message));
+  await start(page);
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
+  const panel = page.getByRole('region', { name: '배경 패널' });
+  // 먼저 보이는 카드는 새 그림 배경이고, 미리보기가 실제로 그려진다.
+  const first = panel.locator('.background-card').first();
+  await expect(first).toHaveAttribute('aria-label', `배경 ${assets[0].label}`);
+  await expect.poll(() => first.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBe(320);
+  expect(originals).toEqual([]);
+
+  for (const [index, asset] of assets.entries()) {
+    if (index) await page.getByRole('button', { name: '페이지 추가' }).click();
+    await expect.poll(async () => (await doc(page)).slides.length).toBe(index + 1);
+    await panel.getByRole('button', { name: `배경 ${asset.label}` }).click();
+    await expect.poll(async () => (await current(page)).background.assetId).toBe(asset.pngSha256);
+  }
+  expect(originals.length).toBe(16);
+  const project = await doc(page);
+  expect(project.slides.map((slide: any) => slide.background.assetId)).toEqual(assets.map(asset => asset.pngSha256));
+
+  // 마지막 장은 흰 글씨를 권하는 어두운 배경이다.
+  expect(assets[15].recommendedTextColor).toBe('#FFFFFF');
+  await rail(page, '텍스트').click();
+  await page.getByRole('button', { name: '본문 추가' }).click();
+  await page.keyboard.type('음악');
+  await page.keyboard.press('Escape');
+  expect((await current(page)).elements[0].color).toBe('#FFFFFF');
+  const edited = await doc(page);
+
+  // 원본 저장 → 새 프로필에서 그림 배경 파일 없이 연다.
+  const waiting = page.waitForEvent('download');
+  await page.getByRole('button', { name: '파일' }).click();
+  await page.getByRole('menuitem', { name: '원본 저장' }).click();
+  const original = path.join(OUT, 'illustrated.canvacraft');
+  await (await waiting).saveAs(original);
+  const other = await browser.newContext({ viewport: { width: 1440, height: 1000 } }); const otherPage = await other.newPage();
+  await otherPage.route('**/backgrounds-illustrated/png/**', route => route.abort());
+  await otherPage.goto('/'); await expect(otherPage.getByTestId('paper')).toBeVisible();
+  await otherPage.getByTestId('open-file').setInputFiles(original);
+  await expect(otherPage.getByRole('status')).toContainText('새 작품');
+  expect(contentOf(await doc(otherPage))).toEqual(contentOf(edited));
+  await other.close();
+  const zip = await JSZip.loadAsync(await fs.readFile(original));
+  for (const asset of assets) expect(await sha256Hex(await zip.file(`assets/${asset.pngSha256}.png`)!.async('uint8array'))).toBe(asset.pngSha256);
+
+  const sizes: Record<string, number> = { 원본: (await fs.stat(original)).size };
+  for (const [label, name] of [['PowerPoint (.pptx)', 'illustrated-editable.pptx'], ['모양 그대로 PowerPoint', 'illustrated-image.pptx'], ['PDF', 'illustrated.pdf']]) {
+    const download = page.waitForEvent('download', { timeout: 120_000 });
+    await page.getByRole('button', { name: '공유' }).click();
+    await page.getByRole('menuitem', { name: '다운로드' }).click();
+    await page.getByRole('radio', { name: label }).check();
+    await page.getByRole('button', { name: '내려받기', exact: true }).click();
+    await (await download).saveAs(path.join(OUT, name));
+    await expect(status(page)).toContainText('내려받았어요');
+    await page.keyboard.press('Escape');
+    sizes[name] = (await fs.stat(path.join(OUT, name))).size;
+  }
+  console.log('그림 배경 16장 출력 크기(MB)', Object.fromEntries(Object.entries(sizes).map(([key, value]) => [key, +(value / 1048576).toFixed(1)])));
+  const pptx = await JSZip.loadAsync(await fs.readFile(path.join(OUT, 'illustrated-editable.pptx')));
+  expect(Object.keys(pptx.files).filter(name => /^ppt\/slides\/slide\d+\.xml$/.test(name)).length).toBe(16);
+  // 이 그림들은 MIT가 아니므로 Microsoft 고지를 넣지 않는다.
+  const pdf = await PDFDocument.load(await fs.readFile(path.join(OUT, 'illustrated.pdf')), { updateMetadata: false });
+  expect(pdf.getPageCount()).toBe(16);
+  expect(pdf.getSubject() ?? '').not.toContain('licenses.txt');
+  expect(errors).toEqual([]);
 });
 
 test('MIT 그림이 없는 작품에는 고지를 넣지 않는다', async ({ page }) => {
