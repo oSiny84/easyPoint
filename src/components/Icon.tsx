@@ -4,7 +4,7 @@ const PATHS: Record<string, string> = {
   forward: 'M9 5l7 7-7 7',
   undo: 'M9 7L4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2',
   redo: 'M15 7l5 5-5 5M20 12H9a5 5 0 0 0 0 10h2',
-  design: 'M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z',
+  template: 'M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z',
   elements: 'M8 3l4.5 8h-9zM17 7a4 4 0 1 1-.01 0M4 14h8v7H4zM16 14l1.5 2.8 3 .4-2.2 2.1.6 3-2.9-1.5-2.9 1.5.6-3-2.2-2.1 3-.4z',
   text: 'M5 6V4h14v2M12 4v16M9 20h6',
   upload: 'M12 16V5M7 10l5-5 5 5M4 19h16',

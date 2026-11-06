@@ -214,7 +214,7 @@ test('요소 파일이 바뀌었으면 넣지 않는다', async ({ page }) => {
 
 test('배경: 단색·제공 배경·사진 배경은 현재 장만 바꾸고 내용을 보존하며 취소 한 번으로 돌아온다', async ({ page }) => {
   await openSample(page);
-  await rail(page, '배경').click();
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   const panel = page.getByRole('region', { name: '배경 패널' });
   const elements = (await current(page)).elements;
   const others = JSON.stringify((await doc(page)).slides.slice(1));
@@ -250,22 +250,26 @@ test('배경: 단색·제공 배경·사진 배경은 현재 장만 바꾸고 �
   expect((await current(page)).elements).toEqual(elements);
 });
 
-test('디자인 패널의 배경 카드와 넓은 화면의 기본 패널', async ({ page }) => {
+test('넓은 화면은 배경 패널을 연 채 시작하고, 도구 순서는 배경이 맨 위 템플릿이 맨 아래다', async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 768 });
   await openSample(page);
-  const panel = page.getByRole('region', { name: '디자인 패널' });
+  const panel = page.getByRole('region', { name: '배경 패널' });
   await expect(panel).toBeVisible();
+  await expect(page.getByRole('navigation', { name: '도구' }).getByRole('button')).toHaveText(['배경', '요소', '텍스트', '업로드', '그리기', '템플릿']);
   await panel.getByRole('button', { name: '배경 우주 탐험' }).click();
   await expect.poll(async () => (await current(page)).background.kind).toBe('image');
   await page.waitForTimeout(300);
   await fs.mkdir(OUT, { recursive: true });
-  await page.screenshot({ path: path.join(OUT, 'design-1366.png') });
+  await page.screenshot({ path: path.join(OUT, 'background-start-1366.png') });
   await rail(page, '요소').click();
   await page.waitForTimeout(300);
   await page.screenshot({ path: path.join(OUT, 'elements-1366.png') });
-  await rail(page, '배경').click();
+  await rail(page, '템플릿').click();
   await page.waitForTimeout(300);
-  await page.screenshot({ path: path.join(OUT, 'background-1366.png') });
+  // 템플릿 패널에는 템플릿만 있다. 배경은 배경 패널에서 고른다.
+  await expect(page.getByRole('region', { name: '템플릿 패널' }).locator('.template-card')).toHaveCount(12);
+  await expect(page.getByRole('region', { name: '템플릿 패널' }).getByRole('button', { name: /^배경 / })).toHaveCount(0);
+  await page.screenshot({ path: path.join(OUT, 'template-panel-1366.png') });
   await rail(page, '업로드').click();
   await page.waitForTimeout(300);
   await page.screenshot({ path: path.join(OUT, 'upload-1366.png') });
@@ -273,7 +277,7 @@ test('디자인 패널의 배경 카드와 넓은 화면의 기본 패널', asyn
 
 test('배경 패널: 분류와 검색으로 찾는다', async ({ page }) => {
   await start(page);
-  await rail(page, '배경').click();
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   const panel = page.getByRole('region', { name: '배경 패널' });
   const cards = panel.locator('.background-card');
   await expect(cards).toHaveCount(24);
@@ -289,7 +293,8 @@ test('배경 패널: 분류와 검색으로 찾는다', async ({ page }) => {
 test('템플릿: 새 작품으로 열고, 저장 안 한 내용이 있으면 먼저 묻는다', async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 768 });
   await start(page);
-  const panel = page.getByRole('region', { name: '디자인 패널' });
+  await rail(page, '템플릿').click();
+  const panel = page.getByRole('region', { name: '템플릿 패널' });
   await expect(panel.locator('.template-card')).toHaveCount(12);
   // 손대지 않은 새 작품은 바로 연다.
   await panel.getByRole('button', { name: '템플릿 나를 소개해요' }).click();
@@ -305,9 +310,9 @@ test('템플릿: 새 작품으로 열고, 저장 안 한 내용이 있으면 먼
   await expect(page.getByRole('region', { name: '업로드 패널' })).toContainText('아직 넣은 사진이 없어요');
   await page.waitForTimeout(300);
   await expect(page.getByRole('region', { name: '업로드 패널' })).toContainText('아직 넣은 사진이 없어요');
-  await rail(page, '디자인').click();
+  await rail(page, '템플릿').click();
   // 다른 템플릿을 열면 지금 작품을 저장한 뒤 넘어간다. 묻지 않는다.
-  await page.getByRole('region', { name: '디자인 패널' }).getByRole('button', { name: '템플릿 내가 좋아하는 동물' }).click();
+  await page.getByRole('region', { name: '템플릿 패널' }).getByRole('button', { name: '템플릿 내가 좋아하는 동물' }).click();
   await expect(status(page)).toContainText('내가 좋아하는 동물');
   await expect(page.getByRole('alertdialog')).toHaveCount(0);
   expect((await doc(page)).title).not.toBe(first.title);
@@ -380,7 +385,7 @@ test('라이브러리 그림·사진·배경 작품의 저장·열기·PPT·PDF 
   await expect.poll(async () => (await current(page)).elements.length).toBe(4);
   await upload(page, await photo(page));
   await expect.poll(async () => (await current(page)).elements.length).toBe(5);
-  await rail(page, '배경').click();
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   await page.getByRole('region', { name: '배경 패널' }).getByRole('button', { name: '배경 숲속 산책' }).click();
   await expect.poll(async () => (await current(page)).background.kind).toBe('image');
   // 겹치지 않게 벌려 놓아 출력 모양을 눈으로 볼 수 있게 한다.

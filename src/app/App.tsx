@@ -26,7 +26,7 @@ import { createAutosave, type Autosave, type SaveState } from '../state/autosave
 import { renderSlide } from '../rendering/renderSlide';
 import { downloadName } from '../storage/fileName';
 import { deserializeProject, serializeProject } from '../storage/projectFile';
-import { BackgroundPanel, DesignPanel, DrawPanel, ElementsPanel, TextPanel, UploadPanel, type PenSettings, type TextPreset } from './panels';
+import { BackgroundPanel, DrawPanel, ElementsPanel, TemplatePanel, TextPanel, UploadPanel, type PenSettings, type TextPreset } from './panels';
 import { Home } from './Home';
 import { ToolRail, type ToolId } from './ToolRail';
 import { Presenter } from './Presenter';
@@ -78,7 +78,7 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
   selectedRef.current = selectedId;
   const [preview, setPreview] = useState<SlideElement | null>(null);
   const [elementMenu, setElementMenu] = useState<MenuAnchor | null>(null);
-  const [tool, setTool] = useState<ToolId | null>(() => !value.lock.readOnly && window.innerWidth >= PANEL_MIN_WINDOW ? 'design' : null);
+  const [tool, setTool] = useState<ToolId | null>(() => !value.lock.readOnly && window.innerWidth >= PANEL_MIN_WINDOW ? 'background' : null);
   const [photos, setPhotos] = useState<Asset[]>([]);
   const [drawMode, setDrawMode] = useState<'pen' | 'eraser'>('pen');
   const [pen, setPen] = useState<PenSettings>({ color: '#283B37', width: 8 });
@@ -449,7 +449,7 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
   const onCanvasError = useCallback((message: string) => setStatus(message), []);
 
   const panel = tool === 'elements' ? <ElementsPanel onAdd={(item, variant, at) => void addLibraryItem(item, variant, at)} onError={onCanvasError} />
-    : tool === 'design' ? <DesignPanel onTemplate={template => void openTemplate(template)} onPick={background => void useProvidedBackground(background)} onError={onCanvasError} />
+    : tool === 'template' ? <TemplatePanel onTemplate={template => void openTemplate(template)} onError={onCanvasError} />
     : tool === 'upload' ? <UploadPanel photos={photos} resolve={assets.resolve} onUpload={() => openUpload('element')} onPick={asset => { placePhoto(asset, null); }} photoBox={photoBox} onDropPhoto={(asset, at) => { placeImage(asset, null, centeredAt(photoBox(asset), at)); }} />
     : tool === 'background' ? <BackgroundPanel current={slide.background} photos={photos} resolve={assets.resolve} onSolid={setSolid} onProvided={background => void useProvidedBackground(background)} onPhoto={usePhotoBackground} onUpload={() => openUpload('background')} onError={onCanvasError} />
     : tool === 'text' ? <TextPanel onAdd={addTextBox} />

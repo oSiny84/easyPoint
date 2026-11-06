@@ -7,6 +7,8 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build --base=./ --assetsInlineLimit=0 && node scripts/prune-dist.mjs",
     "package": "npm run build && node scripts/package-release.mjs",
+    "exe": "npm run build && node scripts/build-exe.mjs",
+    "test:exe": "npm run exe && node scripts/test-exe.mjs",
     "test": "playwright test --config playwright.config.ts",
     "test:phase2": "playwright test --config playwright.phase2.config.ts",
     "test:release": "npm run build && playwright test --config playwright.release.config.ts"

@@ -13,7 +13,7 @@ function watch(page: Page): Watch {
   const seen: Watch = { errors: [], external: [], failed: [], csp: [] };
   page.on('pageerror', error => seen.errors.push(String(error)));
   page.on('console', message => { if (message.type() === 'error') { (message.text().includes('Content Security Policy') ? seen.csp : seen.errors).push(message.text()); } });
-  page.on('request', request => { const url = request.url(); if (!/^(http:\/\/127\.0\.0\.1:4180\/|blob:|data:)/.test(url)) seen.external.push(url); });
+  page.on('request', request => { const url = request.url(); if (!/^(http:\/\/127\.0\.0\.1:\d+\/|blob:|data:)/.test(url)) seen.external.push(url); });
   page.on('response', response => { if (response.status() >= 400) seen.failed.push(`${response.status()} ${response.url()}`); });
   return seen;
 }
@@ -109,7 +109,7 @@ test('대표 시나리오 1~6: 만들기, 꾸미기, 복원, 다른 프로필, �
   await saved(page);
 
   // 2. 배경, 사진 붙여넣기, 위치와 크기.
-  await rail(page, '배경').click();
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   await panel(page, '배경').getByRole('button', { name: '배경 색 #D8F3DC' }).click();
   await pastePhoto(page, await jpeg(page, 800, 600, '#3366AA'));
   await expect.poll(async () => (await page.getByTestId('handle-se').count())).toBe(1);
@@ -397,7 +397,7 @@ test('화면 크기: 시작 화면과 편집 화면이 넘치지 않고 도구�
     await page.waitForTimeout(150);
     const overflow = await page.evaluate(() => ({ x: document.documentElement.scrollWidth - innerWidth, y: document.documentElement.scrollHeight - innerHeight }));
     expect(overflow, `${width}x${height}`).toEqual({ x: 0, y: 0 });
-    for (const name of ['디자인', '요소', '텍스트', '업로드', '그리기', '배경']) await expect(rail(page, name)).toBeInViewport({ ratio: 1 });
+    for (const name of ['배경', '요소', '텍스트', '업로드', '그리기', '템플릿']) await expect(rail(page, name)).toBeInViewport({ ratio: 1 });
     for (const name of ['발표', '공유', '작품 목록']) await expect(page.getByRole('button', { name }).first()).toBeInViewport({ ratio: 1 });
     await expect(page.getByRole('button', { name: '페이지 추가' })).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: path.join(OUT, `editor-${width}.png`) });
@@ -441,7 +441,7 @@ test('키보드만으로 작품 목록에서 작품을 열고 발표를 시작�
 });
 
 test('터치: 그림을 눌러 넣고 끌어 옮기며, 발표를 눌러서 넘긴다', async ({ browser }) => {
-  const context = await browser.newContext({ baseURL: 'http://127.0.0.1:4180/canvacraft/', viewport: { width: 1280, height: 800 }, hasTouch: true });
+  const context = await browser.newContext({ baseURL: process.env.RELEASE_URL ?? 'http://127.0.0.1:4180/canvacraft/', viewport: { width: 1280, height: 800 }, hasTouch: true });
   const page = await context.newPage();
   const seen = watch(page);
   await page.goto('./');
@@ -530,11 +530,12 @@ test('하위 경로에서 템플릿, 내장 그림, 제공 배경, 사용 조건
   const seen = watch(page);
   await page.goto('./');
   await expect(page.getByTestId('paper')).toBeVisible();
-  await panel(page, '디자인').getByRole('button', { name: '템플릿 내가 좋아하는 동물' }).click();
+  await rail(page, '템플릿').click();
+  await panel(page, '템플릿').getByRole('button', { name: '템플릿 내가 좋아하는 동물' }).click();
   await expect(status(page)).toContainText('내가 좋아하는 동물');
   await saved(page);
   expect((await project(page)).title).toBeTruthy();
-  await rail(page, '배경').click();
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   const provided = panel(page, '배경').locator('button').filter({ has: page.locator('img') }).nth(3);
   await expect(provided).toBeVisible();
   const before = (await project(page)).slides[0].background;

@@ -91,15 +91,13 @@ export function ProvidedBackgrounds({ onPick, onError }: { onPick: (background: 
 }
 
 // 시작 템플릿은 지금 작품을 바꾸지 않고 새 작품으로 연다.
-export function DesignPanel({ onTemplate, onPick, onError }: { onTemplate: (template: TemplateItem) => void; onPick: (background: ProvidedBackground) => void; onError: (message: string) => void }) {
+export function TemplatePanel({ onTemplate, onError }: { onTemplate: (template: TemplateItem) => void; onError: (message: string) => void }) {
   const templates = useLoaded(loadTemplates, onError);
   return <div className="panel-body">
     <h3>새 작품으로 시작</h3>
     <div className="background-grid">
       {(templates ?? []).map(item => <button key={item.id} className="template-card" aria-label={`템플릿 ${item.label}`} onClick={() => onTemplate(item)}><img src={libraryUrl(item.thumbnail)} alt="" loading="lazy" draggable={false} /><span>{item.label}</span></button>)}
     </div>
-    <h3>지금 장의 배경</h3>
-    <ProvidedBackgrounds onPick={onPick} onError={onError} />
   </div>;
 }
 

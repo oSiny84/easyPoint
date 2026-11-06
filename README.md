@@ -22,9 +22,13 @@ npm test
 
 `npm test`는 문서·명령·원본 파일·조작 계산 시험(`tests/contracts`), 샘플 문서의 전체 흐름과 화면 조작(`tests/e2e`), Phase 2 시험 화면(`tests/probe.spec.ts`)을 실행합니다. 한글 시험은 CDP 조합 입력이며 실제 Windows 입력기·iPad 시험을 대신하지 않습니다. 줄·PowerPoint·성능 비교는 `npm run test:phase2`로 따로 실행합니다(docs/PHASE2_RESULTS.md §8). 설계와 현재 인계 상태는 docs/PROGRESS.md를 읽습니다.
 
+## 집에서 쓰기
+
+[Releases](https://github.com/oSiny84/easyPoint/releases)에서 `CanvaCraft.exe`를 받거나, `npm run exe`로 `artifacts/release/CanvaCraft.exe`를 만들어 옮긴 뒤 더블클릭합니다. Node.js나 인터넷이 필요 없습니다.
+
 ## 문서
 
 - 사용 방법: [docs/USER_GUIDE.md](docs/USER_GUIDE.md)
-- 배포 패키지와 되돌리기: [docs/RELEASE.md](docs/RELEASE.md) (`npm run package`, 아직 공개 배포하지 않았습니다)
+- 배포 패키지와 되돌리기: [docs/RELEASE.md](docs/RELEASE.md) (`npm run package`, 웹 호스트에는 아직 배포하지 않았습니다)
 - 통합 시험 결과와 남은 확인: [docs/INTEGRATION_REPORT_2026-11-06.md](docs/INTEGRATION_REPORT_2026-11-06.md)
 - 배포본 시험: `npm run test:release`

@@ -3,12 +3,12 @@ import type { ReactNode } from 'react';
 import { Icon } from '../components/Icon';
 
 export const TOOLS = [
-  { id: 'design', label: '디자인', icon: 'design' },
+  { id: 'background', label: '배경', icon: 'background' },
   { id: 'elements', label: '요소', icon: 'elements' },
   { id: 'text', label: '텍스트', icon: 'text' },
   { id: 'upload', label: '업로드', icon: 'upload' },
   { id: 'draw', label: '그리기', icon: 'draw' },
-  { id: 'background', label: '배경', icon: 'background' },
+  { id: 'template', label: '템플릿', icon: 'template' },
 ] as const;
 export type ToolId = typeof TOOLS[number]['id'];
 

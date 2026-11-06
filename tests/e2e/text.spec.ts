@@ -259,7 +259,7 @@ test('입력 중 내려받기·되돌리기 버튼을 누르면 먼저 확정한
 test('배경에 어울리는 색으로 새 글씨를 시작하고 있던 글씨 색은 바꾸지 않는다', async ({ page }) => {
   await open(page);
   await openSlide(page, 4);
-  await rail(page, '배경').click();
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   await page.getByRole('region', { name: '배경 패널' }).getByRole('button', { name: '배경 우주 탐험' }).click();
   await expect.poll(async () => (await doc(page)).slides[3].background.kind).toBe('image');
   await rail(page, '텍스트').click();
@@ -268,7 +268,7 @@ test('배경에 어울리는 색으로 새 글씨를 시작하고 있던 글씨 
   await page.keyboard.press('Escape');
   expect((await doc(page)).slides[3].elements[0].color).toBe('#FFFFFF');
   // 어두운 단색 배경.
-  await rail(page, '배경').click();
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   await page.getByRole('region', { name: '배경 패널' }).getByRole('button', { name: '배경 색 #FFF3B0' }).click();
   expect((await doc(page)).slides[3].elements[0].color).toBe('#FFFFFF');
   await rail(page, '텍스트').click();
@@ -309,7 +309,8 @@ test('템플릿 글씨를 고치면 PPT와 PDF에 반영된다', async ({ page }
   await fs.mkdir(OUT, { recursive: true });
   await page.setViewportSize({ width: 1366, height: 768 });
   await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
-  await page.getByRole('region', { name: '디자인 패널' }).getByRole('button', { name: '템플릿 나를 소개해요' }).click();
+  await page.getByRole('navigation', { name: '도구' }).getByRole('button', { name: '템플릿' }).click();
+  await page.getByRole('region', { name: '템플릿 패널' }).getByRole('button', { name: '템플릿 나를 소개해요' }).click();
   await expect(page.getByRole('status')).toContainText('새 작품');
   await page.waitForTimeout(400);
   const before = (await doc(page)).slides[0].elements.find((item: any) => item.type === 'text' && item.text.includes('안녕'));

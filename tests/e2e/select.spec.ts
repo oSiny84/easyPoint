@@ -229,7 +229,7 @@ test('하단 목록: 끌어서 순서를 바꾸고 취소 한 번으로 돌아�
 
 test('패널: 열고 닫으면 슬라이드가 남은 영역에 맞고 패널이 덮지 않는다', async ({ page }) => {
   await open(page);
-  // 넓은 화면은 디자인 패널이 열린 채 시작한다.
+  // 넓은 화면은 배경 패널이 열린 채 시작한다.
   await page.getByRole('button', { name: '패널 닫기' }).click();
   await page.waitForTimeout(150);
   const closed = (await page.getByTestId('paper').boundingBox())!;
