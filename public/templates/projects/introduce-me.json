@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "5510252c-8bc6-4e01-a5a2-21140266c316",
+  "title": "나를 소개해요",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "9300df49-56f5-48fd-aec5-238e9c8489ce",
+      "background": {
+        "kind": "image",
+        "assetId": "5dba57853f786dfbe5a59a864b471d2c8f4548d969f8a6dc442a66d6d3e1cea6",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "6fedc801-bbd3-42b5-aa00-c8c8c09e54f5",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "안녕! 나는 ○○야",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "736b525a-f7af-4593-a104-96ba6fb25efd",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "내가 좋아하는 것과 나만의 이야기를 소개해요.",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "92c21c87-60b9-48d4-abcf-340d478e9728",
+          "type": "image",
+          "x": 96,
+          "y": 218,
+          "width": 590,
+          "height": 360,
+          "assetId": "d434b376c23adc121009e935900df07731f188066440ba281a2dbb3f8e7be7ac"
+        },
+        {
+          "id": "ed12034a-2057-4c8e-ad61-ec415d7cdd71",
+          "type": "text",
+          "x": 126,
+          "y": 252,
+          "width": 520,
+          "text": "내 이름은  ○○○\n좋아하는 것은  ○○○\n잘하는 것은  ○○○\n친구들에게 하고 싶은 말은…",
+          "fontId": "sans-ko",
+          "fontSize": 30,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "01b01be1-c3b9-4f90-af18-95685269fbac",
+          "type": "image",
+          "x": 738,
+          "y": 224,
+          "width": 390,
+          "height": 300,
+          "assetId": "1aeae6fafa68a0c5e596127944f70ea45f9fd5f14d12050d4a9f42d87828390e"
+        },
+        {
+          "id": "ea828833-f571-4c6f-a87c-2e3b920e0bac",
+          "type": "text",
+          "x": 756,
+          "y": 351,
+          "width": 354,
+          "text": "여기에 사진을 넣어 보세요",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "8462a65d-231b-4275-a195-3af27af1b52f",
+          "type": "image",
+          "x": 1075,
+          "y": 520,
+          "width": 100,
+          "height": 100,
+          "assetId": "e2f722a1bb4384fd76ee0fe668314ce2658cb6ab34c0da7388311305bb830bcd"
+        },
+        {
+          "id": "04cb238e-cb0f-49e5-a2a9-44cea447e0b3",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "d434b376c23adc121009e935900df07731f188066440ba281a2dbb3f8e7be7ac",
+      "mime": "image/png",
+      "pixelWidth": 1180,
+      "pixelHeight": 720,
+      "byteLength": 8115
+    },
+    {
+      "id": "1aeae6fafa68a0c5e596127944f70ea45f9fd5f14d12050d4a9f42d87828390e",
+      "mime": "image/png",
+      "pixelWidth": 780,
+      "pixelHeight": 600,
+      "byteLength": 5990
+    },
+    {
+      "id": "e2f722a1bb4384fd76ee0fe668314ce2658cb6ab34c0da7388311305bb830bcd",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 19020
+    },
+    {
+      "id": "5dba57853f786dfbe5a59a864b471d2c8f4548d969f8a6dc442a66d6d3e1cea6",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 92644
+    }
+  ]
+}

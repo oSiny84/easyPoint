@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "id": "072362b1-8142-47f3-abdf-7e84910f07c7",
+  "title": "나의 꿈을 향해서",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "d2933765-c914-4e8d-a65e-c6eaf787b60f",
+      "background": {
+        "kind": "image",
+        "assetId": "cb1fb9b4f3d7334fea3d4b61d4e88fa25824bb046863c8e11e388fac679dd3ea",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "b5d70a70-e94c-4e2b-add2-67b6d4a8c93a",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "나의 꿈을 향해서",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#FFFFFF",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "f2ac0ef6-b94e-4ce2-a6d1-1d1114cc8dbf",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "작은 도전이 모이면 멋진 미래가 돼요.",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#DCE7F5",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "97254d56-8161-4447-af74-d9d26f45d5c4",
+          "type": "image",
+          "x": 96,
+          "y": 220,
+          "width": 666,
+          "height": 350,
+          "assetId": "4bfaf371de4017a76b60fe78553ebca744598ea53e00695f4a6ab98e48513f88"
+        },
+        {
+          "id": "5b4c4d49-2cca-4134-a4ad-6533686ae4c1",
+          "type": "text",
+          "x": 126,
+          "y": 249,
+          "width": 604,
+          "text": "나는 ○○○이 되고 싶어요.",
+          "fontId": "sans-ko",
+          "fontSize": 32,
+          "bold": true,
+          "color": "#304362",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "842851fd-6fb0-42a3-a091-360646bd271d",
+          "type": "text",
+          "x": 126,
+          "y": 318,
+          "width": 604,
+          "text": "이 꿈을 고른 이유: ○○○\n내가 잘하고 싶은 것: ○○○\n오늘부터 해 볼 작은 도전:\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 27,
+          "bold": false,
+          "color": "#465A74",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "0ec4d555-6309-47fe-a3aa-a7519204ad87",
+          "type": "image",
+          "x": 824,
+          "y": 220,
+          "width": 330,
+          "height": 186,
+          "assetId": "b668476f0c72aeb116d4c5e1ed1e19a592a9efe7a9803fbd935cb2143415fc40"
+        },
+        {
+          "id": "403badc6-f9ce-4c46-a265-62efb1009c51",
+          "type": "text",
+          "x": 842,
+          "y": 290,
+          "width": 294,
+          "text": "꿈과 관련된 사진",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "b11e53ee-324b-4dcb-a4b3-efd862048169",
+          "type": "image",
+          "x": 920,
+          "y": 430,
+          "width": 165,
+          "height": 165,
+          "assetId": "4736017571a71d644ac121e1c2944f4b3e9aacdada29869c7c3e349771af3e8c"
+        },
+        {
+          "id": "b82d7264-c1d6-441a-a490-b304917c6a6c",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "미래의 나에게: 포기하지 말고 한 걸음씩!",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#DCE7F5",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "4bfaf371de4017a76b60fe78553ebca744598ea53e00695f4a6ab98e48513f88",
+      "mime": "image/png",
+      "pixelWidth": 1332,
+      "pixelHeight": 700,
+      "byteLength": 8382
+    },
+    {
+      "id": "b668476f0c72aeb116d4c5e1ed1e19a592a9efe7a9803fbd935cb2143415fc40",
+      "mime": "image/png",
+      "pixelWidth": 660,
+      "pixelHeight": 372,
+      "byteLength": 4590
+    },
+    {
+      "id": "4736017571a71d644ac121e1c2944f4b3e9aacdada29869c7c3e349771af3e8c",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 23036
+    },
+    {
+      "id": "cb1fb9b4f3d7334fea3d4b61d4e88fa25824bb046863c8e11e388fac679dd3ea",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 168669
+    }
+  ]
+}

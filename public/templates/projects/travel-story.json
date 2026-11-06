@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "15f01659-7fed-44eb-a74b-83d50b48c399",
+  "title": "신나는 여행 기록",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "66fa76a3-a03d-4808-a16e-8d8f5d63f5bf",
+      "background": {
+        "kind": "image",
+        "assetId": "4cf66c0f17f67b99cb6299fe1a6b8c99328e413924cf74d01447cccc183ceab7",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "c3127f9a-803d-4069-a323-e5547dfb93a5",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "신나는 여행을 다녀왔어요",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "5ac5c177-5786-4be3-a1ea-e3fc2fa59b6d",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "사진 한 장에 담긴 특별한 추억",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "903bd842-f6a3-4921-a8e9-a7c6a88d84a9",
+          "type": "image",
+          "x": 96,
+          "y": 220,
+          "width": 660,
+          "height": 371,
+          "assetId": "46e6e0ad83e38a396a9899b1a941c00ce90f7a4aefc9bc7bc36f5893caad32d6"
+        },
+        {
+          "id": "a3933977-383a-408c-a48b-76ba7ded6663",
+          "type": "text",
+          "x": 114,
+          "y": 382.5,
+          "width": 624,
+          "text": "여기에 사진을 넣어 보세요",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "735db368-1b44-4f20-a7ae-4f3f7f91478a",
+          "type": "image",
+          "x": 800,
+          "y": 220,
+          "width": 382,
+          "height": 330,
+          "assetId": "4d75250bf06d667c93ea46703edc0ea9c9af14e38c6b3bc1de0eed2e0e10cc8c"
+        },
+        {
+          "id": "1a70944d-846b-46ae-aa27-686b6bced6ba",
+          "type": "text",
+          "x": 826,
+          "y": 247,
+          "width": 330,
+          "text": "다녀온 곳: ○○○\n함께 간 사람: ○○○\n가장 좋았던 일:\n○○○○○\n다시 가고 싶은 이유:\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 25,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "ab5b92c9-f953-4e64-aab4-dd9c82c26bbc",
+          "type": "image",
+          "x": 1060,
+          "y": 554,
+          "width": 105,
+          "height": 105,
+          "assetId": "50acdc738430b33d4d83a9a4fadd6092aa97c9542fd3bb361d802c89deab0535"
+        },
+        {
+          "id": "5f220bcc-d458-491f-a85c-3ee918349d51",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "내가 고른 여행의 한 장면",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "46e6e0ad83e38a396a9899b1a941c00ce90f7a4aefc9bc7bc36f5893caad32d6",
+      "mime": "image/png",
+      "pixelWidth": 1320,
+      "pixelHeight": 742,
+      "byteLength": 8660
+    },
+    {
+      "id": "4d75250bf06d667c93ea46703edc0ea9c9af14e38c6b3bc1de0eed2e0e10cc8c",
+      "mime": "image/png",
+      "pixelWidth": 764,
+      "pixelHeight": 660,
+      "byteLength": 6386
+    },
+    {
+      "id": "50acdc738430b33d4d83a9a4fadd6092aa97c9542fd3bb361d802c89deab0535",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 14299
+    },
+    {
+      "id": "4cf66c0f17f67b99cb6299fe1a6b8c99328e413924cf74d01447cccc183ceab7",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 74401
+    }
+  ]
+}

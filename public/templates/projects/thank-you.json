@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "id": "a78b381c-7c60-4b1f-a829-2603b2e63012",
+  "title": "고마운 마음을 전해요",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "5c5529e0-d263-46da-a8f4-5645177b37fc",
+      "background": {
+        "kind": "image",
+        "assetId": "bd4d2fd9b5ac00c8af89c4ad04aae1f701972770529f3ecd4626487125125316",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "0d5d2662-bca7-46c7-aaa4-9b03ad97d8ff",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "고마운 마음을 전해요",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "9e4836d4-711c-408c-a28b-914b47fb48df",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "평소에 하지 못했던 말을 오늘은 꼭 전해 봐요.",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "eab8812b-73d9-4f3b-a27f-c88b2b23e4f6",
+          "type": "image",
+          "x": 210,
+          "y": 218,
+          "width": 860,
+          "height": 370,
+          "assetId": "acef476019d895480f001f99a8c11350f203b0877ddd30a066c6dbcecd460eeb"
+        },
+        {
+          "id": "155a141c-1be0-493c-a22c-7bd45d9d85ea",
+          "type": "text",
+          "x": 250,
+          "y": 248,
+          "width": 770,
+          "text": "○○○에게",
+          "fontId": "sans-ko",
+          "fontSize": 32,
+          "bold": true,
+          "color": "#734757",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "e57abfe2-b0b7-4630-aa80-cf6718a8b0a6",
+          "type": "text",
+          "x": 250,
+          "y": 322,
+          "width": 770,
+          "text": "○○○해 주어서 정말 고마워요.\n그때 나는 ○○○한 마음이 들었어요.\n앞으로 나는 ○○○할게요.",
+          "fontId": "sans-ko",
+          "fontSize": 30,
+          "bold": false,
+          "color": "#654553",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "ec272162-4d86-497e-a2ca-c943fa9241a8",
+          "type": "text",
+          "x": 250,
+          "y": 512,
+          "width": 770,
+          "text": "○○○가 드림",
+          "fontId": "sans-ko",
+          "fontSize": 25,
+          "bold": false,
+          "color": "#8B6070",
+          "align": "right",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "30a90872-94f3-4602-a1bb-d65c70275eae",
+          "type": "image",
+          "x": 1110,
+          "y": 520,
+          "width": 88,
+          "height": 88,
+          "assetId": "3e60ed7155411e476c2678fe8efeb49989e7d9e8f29ec8a5bd4430767fde12a8"
+        },
+        {
+          "id": "17dfb0c2-86e5-49dd-ab63-e6e52cb6e966",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "acef476019d895480f001f99a8c11350f203b0877ddd30a066c6dbcecd460eeb",
+      "mime": "image/png",
+      "pixelWidth": 1720,
+      "pixelHeight": 740,
+      "byteLength": 10048
+    },
+    {
+      "id": "3e60ed7155411e476c2678fe8efeb49989e7d9e8f29ec8a5bd4430767fde12a8",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 10752
+    },
+    {
+      "id": "bd4d2fd9b5ac00c8af89c4ad04aae1f701972770529f3ecd4626487125125316",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 74554
+    }
+  ]
+}

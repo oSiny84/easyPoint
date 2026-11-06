@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "8b4dc8cd-9719-4a21-acbb-7e7a0d89408d",
+  "title": "우리 동네를 소개해요",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "0ced0ec6-119c-49e5-acf4-c887636c6d0c",
+      "background": {
+        "kind": "image",
+        "assetId": "376188ae956cf4f6c4ef2945b74cf61ff20338b250134f5f910feec97615295c",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "330a8a14-9eb6-4217-aff6-315ef2338f30",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "우리 동네를 소개해요",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "6df5a8d1-0622-4e8f-a027-1b47fe646f66",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "내가 좋아하는 장소를 함께 찾아봐요.",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "c8219964-27f6-4191-a200-e166b6102399",
+          "type": "image",
+          "x": 96,
+          "y": 220,
+          "width": 620,
+          "height": 349,
+          "assetId": "cc87fc62c957b1cd895f56c4bd0d1b332013655a68786c677323181c3aa64e70"
+        },
+        {
+          "id": "334bd833-4b7b-46da-a6e1-d922965581cb",
+          "type": "text",
+          "x": 114,
+          "y": 371.5,
+          "width": 584,
+          "text": "동네 사진이나 직접 그린 지도",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "cfd124fb-a619-4f35-a78a-d9c151452c6b",
+          "type": "image",
+          "x": 760,
+          "y": 220,
+          "width": 422,
+          "height": 349,
+          "assetId": "c2947021bcc6f970fb4eda46cf7c8bde1258e5b3966cb8f935149b9306c82164"
+        },
+        {
+          "id": "1d6c23b0-406e-4841-a3cc-2fc90b6cb99b",
+          "type": "text",
+          "x": 788,
+          "y": 248,
+          "width": 365,
+          "text": "우리 동네 이름: ○○○\n\n추천 장소 ① ○○○\n추천 장소 ② ○○○\n\n동네에서 지킬 약속: ○○○",
+          "fontId": "sans-ko",
+          "fontSize": 26,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "a7f7bfa5-b365-476d-a3e2-817cd796a7e2",
+          "type": "image",
+          "x": 1090,
+          "y": 572,
+          "width": 85,
+          "height": 85,
+          "assetId": "f799d9704402302401bbbc7cc61dd9caec046f723d29d438b1b5800fa6b16b2b"
+        },
+        {
+          "id": "c1e9b79e-7bfc-41e2-a6ff-387f2585ed66",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "cc87fc62c957b1cd895f56c4bd0d1b332013655a68786c677323181c3aa64e70",
+      "mime": "image/png",
+      "pixelWidth": 1240,
+      "pixelHeight": 698,
+      "byteLength": 8071
+    },
+    {
+      "id": "c2947021bcc6f970fb4eda46cf7c8bde1258e5b3966cb8f935149b9306c82164",
+      "mime": "image/png",
+      "pixelWidth": 844,
+      "pixelHeight": 698,
+      "byteLength": 6690
+    },
+    {
+      "id": "f799d9704402302401bbbc7cc61dd9caec046f723d29d438b1b5800fa6b16b2b",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 13186
+    },
+    {
+      "id": "376188ae956cf4f6c4ef2945b74cf61ff20338b250134f5f910feec97615295c",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 71420
+    }
+  ]
+}

@@ -1,0 +1,631 @@
+{
+  "count": 12,
+  "validator": "src/domain/validate.ts",
+  "renderer": "src/rendering/renderSlide.ts",
+  "allRoundtrips": true,
+  "allTextEditAndUndo": true,
+  "browser": "158.0.8127.18",
+  "errors": [],
+  "external": [],
+  "templates": [
+    {
+      "id": "tpl-introduce-me",
+      "elements": 8,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "6fedc801-bbd3-42b5-aa00-c8c8c09e54f5",
+          "text": "안녕! 나는 ○○야",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "736b525a-f7af-4593-a104-96ba6fb25efd",
+          "text": "내가 좋아하는 것과 나만의 이야기를 소개해요.",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "ed12034a-2057-4c8e-ad61-ec415d7cdd71",
+          "text": "내 이름은  ○○○\n좋아하는 것은  ○○○\n잘하는 것은  ○○○\n친구들에게 하고 싶은 말은…",
+          "lines": 4,
+          "height": 156,
+          "bottom": 408
+        },
+        {
+          "id": "ea828833-f571-4c6f-a87c-2e3b920e0bac",
+          "text": "여기에 사진을 넣어 보세요",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 382.2
+        },
+        {
+          "id": "04cb238e-cb0f-49e5-a2a9-44cea447e0b3",
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-my-family",
+      "elements": 9,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "022d7710-e2e4-4736-a00a-901366e2420e",
+          "text": "우리 가족을 소개해요",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "ce1e51cf-7f4b-47f9-ad6d-21a80ec4141a",
+          "text": "함께해서 더 행복한 우리 집 이야기",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "9ba3f4d8-9bd7-43cf-a3fa-2a0851579b64",
+          "text": "여기에 사진을 넣어 보세요",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 389.2
+        },
+        {
+          "id": "85212b9f-c363-43f1-a855-0e19c2f77103",
+          "text": "우리 가족은요",
+          "lines": 1,
+          "height": 39,
+          "bottom": 285
+        },
+        {
+          "id": "0191e82b-3b2f-48e1-a267-54b006c758c4",
+          "text": "함께 사는 사람: ○○○\n함께 좋아하는 일: ○○○\n가장 즐거웠던 순간:\n○○○○○",
+          "lines": 4,
+          "height": 140.4,
+          "bottom": 450.4
+        },
+        {
+          "id": "fe49c544-002e-4727-ab80-4dc78aa61f02",
+          "text": "우리 가족에게 전하고 싶은 한마디: ○○○",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-best-friends",
+      "elements": 11,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "b21c8934-32f3-4463-a4b1-42dbdd37967f",
+          "text": "친구와 함께한 하루",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "e488d459-5765-4777-a3cd-156e27a3c524",
+          "text": "같이 웃고, 같이 배우는 소중한 친구",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "2f2dd2e3-48b9-4da5-a613-c6a75b8a4058",
+          "text": "우리 사진",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 348.2
+        },
+        {
+          "id": "1c37dd52-891a-4082-a4b6-ff5ccc658dfe",
+          "text": "함께한 놀이",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 348.2
+        },
+        {
+          "id": "f3007100-95ab-4397-ac08-ea78ba206b6a",
+          "text": "친구 이름은 ○○○\n우리는 ○○에서 만났어요.\n함께 ○○을 하면 즐거워요.\n친구의 멋진 점은 ○○예요.",
+          "lines": 4,
+          "height": 130,
+          "bottom": 381
+        },
+        {
+          "id": "2db6e58a-11c4-468d-ad44-b6aa669f7581",
+          "text": "우리의 추억  ○○○",
+          "lines": 1,
+          "height": 39,
+          "bottom": 539
+        },
+        {
+          "id": "111bf284-54eb-4965-abb4-88b49cce1ba1",
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-book-review",
+      "elements": 8,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "1e2b728e-4f19-491d-ac66-646d40295a34",
+          "text": "책 속으로 여행을 떠나요",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "5720b44a-5fc4-48a0-a27c-00f213ceefdf",
+          "text": "읽고, 생각하고, 나만의 느낌을 나눠요.",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "432bb7ea-2a60-4111-ab41-de2a34621d89",
+          "text": "책 표지 사진",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 406.2
+        },
+        {
+          "id": "cc017d27-abe3-49a9-aa93-5c26781e5470",
+          "text": "책 이름: ○○○\n주인공: ○○○\n가장 기억에 남는 장면:\n○○○○○\n이 책을 읽고 나는 ○○라고 느꼈어요.",
+          "lines": 5,
+          "height": 182,
+          "bottom": 428
+        },
+        {
+          "id": "191437f9-8e64-4082-afb0-b90c3c4ceeda",
+          "text": "내가 주는 별점: ☆☆☆☆☆",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-nature-diary",
+      "elements": 8,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "a5a6bd38-45ff-41c3-a659-f495f73aba74",
+          "text": "오늘의 꼼꼼 관찰 일기",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "ef91814f-4ede-4829-a8b0-77ab95bbe164",
+          "text": "작은 변화도 놓치지 않는 나만의 발견",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "14e18ad2-db51-445c-a02a-d40c0e2ad2d6",
+          "text": "관찰 사진이나 그림",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 396.2
+        },
+        {
+          "id": "fdebf721-71d7-4199-a653-f176bda957c6",
+          "text": "관찰한 것: ○○○\n관찰한 날: ○월 ○일\n눈으로 본 특징: ○○○\n새로 알게 된 점: ○○○\n더 궁금한 점: ○○○",
+          "lines": 5,
+          "height": 175.5,
+          "bottom": 426.5
+        },
+        {
+          "id": "ee17ed11-b204-40db-ab71-39ebd25b312e",
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-science-lab",
+      "elements": 13,
+      "assetCount": 3,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "4d29b6d0-218f-4545-a4a8-e4dd497251a7",
+          "text": "나도 꼬마 과학자!",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "f8e83875-2e34-44b3-adf4-e0bd73dbf62e",
+          "text": "궁금한 것을 직접 살펴보고, 발견한 것을 기록해요.",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "b12cf29f-78a3-4875-a023-5c1e9c7566b1",
+          "text": "1. 궁금해요",
+          "lines": 1,
+          "height": 36.4,
+          "bottom": 282.4
+        },
+        {
+          "id": "d1a65245-b3c1-4956-ac7b-79d1be545507",
+          "text": "무엇이 궁금한가요?\n○○○○○\n\n내 생각은 이래요.\n○○○○○",
+          "lines": 5,
+          "height": 156,
+          "bottom": 461
+        },
+        {
+          "id": "e10239a8-15ca-4203-ace7-5b976b1a781b",
+          "text": "2. 해 보았어요",
+          "lines": 1,
+          "height": 36.4,
+          "bottom": 282.4
+        },
+        {
+          "id": "cfcb19f1-5d3a-4beb-a73f-e5cb8b6765ec",
+          "text": "준비한 것: ○○○\n\n실험한 방법:\n① ○○○\n② ○○○",
+          "lines": 5,
+          "height": 156,
+          "bottom": 461
+        },
+        {
+          "id": "f01449e8-815d-4c59-a787-f50f077c701e",
+          "text": "3. 알게 되었어요",
+          "lines": 1,
+          "height": 36.4,
+          "bottom": 282.4
+        },
+        {
+          "id": "f8d239c3-bb4f-4ac4-a664-5e458e84d9ba",
+          "text": "눈으로 본 결과:\n○○○○○\n\n새롭게 알게 된 점:\n○○○○○",
+          "lines": 5,
+          "height": 156,
+          "bottom": 461
+        },
+        {
+          "id": "285b7774-9a09-49c1-a401-9629a87385df",
+          "text": "다음에는 ○○○을 더 알아보고 싶어요.",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-travel-story",
+      "elements": 8,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "c3127f9a-803d-4069-a323-e5547dfb93a5",
+          "text": "신나는 여행을 다녀왔어요",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "5ac5c177-5786-4be3-a1ea-e3fc2fa59b6d",
+          "text": "사진 한 장에 담긴 특별한 추억",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "a3933977-383a-408c-a48b-76ba7ded6663",
+          "text": "여기에 사진을 넣어 보세요",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 413.7
+        },
+        {
+          "id": "1a70944d-846b-46ae-aa27-686b6bced6ba",
+          "text": "다녀온 곳: ○○○\n함께 간 사람: ○○○\n가장 좋았던 일:\n○○○○○\n다시 가고 싶은 이유:\n○○○○○",
+          "lines": 6,
+          "height": 195,
+          "bottom": 442
+        },
+        {
+          "id": "5f220bcc-d458-491f-a85c-3ee918349d51",
+          "text": "내가 고른 여행의 한 장면",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-field-trip",
+      "elements": 13,
+      "assetCount": 3,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "e38ae0bf-2956-48e8-a916-6ba7afab6db7",
+          "text": "현장학습 다녀왔어요",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "93a119fe-9089-4801-a546-27fb55bf919b",
+          "text": "보고, 듣고, 느끼며 배운 하루",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "4083e006-8129-44c9-a956-c69288f738a5",
+          "text": "처음 본 장면",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 337.2
+        },
+        {
+          "id": "52ce97dc-1e46-467a-a25d-c00ef1db62e7",
+          "text": "1. 처음 본 장면\n○○○○○",
+          "lines": 2,
+          "height": 65,
+          "bottom": 537
+        },
+        {
+          "id": "2d192399-8699-4e1d-a806-236c027f7eb7",
+          "text": "가장 신기했던 것",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 337.2
+        },
+        {
+          "id": "a9b388be-13b9-4842-a109-a267faf22a7e",
+          "text": "2. 가장 신기했던 것\n○○○○○",
+          "lines": 2,
+          "height": 65,
+          "bottom": 537
+        },
+        {
+          "id": "63914d83-4239-46b1-acc0-2d3d88528d44",
+          "text": "꼭 기억하고 싶은 것",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 337.2
+        },
+        {
+          "id": "90ccbe03-b6c1-4a90-a1ac-e204f9cef0a4",
+          "text": "3. 꼭 기억하고 싶은 것\n○○○○○",
+          "lines": 2,
+          "height": 65,
+          "bottom": 537
+        },
+        {
+          "id": "bf12b9b4-787c-4ff4-ae15-93151603d637",
+          "text": "다녀온 곳: ○○○ · 다녀온 날: ○월 ○일",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-my-town",
+      "elements": 8,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "330a8a14-9eb6-4217-aff6-315ef2338f30",
+          "text": "우리 동네를 소개해요",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "6df5a8d1-0622-4e8f-a027-1b47fe646f66",
+          "text": "내가 좋아하는 장소를 함께 찾아봐요.",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "334bd833-4b7b-46da-a6e1-d922965581cb",
+          "text": "동네 사진이나 직접 그린 지도",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 402.7
+        },
+        {
+          "id": "1d6c23b0-406e-4841-a3cc-2fc90b6cb99b",
+          "text": "우리 동네 이름: ○○○\n\n추천 장소 ① ○○○\n추천 장소 ② ○○○\n\n동네에서 지킬 약속: ○○○",
+          "lines": 6,
+          "height": 202.8,
+          "bottom": 450.8
+        },
+        {
+          "id": "c1e9b79e-7bfc-41e2-a6ff-387f2585ed66",
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-favorite-animal",
+      "elements": 8,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "8851f462-c228-4d86-a354-98f255157d06",
+          "text": "내가 좋아하는 동물은요",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "b9c7f526-046f-446c-a611-e08846c72565",
+          "text": "생김새도, 살아가는 모습도 신기한 친구",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "ae1facd7-4c05-4831-ad33-dfd5c146c4d2",
+          "text": "좋아하는 동물 사진",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 393.2
+        },
+        {
+          "id": "3258af49-02a9-4606-aacd-c92ac56d9723",
+          "text": "동물 이름: ○○○\n사는 곳: ○○○\n먹는 것: ○○○\n특별한 점: ○○○\n내가 좋아하는 이유: ○○○",
+          "lines": 5,
+          "height": 182,
+          "bottom": 434
+        },
+        {
+          "id": "8cdfdb51-ade9-42bb-a965-aa86c7683981",
+          "text": "동물을 아끼는 나의 약속: ○○○",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-my-dream",
+      "elements": 9,
+      "assetCount": 4,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "b5d70a70-e94c-4e2b-add2-67b6d4a8c93a",
+          "text": "나의 꿈을 향해서",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "f2ac0ef6-b94e-4ce2-a6d1-1d1114cc8dbf",
+          "text": "작은 도전이 모이면 멋진 미래가 돼요.",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "5b4c4d49-2cca-4134-a4ad-6533686ae4c1",
+          "text": "나는 ○○○이 되고 싶어요.",
+          "lines": 1,
+          "height": 41.6,
+          "bottom": 290.6
+        },
+        {
+          "id": "842851fd-6fb0-42a3-a091-360646bd271d",
+          "text": "이 꿈을 고른 이유: ○○○\n내가 잘하고 싶은 것: ○○○\n오늘부터 해 볼 작은 도전:\n○○○○○",
+          "lines": 4,
+          "height": 140.4,
+          "bottom": 458.4
+        },
+        {
+          "id": "403badc6-f9ce-4c46-a265-62efb1009c51",
+          "text": "꿈과 관련된 사진",
+          "lines": 1,
+          "height": 31.200000000000003,
+          "bottom": 321.2
+        },
+        {
+          "id": "b82d7264-c1d6-441a-a490-b304917c6a6c",
+          "text": "미래의 나에게: 포기하지 말고 한 걸음씩!",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    },
+    {
+      "id": "tpl-thank-you",
+      "elements": 8,
+      "assetCount": 3,
+      "roundtrip": true,
+      "editAndUndo": true,
+      "textBounds": [
+        {
+          "id": "0d5d2662-bca7-46c7-aaa4-9b03ad97d8ff",
+          "text": "고마운 마음을 전해요",
+          "lines": 1,
+          "height": 67.60000000000001,
+          "bottom": 131.60000000000002
+        },
+        {
+          "id": "9e4836d4-711c-408c-a28b-914b47fb48df",
+          "text": "평소에 하지 못했던 말을 오늘은 꼭 전해 봐요.",
+          "lines": 1,
+          "height": 29.900000000000002,
+          "bottom": 171.9
+        },
+        {
+          "id": "155a141c-1be0-493c-a22c-7bd45d9d85ea",
+          "text": "○○○에게",
+          "lines": 1,
+          "height": 41.6,
+          "bottom": 289.6
+        },
+        {
+          "id": "e57abfe2-b0b7-4630-aa80-cf6718a8b0a6",
+          "text": "○○○해 주어서 정말 고마워요.\n그때 나는 ○○○한 마음이 들었어요.\n앞으로 나는 ○○○할게요.",
+          "lines": 3,
+          "height": 117,
+          "bottom": 439
+        },
+        {
+          "id": "ec272162-4d86-497e-a2ca-c943fa9241a8",
+          "text": "○○○가 드림",
+          "lines": 1,
+          "height": 32.5,
+          "bottom": 544.5
+        },
+        {
+          "id": "17dfb0c2-86e5-49dd-ab63-e6e52cb6e966",
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "lines": 1,
+          "height": 23.400000000000002,
+          "bottom": 670.4
+        }
+      ]
+    }
+  ]
+}

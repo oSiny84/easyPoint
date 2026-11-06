@@ -1,0 +1,4128 @@
+{
+  "schemaVersion": 1,
+  "packId": "canvacraft-starter-120",
+  "version": "1.0.0",
+  "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+  "palette": {
+    "mint": "#64C8AA",
+    "purple": "#9B83E8",
+    "blue": "#6CA9ED",
+    "yellow": "#FFD56A",
+    "pink": "#F396B5",
+    "orange": "#F5A46C",
+    "white": "#FFFFFF",
+    "dark": "#334155"
+  },
+  "categories": {
+    "shape": "도형",
+    "character": "캐릭터",
+    "sticker": "스티커"
+  },
+  "assets": [
+    {
+      "id": "character-child",
+      "kind": "character",
+      "label": "어린이",
+      "category": "친구",
+      "tags": [
+        "어린이",
+        "아이",
+        "친구",
+        "학생"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Child/Default/Flat/child_flat_default.svg",
+      "sourcePath": "assets/Child/Default/Flat/child_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-child.svg",
+      "image": "/library/png/character-child.png",
+      "thumbnail": "/library/thumbnails/character-child.png",
+      "sourceSha256": "1b938a9b04232efc53987dca2011fc8a4e4e0f33dd04d4d2da0919a673c22a1c",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "e2f722a1bb4384fd76ee0fe668314ce2658cb6ab34c0da7388311305bb830bcd"
+    },
+    {
+      "id": "character-boy",
+      "kind": "character",
+      "label": "남자아이",
+      "category": "친구",
+      "tags": [
+        "남자아이",
+        "어린이",
+        "친구",
+        "학생",
+        "남자"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Boy/Default/Flat/boy_flat_default.svg",
+      "sourcePath": "assets/Boy/Default/Flat/boy_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-boy.svg",
+      "image": "/library/png/character-boy.png",
+      "thumbnail": "/library/thumbnails/character-boy.png",
+      "sourceSha256": "78ae21d36ec70fb1d65e5bc37653e71278e3f163799d096cf1d8db20318502f6",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "2e987560e86e6e410d284c27070d3c4c1ee3911e35c02a884ce938174c205962"
+    },
+    {
+      "id": "character-girl",
+      "kind": "character",
+      "label": "여자아이",
+      "category": "친구",
+      "tags": [
+        "여자아이",
+        "어린이",
+        "친구",
+        "학생",
+        "여자"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Girl/Default/Flat/girl_flat_default.svg",
+      "sourcePath": "assets/Girl/Default/Flat/girl_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-girl.svg",
+      "image": "/library/png/character-girl.png",
+      "thumbnail": "/library/thumbnails/character-girl.png",
+      "sourceSha256": "81df57c25a7e6efb354580783ba16620c6d0951c995dd61283ab7689d6cadd25",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "5df2e1e4bb5104e07e973d0d0b90113301f222330f70397d501584a579b3b290"
+    },
+    {
+      "id": "character-baby",
+      "kind": "character",
+      "label": "아기",
+      "category": "친구",
+      "tags": [
+        "아기",
+        "가족",
+        "동생",
+        "어린이"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Baby/Default/Flat/baby_flat_default.svg",
+      "sourcePath": "assets/Baby/Default/Flat/baby_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-baby.svg",
+      "image": "/library/png/character-baby.png",
+      "thumbnail": "/library/thumbnails/character-baby.png",
+      "sourceSha256": "f1bf168ed31c80d489bd7b1d5511af852e6503aa12749c4360de2f2542967d8a",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "ccf2fcf1fb5cd053fca3bccf962e8f9a6f5802197bac177e35b2cae522c62222"
+    },
+    {
+      "id": "character-person-raising-hand",
+      "kind": "character",
+      "label": "손 든 친구",
+      "category": "친구",
+      "tags": [
+        "손 든 친구",
+        "발표",
+        "질문",
+        "손들기",
+        "학생"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20raising%20hand/Default/Flat/person_raising_hand_flat_default.svg",
+      "sourcePath": "assets/Person raising hand/Default/Flat/person_raising_hand_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-raising-hand.svg",
+      "image": "/library/png/character-person-raising-hand.png",
+      "thumbnail": "/library/thumbnails/character-person-raising-hand.png",
+      "sourceSha256": "515540c2db0ee381341260a64912047e6d35cc51413b4e6ccdd4e59ec7a12416",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "317178108ee6e515d7811332946bac0afe9bf197ff56c7721dabe8b0160044bd"
+    },
+    {
+      "id": "character-person-tipping-hand",
+      "kind": "character",
+      "label": "안내하는 친구",
+      "category": "친구",
+      "tags": [
+        "안내하는 친구",
+        "소개",
+        "설명",
+        "안내"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20tipping%20hand/Default/Flat/person_tipping_hand_flat_default.svg",
+      "sourcePath": "assets/Person tipping hand/Default/Flat/person_tipping_hand_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-tipping-hand.svg",
+      "image": "/library/png/character-person-tipping-hand.png",
+      "thumbnail": "/library/thumbnails/character-person-tipping-hand.png",
+      "sourceSha256": "5b105d8e4b0993e3e2c38325aff96626c2c1d31c70ba2992960cf81f22e64053",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "885f3c30d9c0201b5591126161e77fa6d5fe832c0f4787dc0978965301240378"
+    },
+    {
+      "id": "character-person-bowing",
+      "kind": "character",
+      "label": "인사하는 친구",
+      "category": "친구",
+      "tags": [
+        "인사하는 친구",
+        "인사",
+        "감사",
+        "예절"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20bowing/Default/Flat/person_bowing_flat_default.svg",
+      "sourcePath": "assets/Person bowing/Default/Flat/person_bowing_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-bowing.svg",
+      "image": "/library/png/character-person-bowing.png",
+      "thumbnail": "/library/thumbnails/character-person-bowing.png",
+      "sourceSha256": "f0e3ce7db44475c3811ba7d55ffb99be08780ed3888505b772f3267c9594c6ea",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "92272fb0369d8f2e257090594f28931e833de07e14b3d21941382b2ef88e3029"
+    },
+    {
+      "id": "character-person-gesturing-ok",
+      "kind": "character",
+      "label": "괜찮아 친구",
+      "category": "친구",
+      "tags": [
+        "괜찮아 친구",
+        "좋아",
+        "성공",
+        "동그라미"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20gesturing%20ok/Default/Flat/person_gesturing_ok_flat_default.svg",
+      "sourcePath": "assets/Person gesturing ok/Default/Flat/person_gesturing_ok_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-gesturing-ok.svg",
+      "image": "/library/png/character-person-gesturing-ok.png",
+      "thumbnail": "/library/thumbnails/character-person-gesturing-ok.png",
+      "sourceSha256": "a5fafd7348d12f594e3bec9c0b6300cf069d8b36dd7c5a48191b47adb0f748b7",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "65087eca7490e8c4404605cb7ab921f0395c22b351497c940e30ffb79ff14ddf"
+    },
+    {
+      "id": "character-person-gesturing-no",
+      "kind": "character",
+      "label": "안 돼 친구",
+      "category": "친구",
+      "tags": [
+        "안 돼 친구",
+        "거절",
+        "안전",
+        "엑스"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20gesturing%20no/Default/Flat/person_gesturing_no_flat_default.svg",
+      "sourcePath": "assets/Person gesturing no/Default/Flat/person_gesturing_no_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-gesturing-no.svg",
+      "image": "/library/png/character-person-gesturing-no.png",
+      "thumbnail": "/library/thumbnails/character-person-gesturing-no.png",
+      "sourceSha256": "d425fa8ebe7df809781f156dbab91b8ad621110b65cad350a3ecd1f013b49956",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "f181ea801ee9329068de2fca97c36a5fb993f52063f9d9f9de53535900f61bdb"
+    },
+    {
+      "id": "character-person-shrugging",
+      "kind": "character",
+      "label": "궁금한 친구",
+      "category": "친구",
+      "tags": [
+        "궁금한 친구",
+        "질문",
+        "몰라",
+        "궁금"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20shrugging/Default/Flat/person_shrugging_flat_default.svg",
+      "sourcePath": "assets/Person shrugging/Default/Flat/person_shrugging_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-shrugging.svg",
+      "image": "/library/png/character-person-shrugging.png",
+      "thumbnail": "/library/thumbnails/character-person-shrugging.png",
+      "sourceSha256": "00ef030fd2d26877448e2dba69ca09e2d33d49b2e6137956733e4d4a3dd4cb09",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "b6c866ba8048b874689f329966b4f18f35494f4c69590c1aaeed5bcd6ea5b47f"
+    },
+    {
+      "id": "character-person-cartwheeling",
+      "kind": "character",
+      "label": "옆돌기 친구",
+      "category": "친구",
+      "tags": [
+        "옆돌기 친구",
+        "운동",
+        "체육",
+        "놀이"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20cartwheeling/Default/Flat/person_cartwheeling_flat_default.svg",
+      "sourcePath": "assets/Person cartwheeling/Default/Flat/person_cartwheeling_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-cartwheeling.svg",
+      "image": "/library/png/character-person-cartwheeling.png",
+      "thumbnail": "/library/thumbnails/character-person-cartwheeling.png",
+      "sourceSha256": "0937dc37bb86b5f2405b9935f8b50ce64ba3d3b7e8018e9af307c994d6c2a2ad",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "424f2947fd2049cfa032c7ab2139c799d55e7753f71bf0f5fd231f94d5569dbb"
+    },
+    {
+      "id": "character-person-bouncing-ball",
+      "kind": "character",
+      "label": "공놀이 친구",
+      "category": "친구",
+      "tags": [
+        "공놀이 친구",
+        "농구",
+        "운동",
+        "체육"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20bouncing%20ball/Default/Flat/person_bouncing_ball_flat_default.svg",
+      "sourcePath": "assets/Person bouncing ball/Default/Flat/person_bouncing_ball_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-bouncing-ball.svg",
+      "image": "/library/png/character-person-bouncing-ball.png",
+      "thumbnail": "/library/thumbnails/character-person-bouncing-ball.png",
+      "sourceSha256": "c8502d7b4470496692b009b5e940271407f4bdbc00181b38b76a4b5c8ca0fa01",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "9c565227576642060ac1ca11ec551a5992ab500ba74fb2d1452ed10adc4ff8a5"
+    },
+    {
+      "id": "character-person-running",
+      "kind": "character",
+      "label": "달리는 친구",
+      "category": "친구",
+      "tags": [
+        "달리는 친구",
+        "달리기",
+        "운동",
+        "체육"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20running/Default/Flat/person_running_flat_default.svg",
+      "sourcePath": "assets/Person running/Default/Flat/person_running_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-running.svg",
+      "image": "/library/png/character-person-running.png",
+      "thumbnail": "/library/thumbnails/character-person-running.png",
+      "sourceSha256": "3ae99e8a7c91f46572910a4ffcdcffdbd0617aa3608392581f52f1bde7dab1ea",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "f36386d6a42ff14090be6966193cf122c10b51bc3cc8a162457a096b0ee4d218"
+    },
+    {
+      "id": "character-person-swimming",
+      "kind": "character",
+      "label": "수영하는 친구",
+      "category": "친구",
+      "tags": [
+        "수영하는 친구",
+        "물놀이",
+        "운동",
+        "여름"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20swimming/Default/Flat/person_swimming_flat_default.svg",
+      "sourcePath": "assets/Person swimming/Default/Flat/person_swimming_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-swimming.svg",
+      "image": "/library/png/character-person-swimming.png",
+      "thumbnail": "/library/thumbnails/character-person-swimming.png",
+      "sourceSha256": "a8d397dbf539ff78b8f582856deb1e2772166a633eb10b792f2d5ab62476c3d9",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "77b0fcb1f553a01b309f34e3cf40838fb2a8c2ee38fb30e594d98e01bd21d770"
+    },
+    {
+      "id": "character-person-biking",
+      "kind": "character",
+      "label": "자전거 타는 친구",
+      "category": "친구",
+      "tags": [
+        "자전거 타는 친구",
+        "자전거",
+        "운동",
+        "여행"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20biking/Default/Flat/person_biking_flat_default.svg",
+      "sourcePath": "assets/Person biking/Default/Flat/person_biking_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-biking.svg",
+      "image": "/library/png/character-person-biking.png",
+      "thumbnail": "/library/thumbnails/character-person-biking.png",
+      "sourceSha256": "fb7b76ded28b034f71d91932d5f50111f4118581da0ff7d24af9406a3e49de12",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "a46173866cb9726dbc0c5ebe618cd7420465f176f70fd3c1ac4ffdc43bf448a9"
+    },
+    {
+      "id": "character-artist",
+      "kind": "character",
+      "label": "화가 친구",
+      "category": "친구",
+      "tags": [
+        "화가 친구",
+        "그림",
+        "미술",
+        "직업"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Artist/Default/Flat/artist_flat_default.svg",
+      "sourcePath": "assets/Artist/Default/Flat/artist_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-artist.svg",
+      "image": "/library/png/character-artist.png",
+      "thumbnail": "/library/thumbnails/character-artist.png",
+      "sourceSha256": "5462b1f6b4f4b43b6981be0369be28a070da9196b9dbeb71c2f125a3f0b0db62",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "387055bda6140a4b69585c57c03950afb59f75e1309cc7d868a66f9fa474f809"
+    },
+    {
+      "id": "character-astronaut",
+      "kind": "character",
+      "label": "우주비행사",
+      "category": "친구",
+      "tags": [
+        "우주비행사",
+        "우주",
+        "직업",
+        "탐험"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Astronaut/Default/Flat/astronaut_flat_default.svg",
+      "sourcePath": "assets/Astronaut/Default/Flat/astronaut_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-astronaut.svg",
+      "image": "/library/png/character-astronaut.png",
+      "thumbnail": "/library/thumbnails/character-astronaut.png",
+      "sourceSha256": "5579e2d124545cf55bf70ff09adc4d2e6f55c3390c90c574426c2ce794debb25",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "4736017571a71d644ac121e1c2944f4b3e9aacdada29869c7c3e349771af3e8c"
+    },
+    {
+      "id": "character-scientist",
+      "kind": "character",
+      "label": "과학자",
+      "category": "친구",
+      "tags": [
+        "과학자",
+        "과학",
+        "실험",
+        "직업"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Scientist/Default/Flat/scientist_flat_default.svg",
+      "sourcePath": "assets/Scientist/Default/Flat/scientist_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-scientist.svg",
+      "image": "/library/png/character-scientist.png",
+      "thumbnail": "/library/thumbnails/character-scientist.png",
+      "sourceSha256": "6ed4b3738601f0c11481c90392a8cc6878224e9dedc9a4dc626fccae4625e186",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "b248734fc1c033b15bdd34f8aca1b5bf33dd944bcf3e082c30627fb5e4c85869"
+    },
+    {
+      "id": "character-teacher",
+      "kind": "character",
+      "label": "선생님",
+      "category": "친구",
+      "tags": [
+        "선생님",
+        "학교",
+        "수업",
+        "직업"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Teacher/Default/Flat/teacher_flat_default.svg",
+      "sourcePath": "assets/Teacher/Default/Flat/teacher_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-teacher.svg",
+      "image": "/library/png/character-teacher.png",
+      "thumbnail": "/library/thumbnails/character-teacher.png",
+      "sourceSha256": "d0cf19fac6954476cfc0e0e1dc0ce662977cc6e13e10adcea31491ce9cb322a6",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "5311a4d94b989b203eb38bbfa1db85d19e93379fca80a2661582cb1367751f5f"
+    },
+    {
+      "id": "character-cook",
+      "kind": "character",
+      "label": "요리사",
+      "category": "친구",
+      "tags": [
+        "요리사",
+        "요리",
+        "음식",
+        "직업"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Cook/Default/Flat/cook_flat_default.svg",
+      "sourcePath": "assets/Cook/Default/Flat/cook_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-cook.svg",
+      "image": "/library/png/character-cook.png",
+      "thumbnail": "/library/thumbnails/character-cook.png",
+      "sourceSha256": "3bd1ec92a5d2c8fe6ac4327d41a03b169d06194b6c102f0d66abaabecbf881aa",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "ba10da210bdf0febd4cbc451ab23f6368f09cf231d6cf5b6801f953a86e886c8"
+    },
+    {
+      "id": "character-cat-face",
+      "kind": "character",
+      "label": "고양이",
+      "category": "동물",
+      "tags": [
+        "고양이",
+        "야옹",
+        "반려동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Cat%20face/Flat/cat_face_flat.svg",
+      "sourcePath": "assets/Cat face/Flat/cat_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-cat-face.svg",
+      "image": "/library/png/character-cat-face.png",
+      "thumbnail": "/library/thumbnails/character-cat-face.png",
+      "sourceSha256": "eb917d09d37ef833f7fbb51eeb583f27ddfd28a7248166050e994defe2cc2ac3",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "aaad61c2f40a34c3456f03479ce21e31ef4b1bdd9167dd179055e8c4832de0a6"
+    },
+    {
+      "id": "character-dog-face",
+      "kind": "character",
+      "label": "강아지",
+      "category": "동물",
+      "tags": [
+        "강아지",
+        "멍멍",
+        "개",
+        "반려동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Dog%20face/Flat/dog_face_flat.svg",
+      "sourcePath": "assets/Dog face/Flat/dog_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-dog-face.svg",
+      "image": "/library/png/character-dog-face.png",
+      "thumbnail": "/library/thumbnails/character-dog-face.png",
+      "sourceSha256": "2ccc82b870a9f6e5ddf64b2874f923890b526b77099feb05892e7839f14dfbe4",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "50673c53247b4fa309d9e5d4cfa7b5e9b3b74f6276ee05fc89909c8cdf222c2f"
+    },
+    {
+      "id": "character-rabbit-face",
+      "kind": "character",
+      "label": "토끼",
+      "category": "동물",
+      "tags": [
+        "토끼",
+        "귀",
+        "깡충"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Rabbit%20face/Flat/rabbit_face_flat.svg",
+      "sourcePath": "assets/Rabbit face/Flat/rabbit_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-rabbit-face.svg",
+      "image": "/library/png/character-rabbit-face.png",
+      "thumbnail": "/library/thumbnails/character-rabbit-face.png",
+      "sourceSha256": "ce2be906f4486289eae21dcfbca4f01d89c5a0511564641d35e54e7ac88b7e4b",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "9f182d91c29c46c16cd4158571ea4827174fe517573e0c92661bd75a0043fbc6"
+    },
+    {
+      "id": "character-bear",
+      "kind": "character",
+      "label": "곰",
+      "category": "동물",
+      "tags": [
+        "곰",
+        "숲",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Bear/Flat/bear_flat.svg",
+      "sourcePath": "assets/Bear/Flat/bear_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-bear.svg",
+      "image": "/library/png/character-bear.png",
+      "thumbnail": "/library/thumbnails/character-bear.png",
+      "sourceSha256": "37b4389149a58d50feff1eec24b8c2e20d2d67f2188208e3af3bcc3b66c067cb",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "80651e6efa49e2da52a45487125d1d158c2f1794f2c1876a521f1c2a6b66df99"
+    },
+    {
+      "id": "character-panda",
+      "kind": "character",
+      "label": "판다",
+      "category": "동물",
+      "tags": [
+        "판다",
+        "팬더",
+        "대나무",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Panda/Flat/panda_flat.svg",
+      "sourcePath": "assets/Panda/Flat/panda_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-panda.svg",
+      "image": "/library/png/character-panda.png",
+      "thumbnail": "/library/thumbnails/character-panda.png",
+      "sourceSha256": "c713e668dbdb6cd53ead805cd968b839ed706dc5ebe40f68d02e89879f2b9996",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "cbed7a0e20d232c38a656a9978be23e5b3c94b6e2a61464ce72485bc0b2234cd"
+    },
+    {
+      "id": "character-koala",
+      "kind": "character",
+      "label": "코알라",
+      "category": "동물",
+      "tags": [
+        "코알라",
+        "나무",
+        "호주",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Koala/Flat/koala_flat.svg",
+      "sourcePath": "assets/Koala/Flat/koala_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-koala.svg",
+      "image": "/library/png/character-koala.png",
+      "thumbnail": "/library/thumbnails/character-koala.png",
+      "sourceSha256": "18fc56aac0e48f026e4d44d684b5de431f580496c3f5fc8f9fee2d574e07bab1",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "6deca8e334dc24cfed906cb7ee7cc1089c9b2b51efc5b8d5b7992aa7bccf00e9"
+    },
+    {
+      "id": "character-tiger-face",
+      "kind": "character",
+      "label": "호랑이",
+      "category": "동물",
+      "tags": [
+        "호랑이",
+        "어흥",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Tiger%20face/Flat/tiger_face_flat.svg",
+      "sourcePath": "assets/Tiger face/Flat/tiger_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-tiger-face.svg",
+      "image": "/library/png/character-tiger-face.png",
+      "thumbnail": "/library/thumbnails/character-tiger-face.png",
+      "sourceSha256": "c0987f9a782ca0e13d8edb0b2989ec8e17d87222e8ead170c104e7475775ab74",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "7106a0da9de79304a1eefc090be3e2e1898c6e18d174b967e1fa1f8639f7b2f4"
+    },
+    {
+      "id": "character-lion",
+      "kind": "character",
+      "label": "사자",
+      "category": "동물",
+      "tags": [
+        "사자",
+        "갈기",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Lion/Flat/lion_flat.svg",
+      "sourcePath": "assets/Lion/Flat/lion_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-lion.svg",
+      "image": "/library/png/character-lion.png",
+      "thumbnail": "/library/thumbnails/character-lion.png",
+      "sourceSha256": "82c0b956f3d733b2139bec69ca0043676ae31bf5870190a1174175ed1d3d27ed",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "b6f2692d2a6e4320c44d6994d6fd594459129c59ccad46208e6b6f03c8617c26"
+    },
+    {
+      "id": "character-fox",
+      "kind": "character",
+      "label": "여우",
+      "category": "동물",
+      "tags": [
+        "여우",
+        "숲",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Fox/Flat/fox_flat.svg",
+      "sourcePath": "assets/Fox/Flat/fox_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-fox.svg",
+      "image": "/library/png/character-fox.png",
+      "thumbnail": "/library/thumbnails/character-fox.png",
+      "sourceSha256": "05992c69f46f9a8ef14e7a95894baa3168f4c195d8d3de3f3a09ce82d68bffc9",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "566b27f24f9ab8e8824b7e49e4ac4bd4380efc6e69855004012e8a7e914d5074"
+    },
+    {
+      "id": "character-wolf",
+      "kind": "character",
+      "label": "늑대",
+      "category": "동물",
+      "tags": [
+        "늑대",
+        "숲",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Wolf/Flat/wolf_flat.svg",
+      "sourcePath": "assets/Wolf/Flat/wolf_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-wolf.svg",
+      "image": "/library/png/character-wolf.png",
+      "thumbnail": "/library/thumbnails/character-wolf.png",
+      "sourceSha256": "23316ea219d91065f4a7747d2d3a9cf90794502ce33f1378b63f188d4ec1b467",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "3c1200110addc8a576c94bf9d9cc0e4dc1bdd547f11d8d180405f2bbf879f30d"
+    },
+    {
+      "id": "character-pig-face",
+      "kind": "character",
+      "label": "돼지",
+      "category": "동물",
+      "tags": [
+        "돼지",
+        "꿀꿀",
+        "농장",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Pig%20face/Flat/pig_face_flat.svg",
+      "sourcePath": "assets/Pig face/Flat/pig_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-pig-face.svg",
+      "image": "/library/png/character-pig-face.png",
+      "thumbnail": "/library/thumbnails/character-pig-face.png",
+      "sourceSha256": "90dcc30373bac5cee297f1ca7f046e16fe11aee380f49dbe24d4be6aa55dd56a",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "aff3307449c74cb5946040a4824b35bfcc7ccd4c0ed0022300ccb835d804c6a6"
+    },
+    {
+      "id": "character-cow-face",
+      "kind": "character",
+      "label": "젖소",
+      "category": "동물",
+      "tags": [
+        "젖소",
+        "소",
+        "음메",
+        "농장"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Cow%20face/Flat/cow_face_flat.svg",
+      "sourcePath": "assets/Cow face/Flat/cow_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-cow-face.svg",
+      "image": "/library/png/character-cow-face.png",
+      "thumbnail": "/library/thumbnails/character-cow-face.png",
+      "sourceSha256": "dd64edd2e1d8a9def133bbcb759edbe2136792865c2688dcbaeda195e32aef06",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "5de08cae7dd3ad9a087f6475d4dbbcb3284804604506fd15654633c8bc8cd6d2"
+    },
+    {
+      "id": "character-horse-face",
+      "kind": "character",
+      "label": "말",
+      "category": "동물",
+      "tags": [
+        "말",
+        "농장",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Horse%20face/Flat/horse_face_flat.svg",
+      "sourcePath": "assets/Horse face/Flat/horse_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-horse-face.svg",
+      "image": "/library/png/character-horse-face.png",
+      "thumbnail": "/library/thumbnails/character-horse-face.png",
+      "sourceSha256": "61e59a386a5d05d4c6867962453f62187aa3cf40c89b4259527748b67e233dfe",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "0852c7326e48973cfa6f0ac34ccf386e6ce195f520f105dd2dcf2800e11de106"
+    },
+    {
+      "id": "character-monkey-face",
+      "kind": "character",
+      "label": "원숭이",
+      "category": "동물",
+      "tags": [
+        "원숭이",
+        "정글",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Monkey%20face/Flat/monkey_face_flat.svg",
+      "sourcePath": "assets/Monkey face/Flat/monkey_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-monkey-face.svg",
+      "image": "/library/png/character-monkey-face.png",
+      "thumbnail": "/library/thumbnails/character-monkey-face.png",
+      "sourceSha256": "4e2a9a96fdbdd4ff1f6696ceeac6ce20855c308217f37d5b2543232fd4b05c97",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "1594b3229905527089535d125643637c95c7e37ff639413a9b6bef7ede5dc478"
+    },
+    {
+      "id": "character-frog",
+      "kind": "character",
+      "label": "개구리",
+      "category": "동물",
+      "tags": [
+        "개구리",
+        "개굴",
+        "연못",
+        "초록"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Frog/Flat/frog_flat.svg",
+      "sourcePath": "assets/Frog/Flat/frog_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-frog.svg",
+      "image": "/library/png/character-frog.png",
+      "thumbnail": "/library/thumbnails/character-frog.png",
+      "sourceSha256": "38a4f680d8dc643d644cbfbe1fde3ee6a9b51f624fe6b17315728af4e006ed08",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "2c3cca0fbf1e60a6b7f647c2cd55bcdf24350d059aca5576e52746f135997228"
+    },
+    {
+      "id": "character-penguin",
+      "kind": "character",
+      "label": "펭귄",
+      "category": "동물",
+      "tags": [
+        "펭귄",
+        "남극",
+        "새",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Penguin/Flat/penguin_flat.svg",
+      "sourcePath": "assets/Penguin/Flat/penguin_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-penguin.svg",
+      "image": "/library/png/character-penguin.png",
+      "thumbnail": "/library/thumbnails/character-penguin.png",
+      "sourceSha256": "7b48f396877956d5b0a32066ef7faf17eeb928bfe70edd7fe4b7a1e76284d425",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "9ff497dc9ccef7dab3345a6607b2678f4854f13f4c01db5d9a5595bca476b2da"
+    },
+    {
+      "id": "character-owl",
+      "kind": "character",
+      "label": "부엉이",
+      "category": "동물",
+      "tags": [
+        "부엉이",
+        "올빼미",
+        "새",
+        "밤"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Owl/Flat/owl_flat.svg",
+      "sourcePath": "assets/Owl/Flat/owl_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-owl.svg",
+      "image": "/library/png/character-owl.png",
+      "thumbnail": "/library/thumbnails/character-owl.png",
+      "sourceSha256": "443a589d5c8ac73bb60deb4350570e25d21cad33a1e189d2e195aaab14856873",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "9d00fad2c81ebecefe977d98f0692ad076ff971c3b1cbd0b7a1f3a2964c8cd3f"
+    },
+    {
+      "id": "character-baby-chick",
+      "kind": "character",
+      "label": "병아리",
+      "category": "동물",
+      "tags": [
+        "병아리",
+        "삐약",
+        "노랑",
+        "새"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Baby%20chick/Flat/baby_chick_flat.svg",
+      "sourcePath": "assets/Baby chick/Flat/baby_chick_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-baby-chick.svg",
+      "image": "/library/png/character-baby-chick.png",
+      "thumbnail": "/library/thumbnails/character-baby-chick.png",
+      "sourceSha256": "88843e98df4af20226db3f29ceed89d12428e6d6cdc3e483efa3476a8a52301e",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "b3b6097198eb1ee42b79f27f29afbf57afa8bd7983e222e1f379ea55cf401b8c"
+    },
+    {
+      "id": "character-duck",
+      "kind": "character",
+      "label": "오리",
+      "category": "동물",
+      "tags": [
+        "오리",
+        "꽥꽥",
+        "연못",
+        "새"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Duck/Flat/duck_flat.svg",
+      "sourcePath": "assets/Duck/Flat/duck_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-duck.svg",
+      "image": "/library/png/character-duck.png",
+      "thumbnail": "/library/thumbnails/character-duck.png",
+      "sourceSha256": "4d793eb8e867817586ae2a03784cbad9814f0e89f195a3503c77f8cb8441e35d",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "f103a89dc8806661fdcfa00754ed40cadce61ca202de027c82c60a7d1c9ca45f"
+    },
+    {
+      "id": "character-butterfly",
+      "kind": "character",
+      "label": "나비",
+      "category": "동물",
+      "tags": [
+        "나비",
+        "봄",
+        "꽃",
+        "곤충"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Butterfly/Flat/butterfly_flat.svg",
+      "sourcePath": "assets/Butterfly/Flat/butterfly_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-butterfly.svg",
+      "image": "/library/png/character-butterfly.png",
+      "thumbnail": "/library/thumbnails/character-butterfly.png",
+      "sourceSha256": "118a7aee6fb3360fef0dcf86aeaac8e022c35c3f52529145750155a8893f50fc",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "8c30d6194e222a74a47ea06b61ab71770a6c0f46a18fe25cc342b5da2d7c869b"
+    },
+    {
+      "id": "character-honeybee",
+      "kind": "character",
+      "label": "꿀벌",
+      "category": "동물",
+      "tags": [
+        "꿀벌",
+        "벌",
+        "꿀",
+        "꽃",
+        "곤충"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Honeybee/Flat/honeybee_flat.svg",
+      "sourcePath": "assets/Honeybee/Flat/honeybee_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-honeybee.svg",
+      "image": "/library/png/character-honeybee.png",
+      "thumbnail": "/library/thumbnails/character-honeybee.png",
+      "sourceSha256": "bb82291c1870bcc05fb694c0f0a4dc63ca0c593fc12e7edd17fc32264ae8d9d5",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "cd08649d825797113418957ff3b7c3ec0aa6e344301f256fa5e14ff72128a541"
+    },
+    {
+      "id": "character-lady-beetle",
+      "kind": "character",
+      "label": "무당벌레",
+      "category": "동물",
+      "tags": [
+        "무당벌레",
+        "벌레",
+        "곤충",
+        "정원"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Lady%20beetle/Flat/lady_beetle_flat.svg",
+      "sourcePath": "assets/Lady beetle/Flat/lady_beetle_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-lady-beetle.svg",
+      "image": "/library/png/character-lady-beetle.png",
+      "thumbnail": "/library/thumbnails/character-lady-beetle.png",
+      "sourceSha256": "c6db446e4774261821661bee4a6a8cf660e546ed20e492b8393d832a93c3d88b",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "494f34a8ff4c5c2db7b638e6fe119b94d0b556bab79f9364240b93575754f89c"
+    },
+    {
+      "id": "character-turtle",
+      "kind": "character",
+      "label": "거북이",
+      "category": "동물",
+      "tags": [
+        "거북이",
+        "바다",
+        "느림",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Turtle/Flat/turtle_flat.svg",
+      "sourcePath": "assets/Turtle/Flat/turtle_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-turtle.svg",
+      "image": "/library/png/character-turtle.png",
+      "thumbnail": "/library/thumbnails/character-turtle.png",
+      "sourceSha256": "91215c4ddf01d1ae49b4e987ef4ce007a30ddae8818e40b7c6e2991c12ace35d",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "d57437094f2a42e0c9dd92a0b8cf81b4196a38b244a22e326055b58987b0c099"
+    },
+    {
+      "id": "character-dolphin",
+      "kind": "character",
+      "label": "돌고래",
+      "category": "동물",
+      "tags": [
+        "돌고래",
+        "바다",
+        "수영",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Dolphin/Flat/dolphin_flat.svg",
+      "sourcePath": "assets/Dolphin/Flat/dolphin_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-dolphin.svg",
+      "image": "/library/png/character-dolphin.png",
+      "thumbnail": "/library/thumbnails/character-dolphin.png",
+      "sourceSha256": "76b57f2babc3de5fc188242bcf4f80a30266e8b4a866af9d080fe85426594aaf",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "d76e88e25cb39f4e97c48baf8491963766a8f7a2ca7008de7a3c02b4ccd2b4ad"
+    },
+    {
+      "id": "character-whale",
+      "kind": "character",
+      "label": "고래",
+      "category": "동물",
+      "tags": [
+        "고래",
+        "바다",
+        "큰동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Whale/Flat/whale_flat.svg",
+      "sourcePath": "assets/Whale/Flat/whale_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-whale.svg",
+      "image": "/library/png/character-whale.png",
+      "thumbnail": "/library/thumbnails/character-whale.png",
+      "sourceSha256": "bb31a1f4ff478bb4838a3404de66678a8bee61e62d96f31218e4cf98b0104fb8",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "97002f9a1bbec7ac948c5aea690bee49d71247b6bdf7aa8c507bf911dd2a7fd8"
+    },
+    {
+      "id": "character-octopus",
+      "kind": "character",
+      "label": "문어",
+      "category": "동물",
+      "tags": [
+        "문어",
+        "바다",
+        "다리",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Octopus/Flat/octopus_flat.svg",
+      "sourcePath": "assets/Octopus/Flat/octopus_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-octopus.svg",
+      "image": "/library/png/character-octopus.png",
+      "thumbnail": "/library/thumbnails/character-octopus.png",
+      "sourceSha256": "50a262e105a309ee21273e1e31a1cff0982a1bf9562fb9d8310a0d61c0f511dd",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "06fe3c04a84238c44d7166249207e31fb8efcd02faba60f59c583e08c55d920a"
+    },
+    {
+      "id": "character-crab",
+      "kind": "character",
+      "label": "게",
+      "category": "동물",
+      "tags": [
+        "게",
+        "바다",
+        "집게",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Crab/Flat/crab_flat.svg",
+      "sourcePath": "assets/Crab/Flat/crab_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-crab.svg",
+      "image": "/library/png/character-crab.png",
+      "thumbnail": "/library/thumbnails/character-crab.png",
+      "sourceSha256": "27358ad17af6023fded1fc2fd9c374a16256e4ab6ec120f9312aebb12a9b8e28",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "c6d9380faf619178ae737736cc7ea9b0b9b95c8f7dadf8f915a6933cc859a146"
+    },
+    {
+      "id": "character-snail",
+      "kind": "character",
+      "label": "달팽이",
+      "category": "동물",
+      "tags": [
+        "달팽이",
+        "느림",
+        "비",
+        "정원"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Snail/Flat/snail_flat.svg",
+      "sourcePath": "assets/Snail/Flat/snail_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-snail.svg",
+      "image": "/library/png/character-snail.png",
+      "thumbnail": "/library/thumbnails/character-snail.png",
+      "sourceSha256": "b4cfa53534ccfd43624af756f1a8736c6a5a1603303fd59ae5ef8fea08b28a87",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "2dec7b74a816da1838f7782bb751b13b6c73ffbafb6d6be32a829f42d4ed7009"
+    },
+    {
+      "id": "character-elephant",
+      "kind": "character",
+      "label": "코끼리",
+      "category": "동물",
+      "tags": [
+        "코끼리",
+        "코",
+        "정글",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Elephant/Flat/elephant_flat.svg",
+      "sourcePath": "assets/Elephant/Flat/elephant_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-elephant.svg",
+      "image": "/library/png/character-elephant.png",
+      "thumbnail": "/library/thumbnails/character-elephant.png",
+      "sourceSha256": "756c630d03adf722b0686012db737f097650f24b8b77174c862e4bafb202fa44",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "d371491bfc92ad994da5656a73ed7dc91b539db09e7e141b7a6bd07b8f650aaf"
+    },
+    {
+      "id": "character-giraffe",
+      "kind": "character",
+      "label": "기린",
+      "category": "동물",
+      "tags": [
+        "기린",
+        "목",
+        "초원",
+        "동물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Giraffe/Flat/giraffe_flat.svg",
+      "sourcePath": "assets/Giraffe/Flat/giraffe_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-giraffe.svg",
+      "image": "/library/png/character-giraffe.png",
+      "thumbnail": "/library/thumbnails/character-giraffe.png",
+      "sourceSha256": "754e9905438473e77bdfbefae26c92bbb5240cd6c718bf1ec95aa190af0a317c",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "8dbc54367771811f54087ef02c13dbb55f591dda6de84eee8273a9359e2b3e5b"
+    },
+    {
+      "id": "character-t-rex",
+      "kind": "character",
+      "label": "티라노사우루스",
+      "category": "상상 친구",
+      "tags": [
+        "티라노사우루스",
+        "공룡",
+        "티라노",
+        "탐험"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/T-rex/Flat/t-rex_flat.svg",
+      "sourcePath": "assets/T-rex/Flat/t-rex_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-t-rex.svg",
+      "image": "/library/png/character-t-rex.png",
+      "thumbnail": "/library/thumbnails/character-t-rex.png",
+      "sourceSha256": "ac8aa7caed3f6b28a4212806b349ca633ed8e2a2caa4eaa9216525c4f130aeb1",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "242b316ecc575ff58c8f0a315a049d00bc80463025efaede938eb88669dfda23"
+    },
+    {
+      "id": "character-sauropod",
+      "kind": "character",
+      "label": "긴 목 공룡",
+      "category": "상상 친구",
+      "tags": [
+        "긴 목 공룡",
+        "공룡",
+        "초식",
+        "탐험"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Sauropod/Flat/sauropod_flat.svg",
+      "sourcePath": "assets/Sauropod/Flat/sauropod_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-sauropod.svg",
+      "image": "/library/png/character-sauropod.png",
+      "thumbnail": "/library/thumbnails/character-sauropod.png",
+      "sourceSha256": "482ea82cd86866e677e77e52fc930f7045cfebfa6aef443a4efcf66c2c3acfc7",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "140ed9d432748754349635f718b887bf7160a3ad9c2d4be4fc2bf3ef303f508b"
+    },
+    {
+      "id": "character-unicorn",
+      "kind": "character",
+      "label": "유니콘",
+      "category": "상상 친구",
+      "tags": [
+        "유니콘",
+        "말",
+        "무지개",
+        "상상"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Unicorn/Flat/unicorn_flat.svg",
+      "sourcePath": "assets/Unicorn/Flat/unicorn_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-unicorn.svg",
+      "image": "/library/png/character-unicorn.png",
+      "thumbnail": "/library/thumbnails/character-unicorn.png",
+      "sourceSha256": "66d76d96cb49e8bf610a9b896ee240c39f5a34f2162e5c98737e959938749e4d",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "191e4e1613134efc60d2546904304cabe4e0741c197b50505ae3536263222d9d"
+    },
+    {
+      "id": "character-dragon-face",
+      "kind": "character",
+      "label": "용",
+      "category": "상상 친구",
+      "tags": [
+        "용",
+        "드래곤",
+        "상상",
+        "판타지"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Dragon%20face/Flat/dragon_face_flat.svg",
+      "sourcePath": "assets/Dragon face/Flat/dragon_face_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-dragon-face.svg",
+      "image": "/library/png/character-dragon-face.png",
+      "thumbnail": "/library/thumbnails/character-dragon-face.png",
+      "sourceSha256": "9542f129272803dd6bd91dd87ede7eadea0ba873e51328f520383401944b6b10",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "021dd0f5ece2647585fa852afd8742b30cbcb4c934243c507d96f9d704044b4f"
+    },
+    {
+      "id": "character-robot",
+      "kind": "character",
+      "label": "로봇",
+      "category": "상상 친구",
+      "tags": [
+        "로봇",
+        "기계",
+        "과학",
+        "미래"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Robot/Flat/robot_flat.svg",
+      "sourcePath": "assets/Robot/Flat/robot_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-robot.svg",
+      "image": "/library/png/character-robot.png",
+      "thumbnail": "/library/thumbnails/character-robot.png",
+      "sourceSha256": "5bf295c5a8c7c4197c8deb639c13b93359ad009585c1ff6b3fd0fbdcf6f8da20",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "bb938108604625ecfdb2edae11664013a24b19faec62b87b8b23cc410703dbd7"
+    },
+    {
+      "id": "character-alien",
+      "kind": "character",
+      "label": "외계인",
+      "category": "상상 친구",
+      "tags": [
+        "외계인",
+        "우주",
+        "상상",
+        "친구"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Alien/Flat/alien_flat.svg",
+      "sourcePath": "assets/Alien/Flat/alien_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-alien.svg",
+      "image": "/library/png/character-alien.png",
+      "thumbnail": "/library/thumbnails/character-alien.png",
+      "sourceSha256": "d3f8a20c9398cad870288029441e540ee5dd623bad3df81c7e8d47e530e1f9cd",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "af1c6d1e5346b3fab1753d047bf55627d54b6acb23dc86feb452bccacd1eeeff"
+    },
+    {
+      "id": "character-person-fairy",
+      "kind": "character",
+      "label": "요정",
+      "category": "상상 친구",
+      "tags": [
+        "요정",
+        "날개",
+        "마법",
+        "상상"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20fairy/Default/Flat/person_fairy_flat_default.svg",
+      "sourcePath": "assets/Person fairy/Default/Flat/person_fairy_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-fairy.svg",
+      "image": "/library/png/character-person-fairy.png",
+      "thumbnail": "/library/thumbnails/character-person-fairy.png",
+      "sourceSha256": "9d3411a4696ba8f734c9ced19a5189ec34bfbca85971fd49a991b24b70ef7dc3",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "a87d9db50e63836de688f704712f27d99856540896f890e905080d1ebbf4fa6b"
+    },
+    {
+      "id": "character-person-merpeople",
+      "kind": "character",
+      "label": "인어",
+      "category": "상상 친구",
+      "tags": [
+        "인어",
+        "바다",
+        "상상",
+        "수영"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20merpeople/Default/Flat/person_merpeople_flat_default.svg",
+      "sourcePath": "assets/Person merpeople/Default/Flat/person_merpeople_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-merpeople.svg",
+      "image": "/library/png/character-person-merpeople.png",
+      "thumbnail": "/library/thumbnails/character-person-merpeople.png",
+      "sourceSha256": "118964382360429a409375824c5da105da04253ac6c483d664c0b1ecb339e446",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "89da1b745309c44ee4ca1adf7200b97e1d8c5164dbe8a00d2db40d7c83d30260"
+    },
+    {
+      "id": "character-person-genie",
+      "kind": "character",
+      "label": "램프 요정",
+      "category": "상상 친구",
+      "tags": [
+        "램프 요정",
+        "마법",
+        "소원",
+        "상상"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20genie/Flat/person_genie_flat.svg",
+      "sourcePath": "assets/Person genie/Flat/person_genie_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-genie.svg",
+      "image": "/library/png/character-person-genie.png",
+      "thumbnail": "/library/thumbnails/character-person-genie.png",
+      "sourceSha256": "ec56f7694963147d5ce17003ac56d77aba07fe8c3b9f0bf23d349baa5e3f0f35",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "662a5bc413891c6737d669c232ad75b4382f124888a0d0dfeaaad88344f1e98b"
+    },
+    {
+      "id": "character-person-elf",
+      "kind": "character",
+      "label": "숲의 요정",
+      "category": "상상 친구",
+      "tags": [
+        "숲의 요정",
+        "숲",
+        "마법",
+        "상상"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Person%20elf/Default/Flat/person_elf_flat_default.svg",
+      "sourcePath": "assets/Person elf/Default/Flat/person_elf_flat_default.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/character-person-elf.svg",
+      "image": "/library/png/character-person-elf.png",
+      "thumbnail": "/library/thumbnails/character-person-elf.png",
+      "sourceSha256": "4d6c74a9b43d44ef33af6d178f8b5f411af580d98fe32a58ac82da3027297cf0",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "5a3a35ea6bf221bba9a07d7c06bd32c884f11dfe0cfaaa57a7d2f8a57632ad58"
+    },
+    {
+      "id": "sticker-school",
+      "kind": "sticker",
+      "label": "학교",
+      "category": "학교·문구",
+      "tags": [
+        "학교",
+        "교실",
+        "공부"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/School/Flat/school_flat.svg",
+      "sourcePath": "assets/School/Flat/school_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-school.svg",
+      "image": "/library/png/sticker-school.png",
+      "thumbnail": "/library/thumbnails/sticker-school.png",
+      "sourceSha256": "03febeb59b9c13ee792874a87cd04aea413e7c6ef23b1e7752837dc5d6cbe34d",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "f799d9704402302401bbbc7cc61dd9caec046f723d29d438b1b5800fa6b16b2b"
+    },
+    {
+      "id": "sticker-backpack",
+      "kind": "sticker",
+      "label": "책가방",
+      "category": "학교·문구",
+      "tags": [
+        "책가방",
+        "학교",
+        "가방",
+        "준비물"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Backpack/Flat/backpack_flat.svg",
+      "sourcePath": "assets/Backpack/Flat/backpack_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-backpack.svg",
+      "image": "/library/png/sticker-backpack.png",
+      "thumbnail": "/library/thumbnails/sticker-backpack.png",
+      "sourceSha256": "9a3ea2d79e670de01c0f6e742b80d5b679c172edc4532c08a7c3083d703b4f23",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "600106bef38d5a8f9de9c548694b392753422f7f0ef26da106b889bc585db19a"
+    },
+    {
+      "id": "sticker-books",
+      "kind": "sticker",
+      "label": "책 더미",
+      "category": "학교·문구",
+      "tags": [
+        "책 더미",
+        "책",
+        "독서",
+        "공부"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Books/Flat/books_flat.svg",
+      "sourcePath": "assets/Books/Flat/books_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-books.svg",
+      "image": "/library/png/sticker-books.png",
+      "thumbnail": "/library/thumbnails/sticker-books.png",
+      "sourceSha256": "41e2686cdc526bfa41ea599e2a74378f3a02788ff7e8cd1b9ad0a39ea157000c",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "7f2b934df64bac77bd60db729ce1cab9a56c3cb32c1cf3ecef7c0177bf66ac22"
+    },
+    {
+      "id": "sticker-pencil",
+      "kind": "sticker",
+      "label": "연필",
+      "category": "학교·문구",
+      "tags": [
+        "연필",
+        "필기",
+        "공부",
+        "쓰기"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Pencil/Flat/pencil_flat.svg",
+      "sourcePath": "assets/Pencil/Flat/pencil_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-pencil.svg",
+      "image": "/library/png/sticker-pencil.png",
+      "thumbnail": "/library/thumbnails/sticker-pencil.png",
+      "sourceSha256": "f82b7820c41b57d2cca96ef75e32fdedcb07d2d8b786a781274c25fe306c76d7",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "7bebf65d1b521b27da4ae7aa687d28556367d94668d6a996190eacede310222b"
+    },
+    {
+      "id": "sticker-artist-palette",
+      "kind": "sticker",
+      "label": "미술 팔레트",
+      "category": "학교·문구",
+      "tags": [
+        "미술 팔레트",
+        "미술",
+        "그림",
+        "색"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Artist%20palette/Flat/artist_palette_flat.svg",
+      "sourcePath": "assets/Artist palette/Flat/artist_palette_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-artist-palette.svg",
+      "image": "/library/png/sticker-artist-palette.png",
+      "thumbnail": "/library/thumbnails/sticker-artist-palette.png",
+      "sourceSha256": "046b147ae3b378bb7e19358d2a0036cd6a6e79b721481445538dc34333fd4a49",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "83fce1cf7e181b0e8e367cee91f2aff5cc6ed481b06e9b3b27a51b78dac557b9"
+    },
+    {
+      "id": "sticker-microscope",
+      "kind": "sticker",
+      "label": "현미경",
+      "category": "학교·문구",
+      "tags": [
+        "현미경",
+        "과학",
+        "실험",
+        "관찰"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Microscope/Flat/microscope_flat.svg",
+      "sourcePath": "assets/Microscope/Flat/microscope_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-microscope.svg",
+      "image": "/library/png/sticker-microscope.png",
+      "thumbnail": "/library/thumbnails/sticker-microscope.png",
+      "sourceSha256": "600554164fd9b06b59670ba169c368ab2ab56b87e3fc2de7ff820aab9e985ff5",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "03f825da390506755c3745e8cf3f223d4863196d91e53fb16dbbf8b3df52dd81"
+    },
+    {
+      "id": "sticker-sun",
+      "kind": "sticker",
+      "label": "해님",
+      "category": "자연·날씨",
+      "tags": [
+        "해님",
+        "해",
+        "태양",
+        "맑음",
+        "여름"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Sun/Flat/sun_flat.svg",
+      "sourcePath": "assets/Sun/Flat/sun_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-sun.svg",
+      "image": "/library/png/sticker-sun.png",
+      "thumbnail": "/library/thumbnails/sticker-sun.png",
+      "sourceSha256": "a51d98e68ac038b917584d43b7729174f035a94ed7cd694802a3a7160f0b08f2",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "e832b070bddd4a196c202eb30ba8d82171870ff684dd8b06749652070be9a007"
+    },
+    {
+      "id": "sticker-cloud",
+      "kind": "sticker",
+      "label": "구름",
+      "category": "자연·날씨",
+      "tags": [
+        "구름",
+        "하늘",
+        "날씨"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Cloud/Flat/cloud_flat.svg",
+      "sourcePath": "assets/Cloud/Flat/cloud_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-cloud.svg",
+      "image": "/library/png/sticker-cloud.png",
+      "thumbnail": "/library/thumbnails/sticker-cloud.png",
+      "sourceSha256": "b679020aa5321149bad0a7f4dd0f0362a570a1ba1e3ddfeccac94064c4e87955",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "00fbe39815d3da7d9d8875375a6dfb5dc4afc97c3c91df24be72c297adacd010"
+    },
+    {
+      "id": "sticker-rainbow",
+      "kind": "sticker",
+      "label": "무지개",
+      "category": "자연·날씨",
+      "tags": [
+        "무지개",
+        "일곱색",
+        "하늘",
+        "비"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Rainbow/Flat/rainbow_flat.svg",
+      "sourcePath": "assets/Rainbow/Flat/rainbow_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-rainbow.svg",
+      "image": "/library/png/sticker-rainbow.png",
+      "thumbnail": "/library/thumbnails/sticker-rainbow.png",
+      "sourceSha256": "85a0bee875fa032375f0448ac5ed89bf5fa8662438dbb539abbfcba118c18c74",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "daf74ce430070676221b4a0c5fd73f546860d19b8309fbc3437e5d0958c2664d"
+    },
+    {
+      "id": "sticker-snowflake",
+      "kind": "sticker",
+      "label": "눈송이",
+      "category": "자연·날씨",
+      "tags": [
+        "눈송이",
+        "겨울",
+        "눈",
+        "추위"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Snowflake/Flat/snowflake_flat.svg",
+      "sourcePath": "assets/Snowflake/Flat/snowflake_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-snowflake.svg",
+      "image": "/library/png/sticker-snowflake.png",
+      "thumbnail": "/library/thumbnails/sticker-snowflake.png",
+      "sourceSha256": "bbe0ff7fbfbd17f02d26aa59d4f961c6470af1cff9474047b7b031a81c4915ab",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "451184daea0ea332099c2384d407bbe3a876fde198398e52bee1c64f622ab80f"
+    },
+    {
+      "id": "sticker-cherry-blossom",
+      "kind": "sticker",
+      "label": "벚꽃",
+      "category": "자연·날씨",
+      "tags": [
+        "벚꽃",
+        "봄",
+        "꽃",
+        "분홍"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Cherry%20blossom/Flat/cherry_blossom_flat.svg",
+      "sourcePath": "assets/Cherry blossom/Flat/cherry_blossom_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-cherry-blossom.svg",
+      "image": "/library/png/sticker-cherry-blossom.png",
+      "thumbnail": "/library/thumbnails/sticker-cherry-blossom.png",
+      "sourceSha256": "eb1ec221824f85581b5dc685e2a8d31bf9f6113c08d0940ee361234173336e62",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "e3a08918f64f84716db5b5525b3a83f600fdd8f0a4a40933667d9358c6c5458c"
+    },
+    {
+      "id": "sticker-deciduous-tree",
+      "kind": "sticker",
+      "label": "나무",
+      "category": "자연·날씨",
+      "tags": [
+        "나무",
+        "숲",
+        "자연"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Deciduous%20tree/Flat/deciduous_tree_flat.svg",
+      "sourcePath": "assets/Deciduous tree/Flat/deciduous_tree_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-deciduous-tree.svg",
+      "image": "/library/png/sticker-deciduous-tree.png",
+      "thumbnail": "/library/thumbnails/sticker-deciduous-tree.png",
+      "sourceSha256": "0dd734acc351486d31824d85d7aec4004e3392a00a44ca2f3129603f1d6a0040",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "744f1bcf651a97ef8f1f85b1a85ca6b78d11f3233e28a12238e0645e31868553"
+    },
+    {
+      "id": "sticker-red-apple",
+      "kind": "sticker",
+      "label": "사과",
+      "category": "음식",
+      "tags": [
+        "사과",
+        "과일",
+        "빨강",
+        "간식"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Red%20apple/Flat/red_apple_flat.svg",
+      "sourcePath": "assets/Red apple/Flat/red_apple_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-red-apple.svg",
+      "image": "/library/png/sticker-red-apple.png",
+      "thumbnail": "/library/thumbnails/sticker-red-apple.png",
+      "sourceSha256": "bc69f7c89a3621fb564482f9e13818019c6eac3a9d16fe996852514f3b19a073",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "c6d63ebfdf2249d4ffe72dedb4828ecae63e6ebf479da952db3b8f7445e1cfff"
+    },
+    {
+      "id": "sticker-strawberry",
+      "kind": "sticker",
+      "label": "딸기",
+      "category": "음식",
+      "tags": [
+        "딸기",
+        "과일",
+        "빨강",
+        "간식"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Strawberry/Flat/strawberry_flat.svg",
+      "sourcePath": "assets/Strawberry/Flat/strawberry_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-strawberry.svg",
+      "image": "/library/png/sticker-strawberry.png",
+      "thumbnail": "/library/thumbnails/sticker-strawberry.png",
+      "sourceSha256": "d8522f848f305fc81040dd9c5467f97df483fde5e2568429046e7f1ae1a23d91",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "c4a3c0208540c53af781f4a0644a14139a41ec0067e685f43e2df8fa9671150f"
+    },
+    {
+      "id": "sticker-watermelon",
+      "kind": "sticker",
+      "label": "수박",
+      "category": "음식",
+      "tags": [
+        "수박",
+        "여름",
+        "과일",
+        "간식"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Watermelon/Flat/watermelon_flat.svg",
+      "sourcePath": "assets/Watermelon/Flat/watermelon_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-watermelon.svg",
+      "image": "/library/png/sticker-watermelon.png",
+      "thumbnail": "/library/thumbnails/sticker-watermelon.png",
+      "sourceSha256": "33ce86d2784776504191684fd34495c68ac54be7b98e100ef18c3a19297c735e",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "186062968bbd71db334fbdd4f0fc76d068f4e7f70a12bcb0ca50aaa587a7f908"
+    },
+    {
+      "id": "sticker-shortcake",
+      "kind": "sticker",
+      "label": "딸기 케이크",
+      "category": "음식",
+      "tags": [
+        "딸기 케이크",
+        "케이크",
+        "생일",
+        "간식"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Shortcake/Flat/shortcake_flat.svg",
+      "sourcePath": "assets/Shortcake/Flat/shortcake_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-shortcake.svg",
+      "image": "/library/png/sticker-shortcake.png",
+      "thumbnail": "/library/thumbnails/sticker-shortcake.png",
+      "sourceSha256": "1aef1f7b8c9e45deeab006d58963bfa883e5ffb3e56180ab4ee57f041b91e106",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "fd7aafbe0a050249349d486f04b21e2071f32c771c385cdaab1d9bfa5a2a6568"
+    },
+    {
+      "id": "sticker-soft-ice-cream",
+      "kind": "sticker",
+      "label": "아이스크림",
+      "category": "음식",
+      "tags": [
+        "아이스크림",
+        "여름",
+        "간식",
+        "달콤"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Soft%20ice%20cream/Flat/soft_ice_cream_flat.svg",
+      "sourcePath": "assets/Soft ice cream/Flat/soft_ice_cream_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-soft-ice-cream.svg",
+      "image": "/library/png/sticker-soft-ice-cream.png",
+      "thumbnail": "/library/thumbnails/sticker-soft-ice-cream.png",
+      "sourceSha256": "30080a0e3e52639454d4e86436adbd145b38db4a6a2d83ff218fc9b7d4adb7f2",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "f106835f15df22e4870111b36f8b1597d31af6e674388648c898a08c30b2a2b1"
+    },
+    {
+      "id": "sticker-rice-ball",
+      "kind": "sticker",
+      "label": "주먹밥",
+      "category": "음식",
+      "tags": [
+        "주먹밥",
+        "밥",
+        "소풍",
+        "간식"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Rice%20ball/Flat/rice_ball_flat.svg",
+      "sourcePath": "assets/Rice ball/Flat/rice_ball_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-rice-ball.svg",
+      "image": "/library/png/sticker-rice-ball.png",
+      "thumbnail": "/library/thumbnails/sticker-rice-ball.png",
+      "sourceSha256": "b5fa5958fe8fa7f131b03f4a86fb8589ac4f22b214ab0468e04d71691006daff",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "8ca2dd7e194f9294993a138d8fd8963334d65a21cf12c4f9da4af97ac2d2675f"
+    },
+    {
+      "id": "sticker-automobile",
+      "kind": "sticker",
+      "label": "자동차",
+      "category": "탈것·여행",
+      "tags": [
+        "자동차",
+        "차",
+        "여행",
+        "도로"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Automobile/Flat/automobile_flat.svg",
+      "sourcePath": "assets/Automobile/Flat/automobile_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-automobile.svg",
+      "image": "/library/png/sticker-automobile.png",
+      "thumbnail": "/library/thumbnails/sticker-automobile.png",
+      "sourceSha256": "1d12961ada570f692b9ce495a9c531b0d56edcf1136be5823bb7bd8a3112907c",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "ff28ff0ce205ceeb1aa11622f555636e9fcb8a42f6696820070639cb7dac5f70"
+    },
+    {
+      "id": "sticker-bus",
+      "kind": "sticker",
+      "label": "버스",
+      "category": "탈것·여행",
+      "tags": [
+        "버스",
+        "학교",
+        "여행"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Bus/Flat/bus_flat.svg",
+      "sourcePath": "assets/Bus/Flat/bus_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-bus.svg",
+      "image": "/library/png/sticker-bus.png",
+      "thumbnail": "/library/thumbnails/sticker-bus.png",
+      "sourceSha256": "d31dafdba29476b40fccca7c157a9913c8bc469b46b420eac6597050e17a8352",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "cc36e4efcee9acaa7a46379dabd8c982db232180fd32858954724322d5db97b5"
+    },
+    {
+      "id": "sticker-airplane",
+      "kind": "sticker",
+      "label": "비행기",
+      "category": "탈것·여행",
+      "tags": [
+        "비행기",
+        "하늘",
+        "여행",
+        "비행"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Airplane/Flat/airplane_flat.svg",
+      "sourcePath": "assets/Airplane/Flat/airplane_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-airplane.svg",
+      "image": "/library/png/sticker-airplane.png",
+      "thumbnail": "/library/thumbnails/sticker-airplane.png",
+      "sourceSha256": "712be925e9ba02fa9dfa86d2b8e53a0a7205b5dfb5bfd9322a53ed2a99fe9013",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "50acdc738430b33d4d83a9a4fadd6092aa97c9542fd3bb361d802c89deab0535"
+    },
+    {
+      "id": "sticker-rocket",
+      "kind": "sticker",
+      "label": "로켓",
+      "category": "탈것·여행",
+      "tags": [
+        "로켓",
+        "우주",
+        "여행",
+        "발사"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Rocket/Flat/rocket_flat.svg",
+      "sourcePath": "assets/Rocket/Flat/rocket_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-rocket.svg",
+      "image": "/library/png/sticker-rocket.png",
+      "thumbnail": "/library/thumbnails/sticker-rocket.png",
+      "sourceSha256": "ea9423e32494b81bbdccc8970987d9fe2a85462610cd4b8ddd0b9e1a03fb2ebf",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "3c50fece8c1d9de0e752ae197740b63612d9713bfaf308e6f741ebfc3865aa0c"
+    },
+    {
+      "id": "sticker-sailboat",
+      "kind": "sticker",
+      "label": "돛단배",
+      "category": "탈것·여행",
+      "tags": [
+        "돛단배",
+        "바다",
+        "배",
+        "여행"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Sailboat/Flat/sailboat_flat.svg",
+      "sourcePath": "assets/Sailboat/Flat/sailboat_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-sailboat.svg",
+      "image": "/library/png/sticker-sailboat.png",
+      "thumbnail": "/library/thumbnails/sticker-sailboat.png",
+      "sourceSha256": "e80a311ad9504c1a8b754c295b6279e6d54c7c28437835b09d1ed33697241c03",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "6d6c8456c3eb5de9f564df0c2b020c2d8af3f19831ae7a4feeae1fdbc0f2dfc6"
+    },
+    {
+      "id": "sticker-tent",
+      "kind": "sticker",
+      "label": "텐트",
+      "category": "탈것·여행",
+      "tags": [
+        "텐트",
+        "캠핑",
+        "소풍",
+        "여행"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Tent/Flat/tent_flat.svg",
+      "sourcePath": "assets/Tent/Flat/tent_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-tent.svg",
+      "image": "/library/png/sticker-tent.png",
+      "thumbnail": "/library/thumbnails/sticker-tent.png",
+      "sourceSha256": "230a747c17431c13c17295b541612edec7b01ec35664df31ee2a61c6c0c8ec3f",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "866a7a873599fe4d2d2bbf52b140a7ebb00288c1ffdc9e502ba8174a5e28203f"
+    },
+    {
+      "id": "sticker-party-popper",
+      "kind": "sticker",
+      "label": "축하 폭죽",
+      "category": "축하·감정",
+      "tags": [
+        "축하 폭죽",
+        "축하",
+        "파티",
+        "성공"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Party%20popper/Flat/party_popper_flat.svg",
+      "sourcePath": "assets/Party popper/Flat/party_popper_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-party-popper.svg",
+      "image": "/library/png/sticker-party-popper.png",
+      "thumbnail": "/library/thumbnails/sticker-party-popper.png",
+      "sourceSha256": "8128c958bfc06568aa49d03cd001556a6c6223660f43c657d381e638416c51f6",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "b35cdf6f7963c65e6e9be5b5332d3a2cf64a7662b1fcda2fb6ed620c6245c363"
+    },
+    {
+      "id": "sticker-balloon",
+      "kind": "sticker",
+      "label": "풍선",
+      "category": "축하·감정",
+      "tags": [
+        "풍선",
+        "생일",
+        "파티",
+        "축하"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Balloon/Flat/balloon_flat.svg",
+      "sourcePath": "assets/Balloon/Flat/balloon_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-balloon.svg",
+      "image": "/library/png/sticker-balloon.png",
+      "thumbnail": "/library/thumbnails/sticker-balloon.png",
+      "sourceSha256": "5b7af328c99543aa940215cd82af39c6248c54d5f3b36260284364db63490e73",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "398a626645baf05a0c93078c29d794ce76328dc121eda3a1af7cac48759ae4b6"
+    },
+    {
+      "id": "sticker-wrapped-gift",
+      "kind": "sticker",
+      "label": "선물",
+      "category": "축하·감정",
+      "tags": [
+        "선물",
+        "생일",
+        "축하"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Wrapped%20gift/Flat/wrapped_gift_flat.svg",
+      "sourcePath": "assets/Wrapped gift/Flat/wrapped_gift_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-wrapped-gift.svg",
+      "image": "/library/png/sticker-wrapped-gift.png",
+      "thumbnail": "/library/thumbnails/sticker-wrapped-gift.png",
+      "sourceSha256": "326da81790739066b77219b1a84dbcdb2efb4fddbf4d1767c7097c6ab9b7634b",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "3e60ed7155411e476c2678fe8efeb49989e7d9e8f29ec8a5bd4430767fde12a8"
+    },
+    {
+      "id": "sticker-trophy",
+      "kind": "sticker",
+      "label": "트로피",
+      "category": "축하·감정",
+      "tags": [
+        "트로피",
+        "우승",
+        "상",
+        "성공"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Trophy/Flat/trophy_flat.svg",
+      "sourcePath": "assets/Trophy/Flat/trophy_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-trophy.svg",
+      "image": "/library/png/sticker-trophy.png",
+      "thumbnail": "/library/thumbnails/sticker-trophy.png",
+      "sourceSha256": "088c6305e4c6551dd64e3aff880aa36c399b9867facb81972c431cfaf5d4bab8",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "2c23f4df4893ae593d232bcb4d7c62aa86bf3c586e3cb32bf405beb32d34e7f6"
+    },
+    {
+      "id": "sticker-sparkles",
+      "kind": "sticker",
+      "label": "반짝반짝",
+      "category": "축하·감정",
+      "tags": [
+        "반짝반짝",
+        "별",
+        "빛",
+        "꾸미기"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Sparkles/Flat/sparkles_flat.svg",
+      "sourcePath": "assets/Sparkles/Flat/sparkles_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-sparkles.svg",
+      "image": "/library/png/sticker-sparkles.png",
+      "thumbnail": "/library/thumbnails/sticker-sparkles.png",
+      "sourceSha256": "d5802877677464187a510c3fbb9d8c272dea164bcca2bf6a2270944e6cd2324e",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "75613e01546d862b91ed7ff477ab5f8bc22a2ee82373e055f9f36744ec68db02"
+    },
+    {
+      "id": "sticker-red-heart",
+      "kind": "sticker",
+      "label": "빨간 하트",
+      "category": "축하·감정",
+      "tags": [
+        "빨간 하트",
+        "사랑",
+        "마음",
+        "좋아"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Red%20heart/Flat/red_heart_flat.svg",
+      "sourcePath": "assets/Red heart/Flat/red_heart_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-red-heart.svg",
+      "image": "/library/png/sticker-red-heart.png",
+      "thumbnail": "/library/thumbnails/sticker-red-heart.png",
+      "sourceSha256": "61846b9c946736481d65dbf244fe53792d06d50405c2d5f3e40a0a06cbfe5317",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "e39084afd88b04b276e0b8fec8b04cce0839be24f9eb5c488ec14e2986617ca3"
+    },
+    {
+      "id": "sticker-soccer-ball",
+      "kind": "sticker",
+      "label": "축구공",
+      "category": "놀이·운동",
+      "tags": [
+        "축구공",
+        "축구",
+        "공",
+        "체육"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Soccer%20ball/Flat/soccer_ball_flat.svg",
+      "sourcePath": "assets/Soccer ball/Flat/soccer_ball_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-soccer-ball.svg",
+      "image": "/library/png/sticker-soccer-ball.png",
+      "thumbnail": "/library/thumbnails/sticker-soccer-ball.png",
+      "sourceSha256": "ca792d91995ac20dc37be0c1bd1f9f46d2f7ea4aea3bd4d0c69df1083bd641c9",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "2e643da507e67bb4ccf53c807d9b23f4b24b77dec0dae089999d20b74234af1b"
+    },
+    {
+      "id": "sticker-basketball",
+      "kind": "sticker",
+      "label": "농구공",
+      "category": "놀이·운동",
+      "tags": [
+        "농구공",
+        "농구",
+        "공",
+        "체육"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Basketball/Flat/basketball_flat.svg",
+      "sourcePath": "assets/Basketball/Flat/basketball_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-basketball.svg",
+      "image": "/library/png/sticker-basketball.png",
+      "thumbnail": "/library/thumbnails/sticker-basketball.png",
+      "sourceSha256": "50735d09f42671499773bc4bd7d3fd2a2717205ceacdc5f8c5012abc586ecf65",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "def52bd7a8b3d710c0f08b9ec1a882cefb870624225c3ef6f874129541eca262"
+    },
+    {
+      "id": "sticker-kite",
+      "kind": "sticker",
+      "label": "연",
+      "category": "놀이·운동",
+      "tags": [
+        "연",
+        "놀이",
+        "하늘",
+        "바람"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Kite/Flat/kite_flat.svg",
+      "sourcePath": "assets/Kite/Flat/kite_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-kite.svg",
+      "image": "/library/png/sticker-kite.png",
+      "thumbnail": "/library/thumbnails/sticker-kite.png",
+      "sourceSha256": "13b9a1b5313d577763d3ea048acf3faef58fa438b8925dd945b55066e62b0704",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "77ec25ec396d235c57d2fd77fcbaef6bdd31641d776f27e6a8e2878bab7b8557"
+    },
+    {
+      "id": "sticker-teddy-bear",
+      "kind": "sticker",
+      "label": "곰 인형",
+      "category": "놀이·운동",
+      "tags": [
+        "곰 인형",
+        "인형",
+        "장난감",
+        "놀이"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Teddy%20bear/Flat/teddy_bear_flat.svg",
+      "sourcePath": "assets/Teddy bear/Flat/teddy_bear_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-teddy-bear.svg",
+      "image": "/library/png/sticker-teddy-bear.png",
+      "thumbnail": "/library/thumbnails/sticker-teddy-bear.png",
+      "sourceSha256": "83e2f3bd7cdeadade4be675ed238b8d1ba9e90e967ff1c10e8de8423043e568d",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "5d32b0adb6cf5e7a0b0dceae375a6b14f3a2d42ec4db2ca4a7b6f07935adc6ac"
+    },
+    {
+      "id": "sticker-puzzle-piece",
+      "kind": "sticker",
+      "label": "퍼즐",
+      "category": "놀이·운동",
+      "tags": [
+        "퍼즐",
+        "조각",
+        "놀이",
+        "생각"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Puzzle%20piece/Flat/puzzle_piece_flat.svg",
+      "sourcePath": "assets/Puzzle piece/Flat/puzzle_piece_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-puzzle-piece.svg",
+      "image": "/library/png/sticker-puzzle-piece.png",
+      "thumbnail": "/library/thumbnails/sticker-puzzle-piece.png",
+      "sourceSha256": "72b3482570a4041ab8b77a54cf2b4e81fe78dab7c3b9ecb879a2921ab3711533",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "60b02ed2eafdee9d02a24e7a9324dd65a31a088fa1d3b7c6c9bf654e7daa83c7"
+    },
+    {
+      "id": "sticker-musical-note",
+      "kind": "sticker",
+      "label": "음표",
+      "category": "놀이·운동",
+      "tags": [
+        "음표",
+        "음악",
+        "노래",
+        "소리"
+      ],
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Musical%20note/Flat/musical_note_flat.svg",
+      "sourcePath": "assets/Musical note/Flat/musical_note_flat.svg",
+      "license": "MIT",
+      "attribution": "Copyright (c) Microsoft Corporation.",
+      "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "svg": "/library/svg/sticker-musical-note.svg",
+      "image": "/library/png/sticker-musical-note.png",
+      "thumbnail": "/library/thumbnails/sticker-musical-note.png",
+      "sourceSha256": "889610f268faa48d8c258a55df4b837595d7e91e92bc3695d0603beff12643a9",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 200,
+      "defaultHeight": 200,
+      "pngSha256": "61003e6eb3912528cffe73c8dea09872206ff835514898070e6b2fe3318dee8f"
+    },
+    {
+      "id": "shape-circle",
+      "kind": "shape",
+      "label": "원",
+      "category": "기본 도형",
+      "tags": [
+        "원",
+        "동그라미",
+        "기본"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-circle.svg",
+      "image": "/library/png/shape-circle.png",
+      "thumbnail": "/library/thumbnails/shape-circle.png",
+      "sourceSha256": "763312842a61d27dd5b112ed23100471993f5f40b8b271a1725a18ecf9e2cdca",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "a2a6580267876d3e031bd46d379df036fc16f0053fb756349a46bcd3fd2c24cf",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-circle.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-circle-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-circle-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-circle-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-circle-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-circle-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-circle-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-circle-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-ellipse",
+      "kind": "shape",
+      "label": "타원",
+      "category": "기본 도형",
+      "tags": [
+        "타원",
+        "동그라미",
+        "기본"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-ellipse.svg",
+      "image": "/library/png/shape-ellipse.png",
+      "thumbnail": "/library/thumbnails/shape-ellipse.png",
+      "sourceSha256": "86501bbc9aa5a231a99afc24a79f24fddc31e9e9331eed4e7f01387b2a34dc36",
+      "width": 512,
+      "height": 334,
+      "defaultWidth": 240,
+      "defaultHeight": 157,
+      "pngSha256": "5ecf5c51347ee2fbade962ed4e4769e5a747a4f12f89c182ada4f94cd7a9710c",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-ellipse.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-ellipse-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-ellipse-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-ellipse-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-ellipse-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-ellipse-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-ellipse-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-ellipse-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-square",
+      "kind": "shape",
+      "label": "정사각형",
+      "category": "기본 도형",
+      "tags": [
+        "정사각형",
+        "네모",
+        "사각형",
+        "기본"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-square.svg",
+      "image": "/library/png/shape-square.png",
+      "thumbnail": "/library/thumbnails/shape-square.png",
+      "sourceSha256": "b8d5638d0a3c6a2db0210f9a9736cd2d57c597d57ca1298b4e15a908a37ff150",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "245fbf429aac56743fc7eaf33e72b46454c1d8b04ef613094808145538de9122",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-square.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-square-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-square-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-square-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-square-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-square-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-square-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-square-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-rectangle",
+      "kind": "shape",
+      "label": "직사각형",
+      "category": "기본 도형",
+      "tags": [
+        "직사각형",
+        "네모",
+        "사각형",
+        "기본"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-rectangle.svg",
+      "image": "/library/png/shape-rectangle.png",
+      "thumbnail": "/library/thumbnails/shape-rectangle.png",
+      "sourceSha256": "697f787f39e19c09d2f9ea8ad9a67805036e684e82ba2524dfbe318dbeb77e4a",
+      "width": 512,
+      "height": 334,
+      "defaultWidth": 240,
+      "defaultHeight": 157,
+      "pngSha256": "84573e93a1109bd78b47c61ef46ef18f04b1e2b1bc9ab890623278bb2d5228f5",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-rectangle.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-rectangle-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-rectangle-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-rectangle-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-rectangle-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-rectangle-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-rectangle-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-rectangle-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-rounded-rectangle",
+      "kind": "shape",
+      "label": "둥근 사각형",
+      "category": "기본 도형",
+      "tags": [
+        "둥근 사각형",
+        "둥근",
+        "네모",
+        "사각형"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-rounded-rectangle.svg",
+      "image": "/library/png/shape-rounded-rectangle.png",
+      "thumbnail": "/library/thumbnails/shape-rounded-rectangle.png",
+      "sourceSha256": "ea28470192a42fd04b4cd56163a0b6419780172daf8f58eecb3c8681cc7049f5",
+      "width": 512,
+      "height": 334,
+      "defaultWidth": 240,
+      "defaultHeight": 157,
+      "pngSha256": "7020b7e564a87102a99cfa1d88ceaaa2d8c1329b2ffd7abb929330eec222f783",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-rounded-rectangle.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-rounded-rectangle-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-rounded-rectangle-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-rounded-rectangle-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-rounded-rectangle-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-rounded-rectangle-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-rounded-rectangle-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-rounded-rectangle-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-triangle",
+      "kind": "shape",
+      "label": "삼각형",
+      "category": "기본 도형",
+      "tags": [
+        "삼각형",
+        "세모",
+        "기본"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-triangle.svg",
+      "image": "/library/png/shape-triangle.png",
+      "thumbnail": "/library/thumbnails/shape-triangle.png",
+      "sourceSha256": "2e1ce806564dc8b7f085d37d40827a113368a4d03268872604194d37f3330dcc",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "ba8cab0e020993fbd43669811add9724dc90b9b07f3b81a59053ee6583032eb7",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-triangle.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-triangle-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-triangle-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-triangle-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-triangle-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-triangle-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-triangle-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-triangle-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-right-triangle",
+      "kind": "shape",
+      "label": "직각삼각형",
+      "category": "기본 도형",
+      "tags": [
+        "직각삼각형",
+        "직각",
+        "세모",
+        "기본"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-right-triangle.svg",
+      "image": "/library/png/shape-right-triangle.png",
+      "thumbnail": "/library/thumbnails/shape-right-triangle.png",
+      "sourceSha256": "25352431debef99c97c102a30d7fad3184d754ad31961c16aa8cbe9e59d200f2",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "72f4bf00cd8f5f03d6813ea4759303ad5bfa0406f72d740f74e980560c2351a7",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-right-triangle.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-right-triangle-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-right-triangle-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-right-triangle-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-right-triangle-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-right-triangle-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-right-triangle-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-right-triangle-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-diamond",
+      "kind": "shape",
+      "label": "마름모",
+      "category": "기본 도형",
+      "tags": [
+        "마름모",
+        "다이아",
+        "기본"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-diamond.svg",
+      "image": "/library/png/shape-diamond.png",
+      "thumbnail": "/library/thumbnails/shape-diamond.png",
+      "sourceSha256": "b15883c757e37dd34c13e3fd0799a78f45b4fce6adb7fccac58a8fffda37f04a",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "6a7f6dbcd11a7e94feedc0e8ee18f2b0d3caf229667cb0f8b586ba9ed36fd700",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-diamond.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-diamond-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-diamond-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-diamond-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-diamond-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-diamond-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-diamond-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-diamond-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-pentagon",
+      "kind": "shape",
+      "label": "오각형",
+      "category": "기본 도형",
+      "tags": [
+        "오각형",
+        "다각형"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-pentagon.svg",
+      "image": "/library/png/shape-pentagon.png",
+      "thumbnail": "/library/thumbnails/shape-pentagon.png",
+      "sourceSha256": "9de28c644356cbdbcd5f932542d6bca269ac516db6910c19c956c91aff9e9712",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "4a3441eb318be762fdb59e386e53c7388e62e31c8239f467d697d09bb864a9ba",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-pentagon.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-pentagon-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-pentagon-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-pentagon-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-pentagon-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-pentagon-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-pentagon-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-pentagon-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-hexagon",
+      "kind": "shape",
+      "label": "육각형",
+      "category": "기본 도형",
+      "tags": [
+        "육각형",
+        "다각형",
+        "벌집"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-hexagon.svg",
+      "image": "/library/png/shape-hexagon.png",
+      "thumbnail": "/library/thumbnails/shape-hexagon.png",
+      "sourceSha256": "a55e43c292b21c593ee1cd452748477c41d132acfa63d84dc1564d92b317e965",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "7b992e61ebaf08f35a361e9c7eeee782dd22755df98080129c25047fdccbe37d",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-hexagon.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-hexagon-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-hexagon-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-hexagon-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-hexagon-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-hexagon-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-hexagon-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-hexagon-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-octagon",
+      "kind": "shape",
+      "label": "팔각형",
+      "category": "기본 도형",
+      "tags": [
+        "팔각형",
+        "다각형"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-octagon.svg",
+      "image": "/library/png/shape-octagon.png",
+      "thumbnail": "/library/thumbnails/shape-octagon.png",
+      "sourceSha256": "9b4420b8caad3f37bbd03fa83ac7f59a047176371d2c29bc0f0d39a3ffa73395",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "c8c2656c822cff3de2878909a99c2be9aaade8cc12983c999c278c8e31f79a32",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-octagon.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-octagon-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-octagon-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-octagon-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-octagon-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-octagon-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-octagon-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-octagon-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-trapezoid",
+      "kind": "shape",
+      "label": "사다리꼴",
+      "category": "기본 도형",
+      "tags": [
+        "사다리꼴",
+        "사각형"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-trapezoid.svg",
+      "image": "/library/png/shape-trapezoid.png",
+      "thumbnail": "/library/thumbnails/shape-trapezoid.png",
+      "sourceSha256": "389f3b1726b9d2fd189f1d19176ca2813414a5894deb5e1e2e87eb311b0fe12f",
+      "width": 512,
+      "height": 393,
+      "defaultWidth": 240,
+      "defaultHeight": 184,
+      "pngSha256": "ccef1f9c6dc203fe65ba9ea70315995f4d497baca57d79533dc58d8c9f6d0ff7",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-trapezoid.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-trapezoid-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-trapezoid-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-trapezoid-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-trapezoid-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-trapezoid-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-trapezoid-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-trapezoid-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-parallelogram",
+      "kind": "shape",
+      "label": "평행사변형",
+      "category": "기본 도형",
+      "tags": [
+        "평행사변형",
+        "평행",
+        "사각형"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-parallelogram.svg",
+      "image": "/library/png/shape-parallelogram.png",
+      "thumbnail": "/library/thumbnails/shape-parallelogram.png",
+      "sourceSha256": "7e4670c8d6bb5aa7237446cda487129f74e1d86c29f942433cfc53abb07c639b",
+      "width": 512,
+      "height": 334,
+      "defaultWidth": 240,
+      "defaultHeight": 157,
+      "pngSha256": "4fb1639b311bbf603bacec4af35c4677cdc73cb35b66b31a3ffbe10504f06dd7",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-parallelogram.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-parallelogram-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-parallelogram-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-parallelogram-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-parallelogram-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-parallelogram-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-parallelogram-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-parallelogram-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-star-five",
+      "kind": "shape",
+      "label": "오각별",
+      "category": "꾸미기 도형",
+      "tags": [
+        "오각별",
+        "별",
+        "반짝",
+        "꾸미기"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-star-five.svg",
+      "image": "/library/png/shape-star-five.png",
+      "thumbnail": "/library/thumbnails/shape-star-five.png",
+      "sourceSha256": "1a94debd27db1c0369ed12d93d0fe5cbf361f38a8c972b2dd75935c0f5b08f09",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "aa684741c93723a32e286ca6d8a6e12a7c74d1f66285d05ae23e2aab3174731f",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-star-five.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-star-five-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-star-five-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-star-five-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-star-five-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-star-five-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-star-five-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-star-five-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-star-six",
+      "kind": "shape",
+      "label": "육각별",
+      "category": "꾸미기 도형",
+      "tags": [
+        "육각별",
+        "별",
+        "반짝",
+        "꾸미기"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-star-six.svg",
+      "image": "/library/png/shape-star-six.png",
+      "thumbnail": "/library/thumbnails/shape-star-six.png",
+      "sourceSha256": "c6ad40cbb1d895e74a58074e70bc508a71ff4a8e2e6283603b289b590069eea4",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "644aa1a1a2b11f58f9b1d8cd2c88d1cf4804fabcd6a101d4810194c0686a1aa0",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-star-six.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-star-six-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-star-six-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-star-six-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-star-six-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-star-six-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-star-six-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-star-six-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-sparkle",
+      "kind": "shape",
+      "label": "네 갈래 별",
+      "category": "꾸미기 도형",
+      "tags": [
+        "네 갈래 별",
+        "반짝",
+        "별",
+        "빛"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-sparkle.svg",
+      "image": "/library/png/shape-sparkle.png",
+      "thumbnail": "/library/thumbnails/shape-sparkle.png",
+      "sourceSha256": "2b16f751374399cec69c5b87e5afb776f3a16af2b430c819d494d7c837927ab2",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "008440052e52386c7520b834e7fcfb0ec891998a6ffabd129fabad4fb9eaf373",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-sparkle.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-sparkle-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-sparkle-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-sparkle-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-sparkle-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-sparkle-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-sparkle-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-sparkle-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-heart",
+      "kind": "shape",
+      "label": "하트",
+      "category": "꾸미기 도형",
+      "tags": [
+        "하트",
+        "사랑",
+        "마음"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-heart.svg",
+      "image": "/library/png/shape-heart.png",
+      "thumbnail": "/library/thumbnails/shape-heart.png",
+      "sourceSha256": "c844e55d9e7fefa3fa6e028dbed7300acc84bcd446795d1bf4242b110ffe7b62",
+      "width": 512,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 240,
+      "pngSha256": "d101aeb4c01b3e0e0a34455d4994d64144c467f3b79f457de9cf4fe9cc01abac",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-heart.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-heart-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-heart-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-heart-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-heart-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-heart-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-heart-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-heart-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-arrow-right",
+      "kind": "shape",
+      "label": "오른쪽 화살표",
+      "category": "꾸미기 도형",
+      "tags": [
+        "오른쪽 화살표",
+        "오른쪽",
+        "방향",
+        "화살표"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-arrow-right.svg",
+      "image": "/library/png/shape-arrow-right.png",
+      "thumbnail": "/library/thumbnails/shape-arrow-right.png",
+      "sourceSha256": "6857219ac42bdb6a67f6e06a810c0c16567a315565f8f31c50502ea6cefd1aed",
+      "width": 512,
+      "height": 334,
+      "defaultWidth": 240,
+      "defaultHeight": 157,
+      "pngSha256": "951c4311087fcf6b96bbaafc0537edce68d4195d813cc9c6e6329b02cc36ac5d",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-arrow-right.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-arrow-right-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-arrow-right-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-arrow-right-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-arrow-right-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-arrow-right-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-arrow-right-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-arrow-right-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-arrow-left",
+      "kind": "shape",
+      "label": "왼쪽 화살표",
+      "category": "꾸미기 도형",
+      "tags": [
+        "왼쪽 화살표",
+        "왼쪽",
+        "방향",
+        "화살표"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-arrow-left.svg",
+      "image": "/library/png/shape-arrow-left.png",
+      "thumbnail": "/library/thumbnails/shape-arrow-left.png",
+      "sourceSha256": "000e10cac259e9c087e4e59751f0c35dc8d0f2025e275aca80d9860f410d58bd",
+      "width": 512,
+      "height": 334,
+      "defaultWidth": 240,
+      "defaultHeight": 157,
+      "pngSha256": "0c1e4111d71bdc5cdd6d294be3325a6813939465dddb703f750223b6bd9d6d57",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-arrow-left.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-arrow-left-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-arrow-left-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-arrow-left-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-arrow-left-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-arrow-left-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-arrow-left-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-arrow-left-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-arrow-up",
+      "kind": "shape",
+      "label": "위쪽 화살표",
+      "category": "꾸미기 도형",
+      "tags": [
+        "위쪽 화살표",
+        "위",
+        "방향",
+        "화살표"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-arrow-up.svg",
+      "image": "/library/png/shape-arrow-up.png",
+      "thumbnail": "/library/thumbnails/shape-arrow-up.png",
+      "sourceSha256": "b3331df68568cf3177a1cf689817e920a699e5f5f8b48de07c7f81dd9ee08d3d",
+      "width": 334,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 368,
+      "pngSha256": "3b1429f88a9a0a022dac2517198c29e33e55961f1da7e740506597fe226a2284",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-arrow-up.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-arrow-up-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-arrow-up-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-arrow-up-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-arrow-up-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-arrow-up-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-arrow-up-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-arrow-up-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-arrow-down",
+      "kind": "shape",
+      "label": "아래쪽 화살표",
+      "category": "꾸미기 도형",
+      "tags": [
+        "아래쪽 화살표",
+        "아래",
+        "방향",
+        "화살표"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-arrow-down.svg",
+      "image": "/library/png/shape-arrow-down.png",
+      "thumbnail": "/library/thumbnails/shape-arrow-down.png",
+      "sourceSha256": "a518bbca15f406f4f4dd74828d9c8f469b6bb459e37bf57c9addd4d0a2aa698e",
+      "width": 334,
+      "height": 512,
+      "defaultWidth": 240,
+      "defaultHeight": 368,
+      "pngSha256": "c9064ce48d15c1912132cbff81440f20531a4a9950c55166c2f4a94522fc7e99",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-arrow-down.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-arrow-down-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-arrow-down-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-arrow-down-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-arrow-down-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-arrow-down-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-arrow-down-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-arrow-down-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-speech-round",
+      "kind": "shape",
+      "label": "둥근 말풍선",
+      "category": "꾸미기 도형",
+      "tags": [
+        "둥근 말풍선",
+        "대화",
+        "말풍선",
+        "이야기"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-speech-round.svg",
+      "image": "/library/png/shape-speech-round.png",
+      "thumbnail": "/library/thumbnails/shape-speech-round.png",
+      "sourceSha256": "eb388afa927800275bd4f65f32c06664ae70ecd19e0eb4eff8b2b48da2f327ab",
+      "width": 512,
+      "height": 408,
+      "defaultWidth": 240,
+      "defaultHeight": 191,
+      "pngSha256": "7c82c72c6ff39cf635ac071da5dbf0c9312ac0e6657f780fc22bdfdeb6d1bccb",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-speech-round.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-speech-round-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-speech-round-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-speech-round-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-speech-round-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-speech-round-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-speech-round-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-speech-round-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-speech-square",
+      "kind": "shape",
+      "label": "네모 말풍선",
+      "category": "꾸미기 도형",
+      "tags": [
+        "네모 말풍선",
+        "대화",
+        "말풍선",
+        "네모"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-speech-square.svg",
+      "image": "/library/png/shape-speech-square.png",
+      "thumbnail": "/library/thumbnails/shape-speech-square.png",
+      "sourceSha256": "a3627f834cd5f03fb1476e1b7dccf3675c0371399bec534cf832b35d4c983382",
+      "width": 512,
+      "height": 408,
+      "defaultWidth": 240,
+      "defaultHeight": 191,
+      "pngSha256": "738950ad486762c98a1ff15d2274cef924909b2bdbb14fe928eed16212208509",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-speech-square.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-speech-square-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-speech-square-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-speech-square-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-speech-square-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-speech-square-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-speech-square-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-speech-square-dark.png"
+        }
+      ]
+    },
+    {
+      "id": "shape-cloud",
+      "kind": "shape",
+      "label": "구름 도형",
+      "category": "꾸미기 도형",
+      "tags": [
+        "구름 도형",
+        "구름",
+        "하늘",
+        "생각"
+      ],
+      "sourceUrl": null,
+      "sourcePath": "asset-pipeline/prepare.py",
+      "license": "CC0-1.0",
+      "attribution": "CanvaCraft original geometric artwork",
+      "recolorable": true,
+      "svg": "/library/svg/shape-cloud.svg",
+      "image": "/library/png/shape-cloud.png",
+      "thumbnail": "/library/thumbnails/shape-cloud.png",
+      "sourceSha256": "cf6c8f970ee0bb6d11bac7dd6c7a42f9931210298cf971269f064c1593ea9c5c",
+      "width": 512,
+      "height": 364,
+      "defaultWidth": 240,
+      "defaultHeight": 171,
+      "pngSha256": "332756f012397b442016faffcbf4a766b684e44fd67f5950bc75b730ff75d971",
+      "colorVariants": [
+        {
+          "id": "mint",
+          "color": "#64C8AA",
+          "image": "/library/png/shape-cloud.png"
+        },
+        {
+          "id": "purple",
+          "color": "#9B83E8",
+          "image": "/library/png/colors/shape-cloud-purple.png"
+        },
+        {
+          "id": "blue",
+          "color": "#6CA9ED",
+          "image": "/library/png/colors/shape-cloud-blue.png"
+        },
+        {
+          "id": "yellow",
+          "color": "#FFD56A",
+          "image": "/library/png/colors/shape-cloud-yellow.png"
+        },
+        {
+          "id": "pink",
+          "color": "#F396B5",
+          "image": "/library/png/colors/shape-cloud-pink.png"
+        },
+        {
+          "id": "orange",
+          "color": "#F5A46C",
+          "image": "/library/png/colors/shape-cloud-orange.png"
+        },
+        {
+          "id": "white",
+          "color": "#FFFFFF",
+          "image": "/library/png/colors/shape-cloud-white.png"
+        },
+        {
+          "id": "dark",
+          "color": "#334155",
+          "image": "/library/png/colors/shape-cloud-dark.png"
+        }
+      ]
+    }
+  ]
+}

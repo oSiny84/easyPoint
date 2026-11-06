@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "0f65426b-5b95-4829-a0fd-0a2f9d4e0f2b",
+  "title": "책 속으로 여행",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "9789cc56-ccbc-4f5c-a33a-4615aa8d80d8",
+      "background": {
+        "kind": "image",
+        "assetId": "3426bb57c52feefde1e2afd2cc096b7a3c1c898d401d12cde7cc980e22d7d37e",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "1e2b728e-4f19-491d-ac66-646d40295a34",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "책 속으로 여행을 떠나요",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "5720b44a-5fc4-48a0-a27c-00f213ceefdf",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "읽고, 생각하고, 나만의 느낌을 나눠요.",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "2adf5825-eec1-4af6-ae18-b4e902985d25",
+          "type": "image",
+          "x": 100,
+          "y": 218,
+          "width": 300,
+          "height": 360,
+          "assetId": "ed2145d542a07445cfa28e0386c2188660097650d4d5d3417a7e42a8b17ae859"
+        },
+        {
+          "id": "432bb7ea-2a60-4111-ab41-de2a34621d89",
+          "type": "text",
+          "x": 118,
+          "y": 375,
+          "width": 264,
+          "text": "책 표지 사진",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "5bc49c1f-4b55-4b90-aa2f-947fead6e96e",
+          "type": "image",
+          "x": 458,
+          "y": 218,
+          "width": 724,
+          "height": 360,
+          "assetId": "4a078c541bd10f817ee13e1aaeaee2e7c0f47f858da5739bb6415f2e73bf5852"
+        },
+        {
+          "id": "cc017d27-abe3-49a9-aa93-5c26781e5470",
+          "type": "text",
+          "x": 490,
+          "y": 246,
+          "width": 650,
+          "text": "책 이름: ○○○\n주인공: ○○○\n가장 기억에 남는 장면:\n○○○○○\n이 책을 읽고 나는 ○○라고 느꼈어요.",
+          "fontId": "sans-ko",
+          "fontSize": 28,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "4862d4cb-ce51-4738-a786-dad975d45ff1",
+          "type": "image",
+          "x": 1060,
+          "y": 568,
+          "width": 90,
+          "height": 90,
+          "assetId": "7f2b934df64bac77bd60db729ce1cab9a56c3cb32c1cf3ecef7c0177bf66ac22"
+        },
+        {
+          "id": "191437f9-8e64-4082-afb0-b90c3c4ceeda",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "내가 주는 별점: ☆☆☆☆☆",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "ed2145d542a07445cfa28e0386c2188660097650d4d5d3417a7e42a8b17ae859",
+      "mime": "image/png",
+      "pixelWidth": 600,
+      "pixelHeight": 720,
+      "byteLength": 6143
+    },
+    {
+      "id": "4a078c541bd10f817ee13e1aaeaee2e7c0f47f858da5739bb6415f2e73bf5852",
+      "mime": "image/png",
+      "pixelWidth": 1448,
+      "pixelHeight": 720,
+      "byteLength": 8941
+    },
+    {
+      "id": "7f2b934df64bac77bd60db729ce1cab9a56c3cb32c1cf3ecef7c0177bf66ac22",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 8851
+    },
+    {
+      "id": "3426bb57c52feefde1e2afd2cc096b7a3c1c898d401d12cde7cc980e22d7d37e",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 76683
+    }
+  ]
+}

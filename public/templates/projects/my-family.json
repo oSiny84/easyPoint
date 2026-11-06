@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "id": "e25f3fe2-05ec-4b27-aaa5-61bb470b7a89",
+  "title": "우리 가족 이야기",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "56a58fea-5580-4b13-a112-e288194d8cd2",
+      "background": {
+        "kind": "image",
+        "assetId": "01935acbe1bd52523ada65ab8016e816f4372f8d81eaaa2c1883f01a18a9a990",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "022d7710-e2e4-4736-a00a-901366e2420e",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "우리 가족을 소개해요",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "ce1e51cf-7f4b-47f9-ad6d-21a80ec4141a",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "함께해서 더 행복한 우리 집 이야기",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "e509fb67-e191-4cd5-a763-61cf2e450a64",
+          "type": "image",
+          "x": 96,
+          "y": 218,
+          "width": 580,
+          "height": 326,
+          "assetId": "f22abfcc6804b19813a7ea9bd779036345f4b805857a461ae646d51c634c31b6"
+        },
+        {
+          "id": "9ba3f4d8-9bd7-43cf-a3fa-2a0851579b64",
+          "type": "text",
+          "x": 114,
+          "y": 358,
+          "width": 544,
+          "text": "여기에 사진을 넣어 보세요",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "d79a9f71-9e72-4d1d-a71b-021afe3d1250",
+          "type": "image",
+          "x": 722,
+          "y": 218,
+          "width": 460,
+          "height": 350,
+          "assetId": "9ca515b383f73133404903569b62b8236c3d81bbb61cf1a5cd0be8efd8cd58d1"
+        },
+        {
+          "id": "85212b9f-c363-43f1-a855-0e19c2f77103",
+          "type": "text",
+          "x": 752,
+          "y": 246,
+          "width": 400,
+          "text": "우리 가족은요",
+          "fontId": "sans-ko",
+          "fontSize": 30,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "0191e82b-3b2f-48e1-a267-54b006c758c4",
+          "type": "text",
+          "x": 752,
+          "y": 310,
+          "width": 400,
+          "text": "함께 사는 사람: ○○○\n함께 좋아하는 일: ○○○\n가장 즐거웠던 순간:\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 27,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "5fa6254d-430e-4f05-a81d-a123d696fb03",
+          "type": "image",
+          "x": 1110,
+          "y": 563,
+          "width": 66,
+          "height": 66,
+          "assetId": "e39084afd88b04b276e0b8fec8b04cce0839be24f9eb5c488ec14e2986617ca3"
+        },
+        {
+          "id": "fe49c544-002e-4727-ab80-4dc78aa61f02",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "우리 가족에게 전하고 싶은 한마디: ○○○",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "f22abfcc6804b19813a7ea9bd779036345f4b805857a461ae646d51c634c31b6",
+      "mime": "image/png",
+      "pixelWidth": 1160,
+      "pixelHeight": 652,
+      "byteLength": 7541
+    },
+    {
+      "id": "9ca515b383f73133404903569b62b8236c3d81bbb61cf1a5cd0be8efd8cd58d1",
+      "mime": "image/png",
+      "pixelWidth": 920,
+      "pixelHeight": 700,
+      "byteLength": 7054
+    },
+    {
+      "id": "e39084afd88b04b276e0b8fec8b04cce0839be24f9eb5c488ec14e2986617ca3",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 13665
+    },
+    {
+      "id": "01935acbe1bd52523ada65ab8016e816f4372f8d81eaaa2c1883f01a18a9a990",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 68868
+    }
+  ]
+}

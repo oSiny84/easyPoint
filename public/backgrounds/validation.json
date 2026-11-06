@@ -1,0 +1,8 @@
+{
+  "count": 24,
+  "dimensions": "2560x1440",
+  "opaque": true,
+  "minTextContrast": 7.19,
+  "errors": [],
+  "rasterizer": "resvg 2.6.2"
+}

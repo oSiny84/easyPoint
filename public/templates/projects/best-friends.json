@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "id": "2c6e8831-f0a3-47c0-a85d-e31dd18bb545",
+  "title": "친구와 함께",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "46968520-728b-4d85-a353-9eb106db9370",
+      "background": {
+        "kind": "image",
+        "assetId": "c054abcd8fc9f173d2d2e1b26a400c6776e0b329094d8ba657d853598647bc5d",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "b21c8934-32f3-4463-a4b1-42dbdd37967f",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "친구와 함께한 하루",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "e488d459-5765-4777-a3cd-156e27a3c524",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "같이 웃고, 같이 배우는 소중한 친구",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "a23dc656-dd79-4ec5-a65a-9bbcb246a20f",
+          "type": "image",
+          "x": 96,
+          "y": 220,
+          "width": 320,
+          "height": 240,
+          "assetId": "b7375266c404230e6d0125a35eaed27189f499875fa716eda0df04d2b7063ca2"
+        },
+        {
+          "id": "2f2dd2e3-48b9-4da5-a613-c6a75b8a4058",
+          "type": "text",
+          "x": 114,
+          "y": 317,
+          "width": 284,
+          "text": "우리 사진",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "cfdc0aab-2315-4af7-a560-d7249b6c3b90",
+          "type": "image",
+          "x": 456,
+          "y": 220,
+          "width": 320,
+          "height": 240,
+          "assetId": "b7375266c404230e6d0125a35eaed27189f499875fa716eda0df04d2b7063ca2"
+        },
+        {
+          "id": "1c37dd52-891a-4082-a4b6-ff5ccc658dfe",
+          "type": "text",
+          "x": 474,
+          "y": 317,
+          "width": 284,
+          "text": "함께한 놀이",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "b8ad0d5a-0ca9-4df7-a495-679e7e754458",
+          "type": "image",
+          "x": 824,
+          "y": 220,
+          "width": 358,
+          "height": 352,
+          "assetId": "1fc6ef3f55f6ae78cc198fc488036b27a01c64d360dc1712f5bc84d1437ac717"
+        },
+        {
+          "id": "f3007100-95ab-4397-ac08-ea78ba206b6a",
+          "type": "text",
+          "x": 850,
+          "y": 251,
+          "width": 305,
+          "text": "친구 이름은 ○○○\n우리는 ○○에서 만났어요.\n함께 ○○을 하면 즐거워요.\n친구의 멋진 점은 ○○예요.",
+          "fontId": "sans-ko",
+          "fontSize": 25,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "2db6e58a-11c4-468d-ad44-b6aa669f7581",
+          "type": "text",
+          "x": 98,
+          "y": 500,
+          "width": 680,
+          "text": "우리의 추억  ○○○",
+          "fontId": "sans-ko",
+          "fontSize": 30,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "8e229485-5d9c-4646-ac43-65f8ac6d4d81",
+          "type": "image",
+          "x": 1070,
+          "y": 576,
+          "width": 75,
+          "height": 75,
+          "assetId": "65087eca7490e8c4404605cb7ab921f0395c22b351497c940e30ffb79ff14ddf"
+        },
+        {
+          "id": "111bf284-54eb-4965-abb4-88b49cce1ba1",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "이름을 적어 주세요 · 날짜를 적어 주세요",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "b7375266c404230e6d0125a35eaed27189f499875fa716eda0df04d2b7063ca2",
+      "mime": "image/png",
+      "pixelWidth": 640,
+      "pixelHeight": 480,
+      "byteLength": 5121
+    },
+    {
+      "id": "1fc6ef3f55f6ae78cc198fc488036b27a01c64d360dc1712f5bc84d1437ac717",
+      "mime": "image/png",
+      "pixelWidth": 716,
+      "pixelHeight": 704,
+      "byteLength": 6342
+    },
+    {
+      "id": "65087eca7490e8c4404605cb7ab921f0395c22b351497c940e30ffb79ff14ddf",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 24858
+    },
+    {
+      "id": "c054abcd8fc9f173d2d2e1b26a400c6776e0b329094d8ba657d853598647bc5d",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 92826
+    }
+  ]
+}

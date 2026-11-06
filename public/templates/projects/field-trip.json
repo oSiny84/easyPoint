@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "id": "44f87df7-b3be-4411-a6fc-91213143186d",
+  "title": "현장학습 다녀왔어요",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "20de0e11-4d7f-4dac-aa64-ccf7fcd52ed7",
+      "background": {
+        "kind": "image",
+        "assetId": "60457a23d92698dcefb97458db4bf72ee058ae36e79f86fe81fb0ea466563096",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "e38ae0bf-2956-48e8-a916-6ba7afab6db7",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "현장학습 다녀왔어요",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "93a119fe-9089-4801-a546-27fb55bf919b",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "보고, 듣고, 느끼며 배운 하루",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "bedd5711-5f37-40c3-a5ce-1a28d62a89a3",
+          "type": "image",
+          "x": 96,
+          "y": 220,
+          "width": 348,
+          "height": 218,
+          "assetId": "554325636bf546fa4c109fd604d376644d661489d9a7b9611969b31793afae01"
+        },
+        {
+          "id": "4083e006-8129-44c9-a956-c69288f738a5",
+          "type": "text",
+          "x": 114,
+          "y": 306,
+          "width": 312,
+          "text": "처음 본 장면",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "52ce97dc-1e46-467a-a25d-c00ef1db62e7",
+          "type": "text",
+          "x": 102,
+          "y": 472,
+          "width": 336,
+          "text": "1. 처음 본 장면\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 25,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "072ffbe6-8709-498b-a91e-26bb185319c7",
+          "type": "image",
+          "x": 466,
+          "y": 220,
+          "width": 348,
+          "height": 218,
+          "assetId": "554325636bf546fa4c109fd604d376644d661489d9a7b9611969b31793afae01"
+        },
+        {
+          "id": "2d192399-8699-4e1d-a806-236c027f7eb7",
+          "type": "text",
+          "x": 484,
+          "y": 306,
+          "width": 312,
+          "text": "가장 신기했던 것",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "a9b388be-13b9-4842-a109-a267faf22a7e",
+          "type": "text",
+          "x": 472,
+          "y": 472,
+          "width": 336,
+          "text": "2. 가장 신기했던 것\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 25,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "9036da46-45e5-4c19-a437-67af8528330b",
+          "type": "image",
+          "x": 836,
+          "y": 220,
+          "width": 348,
+          "height": 218,
+          "assetId": "554325636bf546fa4c109fd604d376644d661489d9a7b9611969b31793afae01"
+        },
+        {
+          "id": "63914d83-4239-46b1-acc0-2d3d88528d44",
+          "type": "text",
+          "x": 854,
+          "y": 306,
+          "width": 312,
+          "text": "꼭 기억하고 싶은 것",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "90ccbe03-b6c1-4a90-a1ac-e204f9cef0a4",
+          "type": "text",
+          "x": 842,
+          "y": 472,
+          "width": 336,
+          "text": "3. 꼭 기억하고 싶은 것\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 25,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "e02a10c8-53e1-4eba-ac44-aad81513be29",
+          "type": "image",
+          "x": 1110,
+          "y": 576,
+          "width": 68,
+          "height": 68,
+          "assetId": "600106bef38d5a8f9de9c548694b392753422f7f0ef26da106b889bc585db19a"
+        },
+        {
+          "id": "bf12b9b4-787c-4ff4-ae15-93151603d637",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "다녀온 곳: ○○○ · 다녀온 날: ○월 ○일",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "554325636bf546fa4c109fd604d376644d661489d9a7b9611969b31793afae01",
+      "mime": "image/png",
+      "pixelWidth": 696,
+      "pixelHeight": 436,
+      "byteLength": 5053
+    },
+    {
+      "id": "600106bef38d5a8f9de9c548694b392753422f7f0ef26da106b889bc585db19a",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 15966
+    },
+    {
+      "id": "60457a23d92698dcefb97458db4bf72ee058ae36e79f86fe81fb0ea466563096",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 38689
+    }
+  ]
+}

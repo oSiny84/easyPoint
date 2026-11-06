@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "id": "b6a8bd34-042f-46fd-a96b-5cbca726d782",
+  "title": "나도 꼬마 과학자",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "01567fa4-f2db-4879-abbc-b53c28d903c8",
+      "background": {
+        "kind": "image",
+        "assetId": "6dc1373ab65329c21bb93f63699daaa2f4f34de702876b90d916a6707ae5c05f",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "4d29b6d0-218f-4545-a4a8-e4dd497251a7",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "나도 꼬마 과학자!",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "f8e83875-2e34-44b3-adf4-e0bd73dbf62e",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "궁금한 것을 직접 살펴보고, 발견한 것을 기록해요.",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "34da9702-cc31-40ed-a56c-d547f18c7692",
+          "type": "image",
+          "x": 96,
+          "y": 220,
+          "width": 348,
+          "height": 350,
+          "assetId": "ed16d3bc6382d6622efddc2009af27fd669c42e8b1fbf5f3cd181975305839a0"
+        },
+        {
+          "id": "b12cf29f-78a3-4875-a023-5c1e9c7566b1",
+          "type": "text",
+          "x": 120,
+          "y": 246,
+          "width": 300,
+          "text": "1. 궁금해요",
+          "fontId": "sans-ko",
+          "fontSize": 28,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "d1a65245-b3c1-4956-ac7b-79d1be545507",
+          "type": "text",
+          "x": 120,
+          "y": 305,
+          "width": 300,
+          "text": "무엇이 궁금한가요?\n○○○○○\n\n내 생각은 이래요.\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "edc665c9-43d5-421d-a2e9-a56ef117c07e",
+          "type": "image",
+          "x": 466,
+          "y": 220,
+          "width": 348,
+          "height": 350,
+          "assetId": "ed16d3bc6382d6622efddc2009af27fd669c42e8b1fbf5f3cd181975305839a0"
+        },
+        {
+          "id": "e10239a8-15ca-4203-ace7-5b976b1a781b",
+          "type": "text",
+          "x": 490,
+          "y": 246,
+          "width": 300,
+          "text": "2. 해 보았어요",
+          "fontId": "sans-ko",
+          "fontSize": 28,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "cfcb19f1-5d3a-4beb-a73f-e5cb8b6765ec",
+          "type": "text",
+          "x": 490,
+          "y": 305,
+          "width": 300,
+          "text": "준비한 것: ○○○\n\n실험한 방법:\n① ○○○\n② ○○○",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "6eb07385-fe25-4a19-a16f-ec6da7eb9db7",
+          "type": "image",
+          "x": 836,
+          "y": 220,
+          "width": 348,
+          "height": 350,
+          "assetId": "ed16d3bc6382d6622efddc2009af27fd669c42e8b1fbf5f3cd181975305839a0"
+        },
+        {
+          "id": "f01449e8-815d-4c59-a787-f50f077c701e",
+          "type": "text",
+          "x": 860,
+          "y": 246,
+          "width": 300,
+          "text": "3. 알게 되었어요",
+          "fontId": "sans-ko",
+          "fontSize": 28,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "f8d239c3-bb4f-4ac4-a664-5e458e84d9ba",
+          "type": "text",
+          "x": 860,
+          "y": 305,
+          "width": 300,
+          "text": "눈으로 본 결과:\n○○○○○\n\n새롭게 알게 된 점:\n○○○○○",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "0cd99822-cb89-4658-a6f1-2195430ce847",
+          "type": "image",
+          "x": 1090,
+          "y": 575,
+          "width": 75,
+          "height": 75,
+          "assetId": "b248734fc1c033b15bdd34f8aca1b5bf33dd944bcf3e082c30627fb5e4c85869"
+        },
+        {
+          "id": "285b7774-9a09-49c1-a401-9629a87385df",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "다음에는 ○○○을 더 알아보고 싶어요.",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "ed16d3bc6382d6622efddc2009af27fd669c42e8b1fbf5f3cd181975305839a0",
+      "mime": "image/png",
+      "pixelWidth": 696,
+      "pixelHeight": 700,
+      "byteLength": 6398
+    },
+    {
+      "id": "b248734fc1c033b15bdd34f8aca1b5bf33dd944bcf3e082c30627fb5e4c85869",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 22775
+    },
+    {
+      "id": "6dc1373ab65329c21bb93f63699daaa2f4f34de702876b90d916a6707ae5c05f",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 39504
+    }
+  ]
+}

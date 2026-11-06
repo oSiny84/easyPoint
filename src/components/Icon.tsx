@@ -1,0 +1,33 @@
+// 앱 전용 단순 선 아이콘. 외부 자산을 쓰지 않는다.
+const PATHS: Record<string, string> = {
+  back: 'M15 5l-7 7 7 7',
+  undo: 'M9 7L4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2',
+  redo: 'M15 7l5 5-5 5M20 12H9a5 5 0 0 0 0 10h2',
+  design: 'M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z',
+  elements: 'M8 3l4.5 8h-9zM17 7a4 4 0 1 1-.01 0M4 14h8v7H4zM16 14l1.5 2.8 3 .4-2.2 2.1.6 3-2.9-1.5-2.9 1.5.6-3-2.2-2.1 3-.4z',
+  text: 'M5 6V4h14v2M12 4v16M9 20h6',
+  upload: 'M12 16V5M7 10l5-5 5 5M4 19h16',
+  download: 'M12 5v11M7 11l5 5 5-5M4 19h16',
+  draw: 'M4 20l1-4L16 5l3 3L8 19zM14 7l3 3',
+  background: 'M3 5h18v14H3zM3 15l5-4 4 3 4-4 5 5',
+  close: 'M6 6l12 12M18 6L6 18',
+  more: 'M5 12h.01M12 12h.01M19 12h.01',
+  plus: 'M12 5v14M5 12h14',
+  fit: 'M3 5h18v14H3zM8 9h8v6H8z',
+  full: 'M9 4H4v5M20 9V4h-5M4 15v5h5M15 20h5v-5',
+  duplicate: 'M9 9h11v11H9zM5 15H4V4h11v1',
+  front: 'M12 19V6M6 12l6-6 6 6',
+  backward: 'M12 5v13M6 12l6 6 6-6',
+  trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
+  file: 'M6 3h9l4 4v14H6zM15 3v4h4',
+  chevron: 'M6 9l6 6 6-6',
+  play: 'M7 4l13 8-13 8z',
+  share: 'M12 15V4M8 8l4-4 4 4M5 13v7h14v-7',
+  'align-left': 'M4 6h16M4 12h10M4 18h13',
+  'align-center': 'M4 6h16M7 12h10M5.5 18h13',
+  'align-right': 'M4 6h16M10 12h10M7 18h13',
+};
+
+export function Icon({ name, size = 20 }: { name: keyof typeof PATHS | string; size?: number }) {
+  return <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={PATHS[name]} /></svg>;
+}

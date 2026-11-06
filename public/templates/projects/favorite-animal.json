@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "a64be78a-3e07-4746-a65d-72425a80d40c",
+  "title": "내가 좋아하는 동물",
+  "revision": 0,
+  "createdAt": "2026-11-06T00:00:00.000Z",
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "width": 1280,
+  "height": 720,
+  "slides": [
+    {
+      "id": "eb37a351-2460-40ac-a062-0ae3508aef9f",
+      "background": {
+        "kind": "image",
+        "assetId": "4e6597250e1edf86ac89966c4b24d395829b87615fdfd4c711707475e1e0409e",
+        "fit": "center-cover"
+      },
+      "elements": [
+        {
+          "id": "8851f462-c228-4d86-a354-98f255157d06",
+          "type": "text",
+          "x": 220,
+          "y": 64,
+          "width": 960,
+          "text": "내가 좋아하는 동물은요",
+          "fontId": "sans-ko",
+          "fontSize": 52,
+          "bold": true,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "b9c7f526-046f-446c-a611-e08846c72565",
+          "type": "text",
+          "x": 222,
+          "y": 142,
+          "width": 930,
+          "text": "생김새도, 살아가는 모습도 신기한 친구",
+          "fontId": "sans-ko",
+          "fontSize": 23,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "c4fdae1c-a8c0-44d9-a5f8-c83fac07fe75",
+          "type": "image",
+          "x": 96,
+          "y": 220,
+          "width": 440,
+          "height": 330,
+          "assetId": "43843d39478fd9c428ccadf285c29af73126ad72197992b155683e6e5e526c9e"
+        },
+        {
+          "id": "ae1facd7-4c05-4831-ad33-dfd5c146c4d2",
+          "type": "text",
+          "x": 114,
+          "y": 362,
+          "width": 404,
+          "text": "좋아하는 동물 사진",
+          "fontId": "sans-ko",
+          "fontSize": 24,
+          "bold": false,
+          "color": "#75899C",
+          "align": "center",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "7b888bd5-ff4e-456f-a0b0-5d90dcf30089",
+          "type": "image",
+          "x": 588,
+          "y": 220,
+          "width": 594,
+          "height": 350,
+          "assetId": "f103f93f687c108c71c286eb2260b105329848c6a4e19cf0cd3219813f5b729f"
+        },
+        {
+          "id": "3258af49-02a9-4606-aacd-c92ac56d9723",
+          "type": "text",
+          "x": 620,
+          "y": 252,
+          "width": 530,
+          "text": "동물 이름: ○○○\n사는 곳: ○○○\n먹는 것: ○○○\n특별한 점: ○○○\n내가 좋아하는 이유: ○○○",
+          "fontId": "sans-ko",
+          "fontSize": 28,
+          "bold": false,
+          "color": "#2D3D50",
+          "align": "left",
+          "lineHeight": 1.3
+        },
+        {
+          "id": "7c958bb5-c365-4414-a7ce-a0da591b3f70",
+          "type": "image",
+          "x": 1060,
+          "y": 576,
+          "width": 80,
+          "height": 80,
+          "assetId": "aaad61c2f40a34c3456f03479ce21e31ef4b1bdd9167dd179055e8c4832de0a6"
+        },
+        {
+          "id": "8cdfdb51-ade9-42bb-a965-aa86c7683981",
+          "type": "text",
+          "x": 220,
+          "y": 647,
+          "width": 840,
+          "text": "동물을 아끼는 나의 약속: ○○○",
+          "fontId": "sans-ko",
+          "fontSize": 18,
+          "bold": false,
+          "color": "#627286",
+          "align": "left",
+          "lineHeight": 1.3
+        }
+      ]
+    }
+  ],
+  "assetManifest": [
+    {
+      "id": "43843d39478fd9c428ccadf285c29af73126ad72197992b155683e6e5e526c9e",
+      "mime": "image/png",
+      "pixelWidth": 880,
+      "pixelHeight": 660,
+      "byteLength": 6715
+    },
+    {
+      "id": "f103f93f687c108c71c286eb2260b105329848c6a4e19cf0cd3219813f5b729f",
+      "mime": "image/png",
+      "pixelWidth": 1188,
+      "pixelHeight": 700,
+      "byteLength": 7987
+    },
+    {
+      "id": "aaad61c2f40a34c3456f03479ce21e31ef4b1bdd9167dd179055e8c4832de0a6",
+      "mime": "image/png",
+      "pixelWidth": 512,
+      "pixelHeight": 512,
+      "byteLength": 13462
+    },
+    {
+      "id": "4e6597250e1edf86ac89966c4b24d395829b87615fdfd4c711707475e1e0409e",
+      "mime": "image/png",
+      "pixelWidth": 2560,
+      "pixelHeight": 1440,
+      "byteLength": 102397
+    }
+  ]
+}

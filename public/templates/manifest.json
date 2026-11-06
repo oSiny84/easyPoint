@@ -1,0 +1,871 @@
+{
+  "schemaVersion": 1,
+  "packId": "canvacraft-templates-12",
+  "version": "1.0.0",
+  "templates": [
+    {
+      "id": "tpl-introduce-me",
+      "label": "나를 소개해요",
+      "category": "자기소개",
+      "tags": [
+        "나를 소개해요",
+        "이름",
+        "취미",
+        "자기소개",
+        "친구"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/introduce-me.json",
+      "preview": "/templates/previews/introduce-me.png",
+      "thumbnail": "/templates/thumbnails/introduce-me.png",
+      "file": "/templates/files/introduce-me.canvacraft",
+      "assets": [
+        {
+          "assetId": "d434b376c23adc121009e935900df07731f188066440ba281a2dbb3f8e7be7ac",
+          "url": "/templates/assets/d434b376c23adc121009e935900df07731f188066440ba281a2dbb3f8e7be7ac.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "1aeae6fafa68a0c5e596127944f70ea45f9fd5f14d12050d4a9f42d87828390e",
+          "url": "/templates/assets/1aeae6fafa68a0c5e596127944f70ea45f9fd5f14d12050d4a9f42d87828390e.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "e2f722a1bb4384fd76ee0fe668314ce2658cb6ab34c0da7388311305bb830bcd",
+          "url": "/templates/assets/e2f722a1bb4384fd76ee0fe668314ce2658cb6ab34c0da7388311305bb830bcd.png",
+          "sourceId": "character-child"
+        },
+        {
+          "assetId": "5dba57853f786dfbe5a59a864b471d2c8f4548d969f8a6dc442a66d6d3e1cea6",
+          "url": "/templates/assets/5dba57853f786dfbe5a59a864b471d2c8f4548d969f8a6dc442a66d6d3e1cea6.png",
+          "sourceId": "bg-mint-breeze"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "01b01be1-c3b9-4f90-af18-95685269fbac",
+          "hintElementId": "ea828833-f571-4c6f-a87c-2e3b920e0bac",
+          "rect": {
+            "x": 738,
+            "y": 224,
+            "width": 390,
+            "height": 300
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "6fedc801-bbd3-42b5-aa00-c8c8c09e54f5": "title",
+        "736b525a-f7af-4593-a104-96ba6fb25efd": "subtitle",
+        "92c21c87-60b9-48d4-abcf-340d478e9728": "panel",
+        "ed12034a-2057-4c8e-ad61-ec415d7cdd71": "body",
+        "01b01be1-c3b9-4f90-af18-95685269fbac": "photo-guide",
+        "ea828833-f571-4c6f-a87c-2e3b920e0bac": "photo-hint",
+        "8462a65d-231b-4275-a195-3af27af1b52f": "decoration",
+        "04cb238e-cb0f-49e5-a2a9-44cea447e0b3": "footer"
+      },
+      "elementCount": 8,
+      "editableTextCount": 5,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-my-family",
+      "label": "우리 가족 이야기",
+      "category": "가족·친구",
+      "tags": [
+        "우리 가족 이야기",
+        "가족",
+        "부모",
+        "형제",
+        "집"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/my-family.json",
+      "preview": "/templates/previews/my-family.png",
+      "thumbnail": "/templates/thumbnails/my-family.png",
+      "file": "/templates/files/my-family.canvacraft",
+      "assets": [
+        {
+          "assetId": "f22abfcc6804b19813a7ea9bd779036345f4b805857a461ae646d51c634c31b6",
+          "url": "/templates/assets/f22abfcc6804b19813a7ea9bd779036345f4b805857a461ae646d51c634c31b6.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "9ca515b383f73133404903569b62b8236c3d81bbb61cf1a5cd0be8efd8cd58d1",
+          "url": "/templates/assets/9ca515b383f73133404903569b62b8236c3d81bbb61cf1a5cd0be8efd8cd58d1.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "e39084afd88b04b276e0b8fec8b04cce0839be24f9eb5c488ec14e2986617ca3",
+          "url": "/templates/assets/e39084afd88b04b276e0b8fec8b04cce0839be24f9eb5c488ec14e2986617ca3.png",
+          "sourceId": "sticker-red-heart"
+        },
+        {
+          "assetId": "01935acbe1bd52523ada65ab8016e816f4372f8d81eaaa2c1883f01a18a9a990",
+          "url": "/templates/assets/01935acbe1bd52523ada65ab8016e816f4372f8d81eaaa2c1883f01a18a9a990.png",
+          "sourceId": "bg-paper-ivory"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "e509fb67-e191-4cd5-a763-61cf2e450a64",
+          "hintElementId": "9ba3f4d8-9bd7-43cf-a3fa-2a0851579b64",
+          "rect": {
+            "x": 96,
+            "y": 218,
+            "width": 580,
+            "height": 326
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "022d7710-e2e4-4736-a00a-901366e2420e": "title",
+        "ce1e51cf-7f4b-47f9-ad6d-21a80ec4141a": "subtitle",
+        "e509fb67-e191-4cd5-a763-61cf2e450a64": "photo-guide",
+        "9ba3f4d8-9bd7-43cf-a3fa-2a0851579b64": "photo-hint",
+        "d79a9f71-9e72-4d1d-a71b-021afe3d1250": "panel",
+        "85212b9f-c363-43f1-a855-0e19c2f77103": "body",
+        "0191e82b-3b2f-48e1-a267-54b006c758c4": "body",
+        "5fa6254d-430e-4f05-a81d-a123d696fb03": "decoration",
+        "fe49c544-002e-4727-ab80-4dc78aa61f02": "footer"
+      },
+      "elementCount": 9,
+      "editableTextCount": 6,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-best-friends",
+      "label": "친구와 함께",
+      "category": "가족·친구",
+      "tags": [
+        "친구와 함께",
+        "친구",
+        "우정",
+        "놀이",
+        "학교"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/best-friends.json",
+      "preview": "/templates/previews/best-friends.png",
+      "thumbnail": "/templates/thumbnails/best-friends.png",
+      "file": "/templates/files/best-friends.canvacraft",
+      "assets": [
+        {
+          "assetId": "b7375266c404230e6d0125a35eaed27189f499875fa716eda0df04d2b7063ca2",
+          "url": "/templates/assets/b7375266c404230e6d0125a35eaed27189f499875fa716eda0df04d2b7063ca2.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "1fc6ef3f55f6ae78cc198fc488036b27a01c64d360dc1712f5bc84d1437ac717",
+          "url": "/templates/assets/1fc6ef3f55f6ae78cc198fc488036b27a01c64d360dc1712f5bc84d1437ac717.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "65087eca7490e8c4404605cb7ab921f0395c22b351497c940e30ffb79ff14ddf",
+          "url": "/templates/assets/65087eca7490e8c4404605cb7ab921f0395c22b351497c940e30ffb79ff14ddf.png",
+          "sourceId": "character-person-gesturing-ok"
+        },
+        {
+          "assetId": "c054abcd8fc9f173d2d2e1b26a400c6776e0b329094d8ba657d853598647bc5d",
+          "url": "/templates/assets/c054abcd8fc9f173d2d2e1b26a400c6776e0b329094d8ba657d853598647bc5d.png",
+          "sourceId": "bg-lavender-dawn"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "a23dc656-dd79-4ec5-a65a-9bbcb246a20f",
+          "hintElementId": "2f2dd2e3-48b9-4da5-a613-c6a75b8a4058",
+          "rect": {
+            "x": 96,
+            "y": 220,
+            "width": 320,
+            "height": 240
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        },
+        {
+          "frameElementId": "cfdc0aab-2315-4af7-a560-d7249b6c3b90",
+          "hintElementId": "1c37dd52-891a-4082-a4b6-ff5ccc658dfe",
+          "rect": {
+            "x": 456,
+            "y": 220,
+            "width": 320,
+            "height": 240
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "b21c8934-32f3-4463-a4b1-42dbdd37967f": "title",
+        "e488d459-5765-4777-a3cd-156e27a3c524": "subtitle",
+        "a23dc656-dd79-4ec5-a65a-9bbcb246a20f": "photo-guide",
+        "2f2dd2e3-48b9-4da5-a613-c6a75b8a4058": "photo-hint",
+        "cfdc0aab-2315-4af7-a560-d7249b6c3b90": "photo-guide",
+        "1c37dd52-891a-4082-a4b6-ff5ccc658dfe": "photo-hint",
+        "b8ad0d5a-0ca9-4df7-a495-679e7e754458": "panel",
+        "f3007100-95ab-4397-ac08-ea78ba206b6a": "body",
+        "2db6e58a-11c4-468d-ad44-b6aa669f7581": "body",
+        "8e229485-5d9c-4646-ac43-65f8ac6d4d81": "decoration",
+        "111bf284-54eb-4965-abb4-88b49cce1ba1": "footer"
+      },
+      "elementCount": 11,
+      "editableTextCount": 7,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-book-review",
+      "label": "책 속으로 여행",
+      "category": "학교·탐구",
+      "tags": [
+        "책 속으로 여행",
+        "독서",
+        "책",
+        "감상",
+        "주인공"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/book-review.json",
+      "preview": "/templates/previews/book-review.png",
+      "thumbnail": "/templates/thumbnails/book-review.png",
+      "file": "/templates/files/book-review.canvacraft",
+      "assets": [
+        {
+          "assetId": "ed2145d542a07445cfa28e0386c2188660097650d4d5d3417a7e42a8b17ae859",
+          "url": "/templates/assets/ed2145d542a07445cfa28e0386c2188660097650d4d5d3417a7e42a8b17ae859.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "4a078c541bd10f817ee13e1aaeaee2e7c0f47f858da5739bb6415f2e73bf5852",
+          "url": "/templates/assets/4a078c541bd10f817ee13e1aaeaee2e7c0f47f858da5739bb6415f2e73bf5852.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "7f2b934df64bac77bd60db729ce1cab9a56c3cb32c1cf3ecef7c0177bf66ac22",
+          "url": "/templates/assets/7f2b934df64bac77bd60db729ce1cab9a56c3cb32c1cf3ecef7c0177bf66ac22.png",
+          "sourceId": "sticker-books"
+        },
+        {
+          "assetId": "3426bb57c52feefde1e2afd2cc096b7a3c1c898d401d12cde7cc980e22d7d37e",
+          "url": "/templates/assets/3426bb57c52feefde1e2afd2cc096b7a3c1c898d401d12cde7cc980e22d7d37e.png",
+          "sourceId": "bg-library-desk"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "2adf5825-eec1-4af6-ae18-b4e902985d25",
+          "hintElementId": "432bb7ea-2a60-4111-ab41-de2a34621d89",
+          "rect": {
+            "x": 100,
+            "y": 218,
+            "width": 300,
+            "height": 360
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "1e2b728e-4f19-491d-ac66-646d40295a34": "title",
+        "5720b44a-5fc4-48a0-a27c-00f213ceefdf": "subtitle",
+        "2adf5825-eec1-4af6-ae18-b4e902985d25": "photo-guide",
+        "432bb7ea-2a60-4111-ab41-de2a34621d89": "photo-hint",
+        "5bc49c1f-4b55-4b90-aa2f-947fead6e96e": "panel",
+        "cc017d27-abe3-49a9-aa93-5c26781e5470": "body",
+        "4862d4cb-ce51-4738-a786-dad975d45ff1": "decoration",
+        "191437f9-8e64-4082-afb0-b90c3c4ceeda": "footer"
+      },
+      "elementCount": 8,
+      "editableTextCount": 5,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-nature-diary",
+      "label": "꼼꼼 관찰 일기",
+      "category": "학교·탐구",
+      "tags": [
+        "꼼꼼 관찰 일기",
+        "관찰",
+        "일기",
+        "식물",
+        "동물",
+        "자연"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/nature-diary.json",
+      "preview": "/templates/previews/nature-diary.png",
+      "thumbnail": "/templates/thumbnails/nature-diary.png",
+      "file": "/templates/files/nature-diary.canvacraft",
+      "assets": [
+        {
+          "assetId": "a15feaba3c0055498fafa115cbaedee05140e17de22d6d9e12ce29624508e591",
+          "url": "/templates/assets/a15feaba3c0055498fafa115cbaedee05140e17de22d6d9e12ce29624508e591.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "8107ac4baaf152cb918605fcb5e20ba17f6f701f028737a183479eb2821bde66",
+          "url": "/templates/assets/8107ac4baaf152cb918605fcb5e20ba17f6f701f028737a183479eb2821bde66.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "8c30d6194e222a74a47ea06b61ab71770a6c0f46a18fe25cc342b5da2d7c869b",
+          "url": "/templates/assets/8c30d6194e222a74a47ea06b61ab71770a6c0f46a18fe25cc342b5da2d7c869b.png",
+          "sourceId": "character-butterfly"
+        },
+        {
+          "assetId": "4094ee3ff261f3b14424e88baeaa2179bdeb2c411623e859c9dfd688ac519eab",
+          "url": "/templates/assets/4094ee3ff261f3b14424e88baeaa2179bdeb2c411623e859c9dfd688ac519eab.png",
+          "sourceId": "bg-forest-walk"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "6bcee59b-3e38-4e5e-a789-7fa839917e5a",
+          "hintElementId": "14e18ad2-db51-445c-a02a-d40c0e2ad2d6",
+          "rect": {
+            "x": 96,
+            "y": 220,
+            "width": 560,
+            "height": 336
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "a5a6bd38-45ff-41c3-a659-f495f73aba74": "title",
+        "ef91814f-4ede-4829-a8b0-77ab95bbe164": "subtitle",
+        "6bcee59b-3e38-4e5e-a789-7fa839917e5a": "photo-guide",
+        "14e18ad2-db51-445c-a02a-d40c0e2ad2d6": "photo-hint",
+        "9fa9c921-81b8-432d-a296-42d8895a1f0f": "panel",
+        "fdebf721-71d7-4199-a653-f176bda957c6": "body",
+        "7152016f-5d10-4a64-aadd-f3ae0b4bca88": "decoration",
+        "ee17ed11-b204-40db-ab71-39ebd25b312e": "footer"
+      },
+      "elementCount": 8,
+      "editableTextCount": 5,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-science-lab",
+      "label": "나도 꼬마 과학자",
+      "category": "학교·탐구",
+      "tags": [
+        "나도 꼬마 과학자",
+        "과학",
+        "실험",
+        "가설",
+        "탐구"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/science-lab.json",
+      "preview": "/templates/previews/science-lab.png",
+      "thumbnail": "/templates/thumbnails/science-lab.png",
+      "file": "/templates/files/science-lab.canvacraft",
+      "assets": [
+        {
+          "assetId": "ed16d3bc6382d6622efddc2009af27fd669c42e8b1fbf5f3cd181975305839a0",
+          "url": "/templates/assets/ed16d3bc6382d6622efddc2009af27fd669c42e8b1fbf5f3cd181975305839a0.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "b248734fc1c033b15bdd34f8aca1b5bf33dd944bcf3e082c30627fb5e4c85869",
+          "url": "/templates/assets/b248734fc1c033b15bdd34f8aca1b5bf33dd944bcf3e082c30627fb5e4c85869.png",
+          "sourceId": "character-scientist"
+        },
+        {
+          "assetId": "6dc1373ab65329c21bb93f63699daaa2f4f34de702876b90d916a6707ae5c05f",
+          "url": "/templates/assets/6dc1373ab65329c21bb93f63699daaa2f4f34de702876b90d916a6707ae5c05f.png",
+          "sourceId": "bg-art-paper"
+        }
+      ],
+      "photoSlots": [],
+      "roles": {
+        "4d29b6d0-218f-4545-a4a8-e4dd497251a7": "title",
+        "f8e83875-2e34-44b3-adf4-e0bd73dbf62e": "subtitle",
+        "34da9702-cc31-40ed-a56c-d547f18c7692": "panel",
+        "b12cf29f-78a3-4875-a023-5c1e9c7566b1": "body",
+        "d1a65245-b3c1-4956-ac7b-79d1be545507": "body",
+        "edc665c9-43d5-421d-a2e9-a56ef117c07e": "panel",
+        "e10239a8-15ca-4203-ace7-5b976b1a781b": "body",
+        "cfcb19f1-5d3a-4beb-a73f-e5cb8b6765ec": "body",
+        "6eb07385-fe25-4a19-a16f-ec6da7eb9db7": "panel",
+        "f01449e8-815d-4c59-a787-f50f077c701e": "body",
+        "f8d239c3-bb4f-4ac4-a664-5e458e84d9ba": "body",
+        "0cd99822-cb89-4658-a6f1-2195430ce847": "decoration",
+        "285b7774-9a09-49c1-a401-9629a87385df": "footer"
+      },
+      "elementCount": 13,
+      "editableTextCount": 9,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-travel-story",
+      "label": "신나는 여행 기록",
+      "category": "여행·생활",
+      "tags": [
+        "신나는 여행 기록",
+        "여행",
+        "방학",
+        "추억",
+        "사진"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/travel-story.json",
+      "preview": "/templates/previews/travel-story.png",
+      "thumbnail": "/templates/thumbnails/travel-story.png",
+      "file": "/templates/files/travel-story.canvacraft",
+      "assets": [
+        {
+          "assetId": "46e6e0ad83e38a396a9899b1a941c00ce90f7a4aefc9bc7bc36f5893caad32d6",
+          "url": "/templates/assets/46e6e0ad83e38a396a9899b1a941c00ce90f7a4aefc9bc7bc36f5893caad32d6.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "4d75250bf06d667c93ea46703edc0ea9c9af14e38c6b3bc1de0eed2e0e10cc8c",
+          "url": "/templates/assets/4d75250bf06d667c93ea46703edc0ea9c9af14e38c6b3bc1de0eed2e0e10cc8c.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "50acdc738430b33d4d83a9a4fadd6092aa97c9542fd3bb361d802c89deab0535",
+          "url": "/templates/assets/50acdc738430b33d4d83a9a4fadd6092aa97c9542fd3bb361d802c89deab0535.png",
+          "sourceId": "sticker-airplane"
+        },
+        {
+          "assetId": "4cf66c0f17f67b99cb6299fe1a6b8c99328e413924cf74d01447cccc183ceab7",
+          "url": "/templates/assets/4cf66c0f17f67b99cb6299fe1a6b8c99328e413924cf74d01447cccc183ceab7.png",
+          "sourceId": "bg-blue-sky"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "903bd842-f6a3-4921-a8e9-a7c6a88d84a9",
+          "hintElementId": "a3933977-383a-408c-a48b-76ba7ded6663",
+          "rect": {
+            "x": 96,
+            "y": 220,
+            "width": 660,
+            "height": 371
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "c3127f9a-803d-4069-a323-e5547dfb93a5": "title",
+        "5ac5c177-5786-4be3-a1ea-e3fc2fa59b6d": "subtitle",
+        "903bd842-f6a3-4921-a8e9-a7c6a88d84a9": "photo-guide",
+        "a3933977-383a-408c-a48b-76ba7ded6663": "photo-hint",
+        "735db368-1b44-4f20-a7ae-4f3f7f91478a": "panel",
+        "1a70944d-846b-46ae-aa27-686b6bced6ba": "body",
+        "ab5b92c9-f953-4e64-aab4-dd9c82c26bbc": "decoration",
+        "5f220bcc-d458-491f-a85c-3ee918349d51": "footer"
+      },
+      "elementCount": 8,
+      "editableTextCount": 5,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-field-trip",
+      "label": "현장학습 다녀왔어요",
+      "category": "여행·생활",
+      "tags": [
+        "현장학습 다녀왔어요",
+        "체험",
+        "현장학습",
+        "견학",
+        "소풍"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/field-trip.json",
+      "preview": "/templates/previews/field-trip.png",
+      "thumbnail": "/templates/thumbnails/field-trip.png",
+      "file": "/templates/files/field-trip.canvacraft",
+      "assets": [
+        {
+          "assetId": "554325636bf546fa4c109fd604d376644d661489d9a7b9611969b31793afae01",
+          "url": "/templates/assets/554325636bf546fa4c109fd604d376644d661489d9a7b9611969b31793afae01.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "600106bef38d5a8f9de9c548694b392753422f7f0ef26da106b889bc585db19a",
+          "url": "/templates/assets/600106bef38d5a8f9de9c548694b392753422f7f0ef26da106b889bc585db19a.png",
+          "sourceId": "sticker-backpack"
+        },
+        {
+          "assetId": "60457a23d92698dcefb97458db4bf72ee058ae36e79f86fe81fb0ea466563096",
+          "url": "/templates/assets/60457a23d92698dcefb97458db4bf72ee058ae36e79f86fe81fb0ea466563096.png",
+          "sourceId": "bg-notebook-blue"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "bedd5711-5f37-40c3-a5ce-1a28d62a89a3",
+          "hintElementId": "4083e006-8129-44c9-a956-c69288f738a5",
+          "rect": {
+            "x": 96,
+            "y": 220,
+            "width": 348,
+            "height": 218
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        },
+        {
+          "frameElementId": "072ffbe6-8709-498b-a91e-26bb185319c7",
+          "hintElementId": "2d192399-8699-4e1d-a806-236c027f7eb7",
+          "rect": {
+            "x": 466,
+            "y": 220,
+            "width": 348,
+            "height": 218
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        },
+        {
+          "frameElementId": "9036da46-45e5-4c19-a437-67af8528330b",
+          "hintElementId": "63914d83-4239-46b1-acc0-2d3d88528d44",
+          "rect": {
+            "x": 836,
+            "y": 220,
+            "width": 348,
+            "height": 218
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "e38ae0bf-2956-48e8-a916-6ba7afab6db7": "title",
+        "93a119fe-9089-4801-a546-27fb55bf919b": "subtitle",
+        "bedd5711-5f37-40c3-a5ce-1a28d62a89a3": "photo-guide",
+        "4083e006-8129-44c9-a956-c69288f738a5": "photo-hint",
+        "52ce97dc-1e46-467a-a25d-c00ef1db62e7": "body",
+        "072ffbe6-8709-498b-a91e-26bb185319c7": "photo-guide",
+        "2d192399-8699-4e1d-a806-236c027f7eb7": "photo-hint",
+        "a9b388be-13b9-4842-a109-a267faf22a7e": "body",
+        "9036da46-45e5-4c19-a437-67af8528330b": "photo-guide",
+        "63914d83-4239-46b1-acc0-2d3d88528d44": "photo-hint",
+        "90ccbe03-b6c1-4a90-a1ac-e204f9cef0a4": "body",
+        "e02a10c8-53e1-4eba-ac44-aad81513be29": "decoration",
+        "bf12b9b4-787c-4ff4-ae15-93151603d637": "footer"
+      },
+      "elementCount": 13,
+      "editableTextCount": 9,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-my-town",
+      "label": "우리 동네를 소개해요",
+      "category": "여행·생활",
+      "tags": [
+        "우리 동네를 소개해요",
+        "동네",
+        "지도",
+        "마을",
+        "장소"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/my-town.json",
+      "preview": "/templates/previews/my-town.png",
+      "thumbnail": "/templates/thumbnails/my-town.png",
+      "file": "/templates/files/my-town.canvacraft",
+      "assets": [
+        {
+          "assetId": "cc87fc62c957b1cd895f56c4bd0d1b332013655a68786c677323181c3aa64e70",
+          "url": "/templates/assets/cc87fc62c957b1cd895f56c4bd0d1b332013655a68786c677323181c3aa64e70.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "c2947021bcc6f970fb4eda46cf7c8bde1258e5b3966cb8f935149b9306c82164",
+          "url": "/templates/assets/c2947021bcc6f970fb4eda46cf7c8bde1258e5b3966cb8f935149b9306c82164.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "f799d9704402302401bbbc7cc61dd9caec046f723d29d438b1b5800fa6b16b2b",
+          "url": "/templates/assets/f799d9704402302401bbbc7cc61dd9caec046f723d29d438b1b5800fa6b16b2b.png",
+          "sourceId": "sticker-school"
+        },
+        {
+          "assetId": "376188ae956cf4f6c4ef2945b74cf61ff20338b250134f5f910feec97615295c",
+          "url": "/templates/assets/376188ae956cf4f6c4ef2945b74cf61ff20338b250134f5f910feec97615295c.png",
+          "sourceId": "bg-rainbow-village"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "c8219964-27f6-4191-a200-e166b6102399",
+          "hintElementId": "334bd833-4b7b-46da-a6e1-d922965581cb",
+          "rect": {
+            "x": 96,
+            "y": 220,
+            "width": 620,
+            "height": 349
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "330a8a14-9eb6-4217-aff6-315ef2338f30": "title",
+        "6df5a8d1-0622-4e8f-a027-1b47fe646f66": "subtitle",
+        "c8219964-27f6-4191-a200-e166b6102399": "photo-guide",
+        "334bd833-4b7b-46da-a6e1-d922965581cb": "photo-hint",
+        "cfd124fb-a619-4f35-a78a-d9c151452c6b": "panel",
+        "1d6c23b0-406e-4841-a3cc-2fc90b6cb99b": "body",
+        "a7f7bfa5-b365-476d-a3e2-817cd796a7e2": "decoration",
+        "c1e9b79e-7bfc-41e2-a6ff-387f2585ed66": "footer"
+      },
+      "elementCount": 8,
+      "editableTextCount": 5,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-favorite-animal",
+      "label": "내가 좋아하는 동물",
+      "category": "자연·꿈",
+      "tags": [
+        "내가 좋아하는 동물",
+        "동물",
+        "고양이",
+        "특징",
+        "좋아"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/favorite-animal.json",
+      "preview": "/templates/previews/favorite-animal.png",
+      "thumbnail": "/templates/thumbnails/favorite-animal.png",
+      "file": "/templates/files/favorite-animal.canvacraft",
+      "assets": [
+        {
+          "assetId": "43843d39478fd9c428ccadf285c29af73126ad72197992b155683e6e5e526c9e",
+          "url": "/templates/assets/43843d39478fd9c428ccadf285c29af73126ad72197992b155683e6e5e526c9e.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "f103f93f687c108c71c286eb2260b105329848c6a4e19cf0cd3219813f5b729f",
+          "url": "/templates/assets/f103f93f687c108c71c286eb2260b105329848c6a4e19cf0cd3219813f5b729f.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "aaad61c2f40a34c3456f03479ce21e31ef4b1bdd9167dd179055e8c4832de0a6",
+          "url": "/templates/assets/aaad61c2f40a34c3456f03479ce21e31ef4b1bdd9167dd179055e8c4832de0a6.png",
+          "sourceId": "character-cat-face"
+        },
+        {
+          "assetId": "4e6597250e1edf86ac89966c4b24d395829b87615fdfd4c711707475e1e0409e",
+          "url": "/templates/assets/4e6597250e1edf86ac89966c4b24d395829b87615fdfd4c711707475e1e0409e.png",
+          "sourceId": "bg-dinosaur-island"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "c4fdae1c-a8c0-44d9-a5f8-c83fac07fe75",
+          "hintElementId": "ae1facd7-4c05-4831-ad33-dfd5c146c4d2",
+          "rect": {
+            "x": 96,
+            "y": 220,
+            "width": 440,
+            "height": 330
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "8851f462-c228-4d86-a354-98f255157d06": "title",
+        "b9c7f526-046f-446c-a611-e08846c72565": "subtitle",
+        "c4fdae1c-a8c0-44d9-a5f8-c83fac07fe75": "photo-guide",
+        "ae1facd7-4c05-4831-ad33-dfd5c146c4d2": "photo-hint",
+        "7b888bd5-ff4e-456f-a0b0-5d90dcf30089": "panel",
+        "3258af49-02a9-4606-aacd-c92ac56d9723": "body",
+        "7c958bb5-c365-4414-a7ce-a0da591b3f70": "decoration",
+        "8cdfdb51-ade9-42bb-a965-aa86c7683981": "footer"
+      },
+      "elementCount": 8,
+      "editableTextCount": 5,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-my-dream",
+      "label": "나의 꿈을 향해서",
+      "category": "자연·꿈",
+      "tags": [
+        "나의 꿈을 향해서",
+        "꿈",
+        "미래",
+        "직업",
+        "목표",
+        "우주"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/my-dream.json",
+      "preview": "/templates/previews/my-dream.png",
+      "thumbnail": "/templates/thumbnails/my-dream.png",
+      "file": "/templates/files/my-dream.canvacraft",
+      "assets": [
+        {
+          "assetId": "4bfaf371de4017a76b60fe78553ebca744598ea53e00695f4a6ab98e48513f88",
+          "url": "/templates/assets/4bfaf371de4017a76b60fe78553ebca744598ea53e00695f4a6ab98e48513f88.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "b668476f0c72aeb116d4c5e1ed1e19a592a9efe7a9803fbd935cb2143415fc40",
+          "url": "/templates/assets/b668476f0c72aeb116d4c5e1ed1e19a592a9efe7a9803fbd935cb2143415fc40.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "4736017571a71d644ac121e1c2944f4b3e9aacdada29869c7c3e349771af3e8c",
+          "url": "/templates/assets/4736017571a71d644ac121e1c2944f4b3e9aacdada29869c7c3e349771af3e8c.png",
+          "sourceId": "character-astronaut"
+        },
+        {
+          "assetId": "cb1fb9b4f3d7334fea3d4b61d4e88fa25824bb046863c8e11e388fac679dd3ea",
+          "url": "/templates/assets/cb1fb9b4f3d7334fea3d4b61d4e88fa25824bb046863c8e11e388fac679dd3ea.png",
+          "sourceId": "bg-space-trip"
+        }
+      ],
+      "photoSlots": [
+        {
+          "frameElementId": "0ec4d555-6309-47fe-a3aa-a7519204ad87",
+          "hintElementId": "403badc6-f9ce-4c46-a265-62efb1009c51",
+          "rect": {
+            "x": 824,
+            "y": 220,
+            "width": 330,
+            "height": 186
+          },
+          "fit": "contain",
+          "instruction": "사진을 넣은 뒤 안내 상자와 안내 글씨를 삭제하세요."
+        }
+      ],
+      "roles": {
+        "b5d70a70-e94c-4e2b-add2-67b6d4a8c93a": "title",
+        "f2ac0ef6-b94e-4ce2-a6d1-1d1114cc8dbf": "subtitle",
+        "97254d56-8161-4447-af74-d9d26f45d5c4": "panel",
+        "5b4c4d49-2cca-4134-a4ad-6533686ae4c1": "body",
+        "842851fd-6fb0-42a3-a091-360646bd271d": "body",
+        "0ec4d555-6309-47fe-a3aa-a7519204ad87": "photo-guide",
+        "403badc6-f9ce-4c46-a265-62efb1009c51": "photo-hint",
+        "b11e53ee-324b-4dcb-a4b3-efd862048169": "decoration",
+        "b82d7264-c1d6-441a-a490-b304917c6a6c": "footer"
+      },
+      "elementCount": 9,
+      "editableTextCount": 6,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    },
+    {
+      "id": "tpl-thank-you",
+      "label": "고마운 마음을 전해요",
+      "category": "마음·편지",
+      "tags": [
+        "고마운 마음을 전해요",
+        "감사",
+        "편지",
+        "고마움",
+        "사랑"
+      ],
+      "pageCount": 1,
+      "width": 1280,
+      "height": 720,
+      "project": "/templates/projects/thank-you.json",
+      "preview": "/templates/previews/thank-you.png",
+      "thumbnail": "/templates/thumbnails/thank-you.png",
+      "file": "/templates/files/thank-you.canvacraft",
+      "assets": [
+        {
+          "assetId": "acef476019d895480f001f99a8c11350f203b0877ddd30a066c6dbcecd460eeb",
+          "url": "/templates/assets/acef476019d895480f001f99a8c11350f203b0877ddd30a066c6dbcecd460eeb.png",
+          "sourceId": "original-panel"
+        },
+        {
+          "assetId": "3e60ed7155411e476c2678fe8efeb49989e7d9e8f29ec8a5bd4430767fde12a8",
+          "url": "/templates/assets/3e60ed7155411e476c2678fe8efeb49989e7d9e8f29ec8a5bd4430767fde12a8.png",
+          "sourceId": "sticker-wrapped-gift"
+        },
+        {
+          "assetId": "bd4d2fd9b5ac00c8af89c4ad04aae1f701972770529f3ecd4626487125125316",
+          "url": "/templates/assets/bd4d2fd9b5ac00c8af89c4ad04aae1f701972770529f3ecd4626487125125316.png",
+          "sourceId": "bg-love-letter"
+        }
+      ],
+      "photoSlots": [],
+      "roles": {
+        "0d5d2662-bca7-46c7-aaa4-9b03ad97d8ff": "title",
+        "9e4836d4-711c-408c-a28b-914b47fb48df": "subtitle",
+        "eab8812b-73d9-4f3b-a27f-c88b2b23e4f6": "panel",
+        "155a141c-1be0-493c-a22c-7bd45d9d85ea": "body",
+        "e57abfe2-b0b7-4630-aa80-cf6718a8b0a6": "body",
+        "ec272162-4d86-497e-a2ca-c943fa9241a8": "signature",
+        "30a90872-94f3-4602-a1bb-d65c70275eae": "decoration",
+        "17dfb0c2-86e5-49dd-ab63-e6e52cb6e966": "footer"
+      },
+      "elementCount": 8,
+      "editableTextCount": 6,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ]
+    }
+  ]
+}

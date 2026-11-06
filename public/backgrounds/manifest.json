@@ -1,0 +1,870 @@
+{
+  "schemaVersion": 1,
+  "packId": "canvacraft-backgrounds-24",
+  "version": "1.0.0",
+  "sourcePack": "canvacraft-starter-120",
+  "sourceCommit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+  "assets": [
+    {
+      "id": "bg-paper-ivory",
+      "label": "따뜻한 종이",
+      "category": "기본",
+      "tags": [
+        "따뜻한 종이",
+        "종이",
+        "베이지",
+        "심플",
+        "발표"
+      ],
+      "image": "/backgrounds/png/paper-ivory.png",
+      "thumbnail": "/backgrounds/thumbnails/paper-ivory.png",
+      "svg": "/backgrounds/svg/paper-ivory.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#29374A",
+      "sampledMinTextContrast": 11.22,
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "sourceAssetIds": [],
+      "pngSha256": "01935acbe1bd52523ada65ab8016e816f4372f8d81eaaa2c1883f01a18a9a990",
+      "sourceSha256": "902a6222080d33c58ca658156c3784b9593136695f3b87db21bc71cb5c81b213"
+    },
+    {
+      "id": "bg-mint-breeze",
+      "label": "민트 바람",
+      "category": "기본",
+      "tags": [
+        "민트 바람",
+        "초록",
+        "민트",
+        "그라데이션",
+        "심플"
+      ],
+      "image": "/backgrounds/png/mint-breeze.png",
+      "thumbnail": "/backgrounds/thumbnails/mint-breeze.png",
+      "svg": "/backgrounds/svg/mint-breeze.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#234C43",
+      "sampledMinTextContrast": 8.45,
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "sourceAssetIds": [],
+      "pngSha256": "5dba57853f786dfbe5a59a864b471d2c8f4548d969f8a6dc442a66d6d3e1cea6",
+      "sourceSha256": "810f496dae0d27f48c2f9616e044cd9a33056fada8dbc3f4556aa212e0f21701"
+    },
+    {
+      "id": "bg-lavender-dawn",
+      "label": "보랏빛 아침",
+      "category": "기본",
+      "tags": [
+        "보랏빛 아침",
+        "보라",
+        "라벤더",
+        "그라데이션",
+        "심플"
+      ],
+      "image": "/backgrounds/png/lavender-dawn.png",
+      "thumbnail": "/backgrounds/thumbnails/lavender-dawn.png",
+      "svg": "/backgrounds/svg/lavender-dawn.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#463760",
+      "sampledMinTextContrast": 8.77,
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "sourceAssetIds": [],
+      "pngSha256": "c054abcd8fc9f173d2d2e1b26a400c6776e0b329094d8ba657d853598647bc5d",
+      "sourceSha256": "6be1a5e25c003888e810f9d719fc9bc0aece808fe6bb9b53541e72d731214491"
+    },
+    {
+      "id": "bg-peach-arc",
+      "label": "복숭아빛 곡선",
+      "category": "기본",
+      "tags": [
+        "복숭아빛 곡선",
+        "분홍",
+        "주황",
+        "복숭아",
+        "심플"
+      ],
+      "image": "/backgrounds/png/peach-arc.png",
+      "thumbnail": "/backgrounds/thumbnails/peach-arc.png",
+      "svg": "/backgrounds/svg/peach-arc.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#613D35",
+      "sampledMinTextContrast": 8.19,
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "sourceAssetIds": [],
+      "pngSha256": "8dd5f3599412bf0aa033f1166a4073b7a7eb47eed84710a6b06579b0c192c4ca",
+      "sourceSha256": "b451c81a092dc4c4cda7786ee94c9b7718f435f13a8bb03dd8a38a2b8813d34c"
+    },
+    {
+      "id": "bg-notebook-blue",
+      "label": "파란 공책",
+      "category": "학교",
+      "tags": [
+        "파란 공책",
+        "공책",
+        "노트",
+        "학교",
+        "기록"
+      ],
+      "image": "/backgrounds/png/notebook-blue.png",
+      "thumbnail": "/backgrounds/thumbnails/notebook-blue.png",
+      "svg": "/backgrounds/svg/notebook-blue.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#283B55",
+      "sampledMinTextContrast": 11.06,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-pencil"
+      ],
+      "pngSha256": "60457a23d92698dcefb97458db4bf72ee058ae36e79f86fe81fb0ea466563096",
+      "sourceSha256": "ab94910b8aaae072b61e8c35b67a68abba8ba7f24994a38ab1034b2de5b691ae"
+    },
+    {
+      "id": "bg-chalkboard-green",
+      "label": "초록 칠판",
+      "category": "학교",
+      "tags": [
+        "초록 칠판",
+        "칠판",
+        "학교",
+        "수업",
+        "발표"
+      ],
+      "image": "/backgrounds/png/chalkboard-green.png",
+      "thumbnail": "/backgrounds/thumbnails/chalkboard-green.png",
+      "svg": "/backgrounds/svg/chalkboard-green.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#FFFFFF",
+      "sampledMinTextContrast": 8.69,
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "sourceAssetIds": [],
+      "pngSha256": "a9e8d3056aab7b4ca841c28e345ae146576bde3c6c66c9b67e50a7628764eb34",
+      "sourceSha256": "75cab373ea39bfb78769bd0fdf6e1165b2a4c469f35a793780eb8880a53a013f"
+    },
+    {
+      "id": "bg-art-paper",
+      "label": "미술 시간",
+      "category": "학교",
+      "tags": [
+        "미술 시간",
+        "미술",
+        "종이",
+        "팔레트",
+        "그림"
+      ],
+      "image": "/backgrounds/png/art-paper.png",
+      "thumbnail": "/backgrounds/thumbnails/art-paper.png",
+      "svg": "/backgrounds/svg/art-paper.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#403E51",
+      "sampledMinTextContrast": 10.18,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-artist-palette",
+        "sticker-pencil"
+      ],
+      "pngSha256": "6dc1373ab65329c21bb93f63699daaa2f4f34de702876b90d916a6707ae5c05f",
+      "sourceSha256": "b2e1942f495ec5e6395179ac6c3bc6d814f2f830ef5ee324884bb87d176534a3"
+    },
+    {
+      "id": "bg-library-desk",
+      "label": "책과 함께",
+      "category": "학교",
+      "tags": [
+        "책과 함께",
+        "독서",
+        "도서관",
+        "책",
+        "공부"
+      ],
+      "image": "/backgrounds/png/library-desk.png",
+      "thumbnail": "/backgrounds/thumbnails/library-desk.png",
+      "svg": "/backgrounds/svg/library-desk.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#4A3E39",
+      "sampledMinTextContrast": 9.51,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-books",
+        "sticker-backpack",
+        "sticker-pencil"
+      ],
+      "pngSha256": "3426bb57c52feefde1e2afd2cc096b7a3c1c898d401d12cde7cc980e22d7d37e",
+      "sourceSha256": "c0617bafea055792b4ec5bcca49ea7cc45791a1250db16c2625397b1c30d161c"
+    },
+    {
+      "id": "bg-forest-walk",
+      "label": "숲속 산책",
+      "category": "자연",
+      "tags": [
+        "숲속 산책",
+        "숲",
+        "나무",
+        "초록",
+        "자연"
+      ],
+      "image": "/backgrounds/png/forest-walk.png",
+      "thumbnail": "/backgrounds/thumbnails/forest-walk.png",
+      "svg": "/backgrounds/svg/forest-walk.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#294D3C",
+      "sampledMinTextContrast": 8.45,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-deciduous-tree",
+        "character-butterfly"
+      ],
+      "pngSha256": "4094ee3ff261f3b14424e88baeaa2179bdeb2c411623e859c9dfd688ac519eab",
+      "sourceSha256": "7627562c7ffd4d2f99a6b5367bc31faf41565f70ca441b22d4928f4862c1f073"
+    },
+    {
+      "id": "bg-ocean-friends",
+      "label": "바다 친구들",
+      "category": "자연",
+      "tags": [
+        "바다 친구들",
+        "바다",
+        "물고기",
+        "문어",
+        "여름"
+      ],
+      "image": "/backgrounds/png/ocean-friends.png",
+      "thumbnail": "/backgrounds/thumbnails/ocean-friends.png",
+      "svg": "/backgrounds/svg/ocean-friends.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#234E62",
+      "sampledMinTextContrast": 7.96,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "character-octopus",
+        "character-dolphin"
+      ],
+      "pngSha256": "7388a89e99392f4abe449170787621f3ed75c74f6afa3fb893007dd6c09979f4",
+      "sourceSha256": "2b8169be4e44af9127fa9679ccd651172d8769ebcdfc2d3b53a937ee637ca406"
+    },
+    {
+      "id": "bg-blue-sky",
+      "label": "구름 위 하늘",
+      "category": "자연",
+      "tags": [
+        "구름 위 하늘",
+        "하늘",
+        "구름",
+        "파랑",
+        "날씨"
+      ],
+      "image": "/backgrounds/png/blue-sky.png",
+      "thumbnail": "/backgrounds/thumbnails/blue-sky.png",
+      "svg": "/backgrounds/svg/blue-sky.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#2A4F6B",
+      "sampledMinTextContrast": 7.97,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-sun"
+      ],
+      "pngSha256": "4cf66c0f17f67b99cb6299fe1a6b8c99328e413924cf74d01447cccc183ceab7",
+      "sourceSha256": "0e92fd19eff43661c009d8e9ea5464eb184ed93119618eea69c9df69ebce0a6a"
+    },
+    {
+      "id": "bg-space-trip",
+      "label": "우주 탐험",
+      "category": "자연",
+      "tags": [
+        "우주 탐험",
+        "우주",
+        "별",
+        "로켓",
+        "행성"
+      ],
+      "image": "/backgrounds/png/space-trip.png",
+      "thumbnail": "/backgrounds/thumbnails/space-trip.png",
+      "svg": "/backgrounds/svg/space-trip.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#FFFFFF",
+      "sampledMinTextContrast": 12.07,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-rocket"
+      ],
+      "pngSha256": "cb1fb9b4f3d7334fea3d4b61d4e88fa25824bb046863c8e11e388fac679dd3ea",
+      "sourceSha256": "922558e6b38c56c2d187720261205638ee919f727eb631c3bb5f4787022ad043"
+    },
+    {
+      "id": "bg-birthday-party",
+      "label": "생일 파티",
+      "category": "축하",
+      "tags": [
+        "생일 파티",
+        "생일",
+        "파티",
+        "케이크",
+        "축하"
+      ],
+      "image": "/backgrounds/png/birthday-party.png",
+      "thumbnail": "/backgrounds/thumbnails/birthday-party.png",
+      "svg": "/backgrounds/svg/birthday-party.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#613F46",
+      "sampledMinTextContrast": 8.1,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-balloon",
+        "sticker-shortcake",
+        "sticker-wrapped-gift"
+      ],
+      "pngSha256": "59d56f2fb766b43ad6fc4297c3b9e07f8b14bfce2738c603e4b7fa88810901f2",
+      "sourceSha256": "c5659d67dbd36670ce5364cba7c29478cb9bc9564198a988efaf94ea66a98685"
+    },
+    {
+      "id": "bg-carnival-bunting",
+      "label": "알록달록 축제",
+      "category": "축하",
+      "tags": [
+        "알록달록 축제",
+        "축제",
+        "가랜드",
+        "행사",
+        "파티"
+      ],
+      "image": "/backgrounds/png/carnival-bunting.png",
+      "thumbnail": "/backgrounds/thumbnails/carnival-bunting.png",
+      "svg": "/backgrounds/svg/carnival-bunting.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#4E4760",
+      "sampledMinTextContrast": 8.54,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-party-popper",
+        "sticker-balloon"
+      ],
+      "pngSha256": "1cb4fdb58c9d5d6c83d53a30ee84c112c6d5c79ccc6ae8e894e8b6867aac9dcb",
+      "sourceSha256": "01f2c67555e4fbd76048aac7cbddd8eb6ff3dde1487244fa41c7184edc14e6e3"
+    },
+    {
+      "id": "bg-star-award",
+      "label": "반짝이는 칭찬",
+      "category": "축하",
+      "tags": [
+        "반짝이는 칭찬",
+        "칭찬",
+        "우승",
+        "상",
+        "별",
+        "성공"
+      ],
+      "image": "/backgrounds/png/star-award.png",
+      "thumbnail": "/backgrounds/thumbnails/star-award.png",
+      "svg": "/backgrounds/svg/star-award.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#4D3868",
+      "sampledMinTextContrast": 8.68,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-trophy",
+        "sticker-sparkles"
+      ],
+      "pngSha256": "7ac68525924605649f2ac09017915eb4e06750dee38a11492a6d173149649b19",
+      "sourceSha256": "c61a7781726f53333e73bc3328e94044058ead40d7dd09983c9d7d67328cb6b3"
+    },
+    {
+      "id": "bg-love-letter",
+      "label": "마음을 전해요",
+      "category": "축하",
+      "tags": [
+        "마음을 전해요",
+        "사랑",
+        "감사",
+        "마음",
+        "하트"
+      ],
+      "image": "/backgrounds/png/love-letter.png",
+      "thumbnail": "/backgrounds/thumbnails/love-letter.png",
+      "svg": "/backgrounds/svg/love-letter.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#663C51",
+      "sampledMinTextContrast": 8,
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "sourceAssetIds": [
+        "shape-heart"
+      ],
+      "pngSha256": "bd4d2fd9b5ac00c8af89c4ad04aae1f701972770529f3ecd4626487125125316",
+      "sourceSha256": "e125fbf8efeced2eba5641ee6fc536c72a6dff2b87cec03fa0969c114c09abda"
+    },
+    {
+      "id": "bg-spring-blossom",
+      "label": "봄꽃 소풍",
+      "category": "계절",
+      "tags": [
+        "봄꽃 소풍",
+        "봄",
+        "벚꽃",
+        "소풍",
+        "꽃"
+      ],
+      "image": "/backgrounds/png/spring-blossom.png",
+      "thumbnail": "/backgrounds/thumbnails/spring-blossom.png",
+      "svg": "/backgrounds/svg/spring-blossom.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#5B4356",
+      "sampledMinTextContrast": 8.07,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-cherry-blossom",
+        "character-butterfly"
+      ],
+      "pngSha256": "d7561cad7789643db1053e8d3d8419b3b4be3c454c49d99f522db022f1e8540d",
+      "sourceSha256": "b635d437c17cc51117b37399f11b80baeb042792d9b5e4a809791f4ddbf5b5bf"
+    },
+    {
+      "id": "bg-summer-beach",
+      "label": "여름 바닷가",
+      "category": "계절",
+      "tags": [
+        "여름 바닷가",
+        "여름",
+        "바다",
+        "모래",
+        "해변"
+      ],
+      "image": "/backgrounds/png/summer-beach.png",
+      "thumbnail": "/backgrounds/thumbnails/summer-beach.png",
+      "svg": "/backgrounds/svg/summer-beach.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#2B5361",
+      "sampledMinTextContrast": 7.69,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-sun",
+        "sticker-sailboat",
+        "character-crab"
+      ],
+      "pngSha256": "eccc5d65fb1f5b8ce409d4afa13571d1ef0fc5da5519d0b1c5bba87e905cca6d",
+      "sourceSha256": "a14c0624de3d78bf12b5a6b20f5b16b4152a9a49c414721ead8d9578214564bb"
+    },
+    {
+      "id": "bg-autumn-leaves",
+      "label": "가을 나뭇잎",
+      "category": "계절",
+      "tags": [
+        "가을 나뭇잎",
+        "가을",
+        "단풍",
+        "낙엽",
+        "숲"
+      ],
+      "image": "/backgrounds/png/autumn-leaves.png",
+      "thumbnail": "/backgrounds/thumbnails/autumn-leaves.png",
+      "svg": "/backgrounds/svg/autumn-leaves.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#654734",
+      "sampledMinTextContrast": 7.59,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-red-apple",
+        "character-snail"
+      ],
+      "pngSha256": "f307930b72927b870bc9745360a289b028a5c828f00092d33f6c1dcf0e1a0ac4",
+      "sourceSha256": "98813cd0857756648ec292dd4aa83913659f736ab28ce6424451bdca533fc20b"
+    },
+    {
+      "id": "bg-winter-snow",
+      "label": "겨울 눈송이",
+      "category": "계절",
+      "tags": [
+        "겨울 눈송이",
+        "겨울",
+        "눈",
+        "눈송이",
+        "추위"
+      ],
+      "image": "/backgrounds/png/winter-snow.png",
+      "thumbnail": "/backgrounds/thumbnails/winter-snow.png",
+      "svg": "/backgrounds/svg/winter-snow.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#3C526D",
+      "sampledMinTextContrast": 7.38,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-snowflake",
+        "character-penguin"
+      ],
+      "pngSha256": "e3196a0fbf5d41085b7d3f072d1263b42f08016c4c1ff5eabb72824d1ef324bc",
+      "sourceSha256": "2b6abc64e26be26eee6c049a7faf4b51344796b35cae87467c74b0400a14b542"
+    },
+    {
+      "id": "bg-castle-cloud",
+      "label": "구름 나라",
+      "category": "동화",
+      "tags": [
+        "구름 나라",
+        "구름",
+        "동화",
+        "성",
+        "마법"
+      ],
+      "image": "/backgrounds/png/castle-cloud.png",
+      "thumbnail": "/backgrounds/thumbnails/castle-cloud.png",
+      "svg": "/backgrounds/svg/castle-cloud.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#514469",
+      "sampledMinTextContrast": 7.9,
+      "licenses": [
+        "CC0-1.0"
+      ],
+      "sourceAssetIds": [],
+      "pngSha256": "32fab0c626b38e2487f3a8f69441c9dd6e5e315557c063857ed4f3b3c5ad7ae7",
+      "sourceSha256": "9e4dcb41bc774692b1603cd8458d1e3ae6685e65a24ccee50ed4df35175b283e"
+    },
+    {
+      "id": "bg-night-camp",
+      "label": "별빛 캠핑",
+      "category": "동화",
+      "tags": [
+        "별빛 캠핑",
+        "밤",
+        "별",
+        "캠핑",
+        "소풍"
+      ],
+      "image": "/backgrounds/png/night-camp.png",
+      "thumbnail": "/backgrounds/thumbnails/night-camp.png",
+      "svg": "/backgrounds/svg/night-camp.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#FFFFFF",
+      "sampledMinTextContrast": 9.19,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-tent"
+      ],
+      "pngSha256": "a0040d095f1d584f58c655ec573e7b20baf42383e6f9e77029eaf56e49b5e931",
+      "sourceSha256": "09a3fef205d831abb65062372ca6027531542c1514241d598e30c074cfcf6d06"
+    },
+    {
+      "id": "bg-rainbow-village",
+      "label": "무지개 마을",
+      "category": "동화",
+      "tags": [
+        "무지개 마을",
+        "무지개",
+        "마을",
+        "집",
+        "동화"
+      ],
+      "image": "/backgrounds/png/rainbow-village.png",
+      "thumbnail": "/backgrounds/thumbnails/rainbow-village.png",
+      "svg": "/backgrounds/svg/rainbow-village.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#4B5460",
+      "sampledMinTextContrast": 7.25,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "sticker-rainbow"
+      ],
+      "pngSha256": "376188ae956cf4f6c4ef2945b74cf61ff20338b250134f5f910feec97615295c",
+      "sourceSha256": "34bb6451d538139be3d533424da3551f5bfd47b8febd3d4231f985e35eb4e71f"
+    },
+    {
+      "id": "bg-dinosaur-island",
+      "label": "공룡섬 탐험",
+      "category": "동화",
+      "tags": [
+        "공룡섬 탐험",
+        "공룡",
+        "섬",
+        "탐험",
+        "모험"
+      ],
+      "image": "/backgrounds/png/dinosaur-island.png",
+      "thumbnail": "/backgrounds/thumbnails/dinosaur-island.png",
+      "svg": "/backgrounds/svg/dinosaur-island.svg",
+      "width": 2560,
+      "height": 1440,
+      "logicalWidth": 1280,
+      "logicalHeight": 720,
+      "safeRect": {
+        "x": 220,
+        "y": 120,
+        "width": 840,
+        "height": 480
+      },
+      "recommendedTextColor": "#435637",
+      "sampledMinTextContrast": 7.19,
+      "licenses": [
+        "CC0-1.0",
+        "MIT"
+      ],
+      "sourceAssetIds": [
+        "character-sauropod",
+        "character-t-rex"
+      ],
+      "pngSha256": "4e6597250e1edf86ac89966c4b24d395829b87615fdfd4c711707475e1e0409e",
+      "sourceSha256": "b4009dbcec662e2ba33e36fdab8fd30957c11483620cd90f027853b97877aa39"
+    }
+  ]
+}

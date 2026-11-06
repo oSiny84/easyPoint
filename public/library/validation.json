@@ -1,0 +1,11 @@
+{
+  "count": 120,
+  "kinds": {
+    "character": 60,
+    "sticker": 36,
+    "shape": 24
+  },
+  "outputBytes": 3318586,
+  "errors": [],
+  "rasterizer": "2.6.2"
+}

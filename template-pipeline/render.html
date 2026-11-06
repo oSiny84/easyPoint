@@ -1,0 +1,24 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>템플릿 렌더 검사</title><body style="margin:0"><div id="output"></div>
+<script type="module">
+import '@fontsource/noto-sans-kr/400.css';
+import '@fontsource/noto-sans-kr/700.css';
+import {validateProject} from '/src/domain/validate.ts';
+import {renderSlide} from '/src/rendering/renderSlide.ts';
+import {layoutText} from '/src/rendering/text/layoutText.ts';
+import {serializeProject,deserializeProject} from '/src/storage/projectFile.ts';
+import {createStore} from '/src/state/store.ts';
+const asBase64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=reject;reader.readAsDataURL(blob)});
+window.renderTemplate=async entry=>{
+ const project=await fetch(entry.project).then(r=>r.json()),checked=validateProject(project);if(!checked.ok)throw Error(JSON.stringify(checked));
+ const blobs=new Map();for(const asset of entry.assets){const response=await fetch(asset.url);if(!response.ok)throw Error(asset.url);const blob=await response.blob();const digest=[...new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()))].map(v=>v.toString(16).padStart(2,'0')).join('');if(digest!==asset.assetId)throw Error('Asset hash mismatch');blobs.set(asset.assetId,blob)}
+ const resolver=async id=>blobs.get(id);const rendered=await renderSlide(project.slides[0],resolver,2);if(!rendered.ok)throw Error(JSON.stringify(rendered));
+ const bounds=[];for(const e of project.slides[0].elements){if(e.type==='text'){const l=layoutText(e);bounds.push({id:e.id,text:e.text,lines:l.lines.length,height:l.height,bottom:e.y+l.height});if(e.y+l.height>720||e.x+e.width>1280)throw Error('Text outside slide: '+e.text)}else if(e.type==='image'&&(e.x+e.width>1280||e.y+e.height>720))throw Error('Image outside slide')}
+ const saved=await serializeProject(project,resolver);if(!saved.ok)throw Error(JSON.stringify(saved));const loaded=await deserializeProject(saved.blob,()=>crypto.randomUUID());if(!loaded.ok)throw Error(JSON.stringify(loaded));
+ if(JSON.stringify(loaded.project.slides)!==JSON.stringify(project.slides))throw Error('Roundtrip slide changed');
+ // Prove editable text and undo with the actual store, independently of the editor UI.
+ const store=createStore(loaded.project,{newId:()=>crypto.randomUUID(),now:()=>new Date().toISOString()});const text=loaded.project.slides[0].elements.find(e=>e.type==='text');const result=store.dispatch(loaded.project.id,loaded.project.revision,{type:'updateText',slideId:loaded.project.slides[0].id,elementId:text.id,text:'수정 가능한 제목'});if(!result.ok)throw Error(JSON.stringify(result));const undo=store.undo();if(!undo.ok||store.getProject().slides[0].elements.find(e=>e.id===text.id).text!==text.text)throw Error('Undo failed');
+ const stage=document.querySelector('#output');stage.replaceChildren(rendered.canvas);rendered.canvas.style.width='1280px';rendered.canvas.style.height='720px';
+ const thumb=document.createElement('canvas');thumb.width=480;thumb.height=270;thumb.getContext('2d').drawImage(rendered.canvas,0,0,480,270);
+ return {image:rendered.canvas.toDataURL('image/png').split(',')[1],thumbnail:thumb.toDataURL('image/png').split(',')[1],file:await asBase64(saved.blob),elements:project.slides[0].elements.length,assetCount:blobs.size,textBounds:bounds,roundtrip:true,editAndUndo:true};
+};
+</script></body></html>
