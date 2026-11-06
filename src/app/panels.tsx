@@ -1,7 +1,9 @@
 // 왼쪽 세부 패널 내용(UI_REFERENCE §2·§3).
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { categoriesOf, libraryUrl, loadBackgrounds, loadLibrary, loadTemplates, readRecent, rememberRecent, searchLibrary, type ColorVariant, type Library, type LibraryItem, type LibraryKind, type ProvidedBackground, type TemplateItem } from '../assets/library';
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
+import { categoriesOf, libraryUrl, loadBackgrounds, loadLibrary, loadTemplates, placeInCenter, readRecent, rememberRecent, searchLibrary, type ColorVariant, type Library, type LibraryItem, type LibraryKind, type ProvidedBackground, type TemplateItem } from '../assets/library';
 import type { Asset, Background } from '../domain/types';
+import { dragToSlide } from '../editor/dragToSlide';
+import type { Point } from '../editor/geometry';
 
 const TABS: { id: LibraryKind | 'all'; label: string }[] = [{ id: 'all', label: '전체' }, { id: 'shape', label: '도형' }, { id: 'character', label: '캐릭터' }, { id: 'sticker', label: '스티커' }];
 
@@ -15,13 +17,14 @@ function useLoaded<T>(load: () => Promise<T>, onError: (message: string) => void
   return value;
 }
 
-function ElementCard({ item, variant, onAdd }: { item: LibraryItem; variant?: ColorVariant; onAdd: (item: LibraryItem, variant?: ColorVariant) => void }) {
+function ElementCard({ item, variant, onAdd }: { item: LibraryItem; variant?: ColorVariant; onAdd: (item: LibraryItem, variant?: ColorVariant, at?: Point) => void }) {
   // 도형 색을 고르면 그 색의 그림을 보여 준다. 기본 색은 작은 미리보기를 쓴다.
   const src = variant && variant.image !== item.image ? variant.image : item.thumbnail;
-  return <button className="element-card" aria-label={item.label} title={item.label} onClick={() => onAdd(item, variant)}><img src={libraryUrl(src)} alt="" loading="lazy" draggable={false} /></button>;
+  return <button className="element-card" aria-label={item.label} title={item.label} onClick={() => onAdd(item, variant)}
+    onPointerDown={event => dragToSlide(event, placeInCenter(item.width, item.height, item.defaultWidth, item.defaultHeight), point => onAdd(item, variant, point))}><img src={libraryUrl(src)} alt="" loading="lazy" draggable={false} /></button>;
 }
 
-export function ElementsPanel({ onAdd, onError }: { onAdd: (item: LibraryItem, variant?: ColorVariant) => void; onError: (message: string) => void }) {
+export function ElementsPanel({ onAdd, onError }: { onAdd: (item: LibraryItem, variant?: ColorVariant, at?: Point) => void; onError: (message: string) => void }) {
   const library = useLoaded<Library>(loadLibrary, onError);
   const [query, setQuery] = useState('');
   const [kind, setKind] = useState<LibraryKind | 'all'>('all');
@@ -35,7 +38,7 @@ export function ElementsPanel({ onAdd, onError }: { onAdd: (item: LibraryItem, v
   const recentItems = recent.map(id => items.find(item => item.id === id)).filter((item): item is LibraryItem => !!item);
   const showsShapes = results.some(item => item.kind === 'shape');
   const variantOf = (item: LibraryItem) => item.colorVariants?.find(variant => variant.id === colorId);
-  const add = (item: LibraryItem, variant?: ColorVariant) => { setRecent(rememberRecent(item.id)); onAdd(item, variant); };
+  const add = (item: LibraryItem, variant?: ColorVariant, at?: Point) => { setRecent(rememberRecent(item.id)); onAdd(item, variant, at); };
 
   return <div className="panel-body">
     <input className="panel-search" type="search" aria-label="요소 검색" placeholder="고양이, 하트, 화살표…" value={query} onChange={event => setQuery(event.target.value)} />
@@ -122,16 +125,16 @@ function AssetThumb({ asset, resolve }: { asset: Asset; resolve: (id: string) =>
 }
 const thumbCache = new Map<string, string>();
 
-function PhotoGrid({ photos, resolve, label, onPick }: { photos: Asset[]; resolve: (id: string) => Promise<Blob | undefined>; label: string; onPick: (asset: Asset) => void }) {
-  return <div className="photo-grid">{photos.map((asset, index) => <button key={asset.id} className="photo-card" aria-label={`${label} ${index + 1}`} onClick={() => onPick(asset)}><AssetThumb asset={asset} resolve={resolve} /></button>)}</div>;
+function PhotoGrid({ photos, resolve, label, onPick, onDragOut }: { photos: Asset[]; resolve: (id: string) => Promise<Blob | undefined>; label: string; onPick: (asset: Asset) => void; onDragOut?: (event: PointerEvent<HTMLElement>, asset: Asset) => void }) {
+  return <div className="photo-grid">{photos.map((asset, index) => <button key={asset.id} className="photo-card" aria-label={`${label} ${index + 1}`} onClick={() => onPick(asset)} onPointerDown={onDragOut && (event => onDragOut(event, asset))}><AssetThumb asset={asset} resolve={resolve} /></button>)}</div>;
 }
 
-export function UploadPanel({ photos, resolve, onUpload, onPick }: { photos: Asset[]; resolve: (id: string) => Promise<Blob | undefined>; onUpload: () => void; onPick: (asset: Asset) => void }) {
+export function UploadPanel({ photos, resolve, onUpload, onPick, photoBox, onDropPhoto }: { photos: Asset[]; resolve: (id: string) => Promise<Blob | undefined>; onUpload: () => void; onPick: (asset: Asset) => void; photoBox: (asset: Asset) => { width: number; height: number }; onDropPhoto: (asset: Asset, at: Point) => void }) {
   return <div className="panel-body">
     <button className="primary wide" onClick={onUpload}>파일 업로드</button>
     <p className="panel-note">사진을 끌어다 놓거나 복사한 그림을 Ctrl+V로 붙여 넣어도 돼요. 붙여넣기가 안 되면 파일 업로드를 써 주세요.</p>
     <h3>넣은 사진</h3>
-    {photos.length === 0 ? <p className="panel-note">아직 넣은 사진이 없어요.</p> : <PhotoGrid photos={photos} resolve={resolve} label="넣은 사진" onPick={onPick} />}
+    {photos.length === 0 ? <p className="panel-note">아직 넣은 사진이 없어요.</p> : <PhotoGrid photos={photos} resolve={resolve} label="넣은 사진" onPick={onPick} onDragOut={(event, asset) => dragToSlide(event, photoBox(asset), point => onDropPhoto(asset, point))} />}
   </div>;
 }
 

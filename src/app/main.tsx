@@ -9,5 +9,6 @@ import '@fontsource/gaegu/400.css';
 import '@fontsource/gaegu/700.css';
 import '../styles/app.css';
 import { App } from './App';
+import { ErrorBoundary } from './ErrorBoundary';
 
-createRoot(document.getElementById('root')!).render(<App />);
+createRoot(document.getElementById('root')!).render(<ErrorBoundary><App /></ErrorBoundary>);

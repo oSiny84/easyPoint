@@ -31,6 +31,7 @@ export async function exportPdf(snapshot: Project, resolve: BlobResolver, option
       pdf.setSubject('포함된 그림의 라이선스 고지는 첨부 파일 licenses.txt에 있습니다.');
     }
     const bytes = await pdf.save();
+    if (signal?.aborted) return fail('CANCELLED', '내보내기를 취소했어요.');
     return { ok: true, blob: new Blob([new Uint8Array(bytes)], { type: 'application/pdf' }), warnings: [] };
   } catch (error) { if (import.meta.env.DEV) console.error(error); return fail('EXPORT_FAILED', '파일을 만들지 못했어요. 다시 시도해 주세요.'); }
 }

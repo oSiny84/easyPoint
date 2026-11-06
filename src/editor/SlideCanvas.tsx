@@ -35,19 +35,21 @@ export function SlideCanvas({ slide, preview, hiddenId, scale, assets, onError }
   const images = useRef(new Map<string, HTMLImageElement>());
   const fonts = useRef(new Set<string>());
   const shown = useRef<Slide | null>(null);
+  // 글꼴이나 사진을 준비하지 못한 문서. 안내를 띄우고 되는 만큼 그려, 편집 결과가 화면에서 사라지지 않게 한다.
+  const incomplete = useRef<Slide | null>(null);
   const [, redraw] = useState(0);
 
   const isPrepared = (target: Slide) => [...assetIdsOf(target)].every(id => images.current.has(id))
     && target.elements.every(element => element.type !== 'text' || fonts.current.has(textKey(element)));
   // 준비가 끝난 문서는 바로 그려 명령 직후 이전 모습이 한 프레임 보이지 않게 한다.
-  if (isPrepared(slide)) shown.current = slide;
+  if (isPrepared(slide) || incomplete.current === slide) shown.current = slide;
 
   useEffect(() => {
     if (isPrepared(slide)) return;
     let active = true;
     void (async () => {
       const problem = await prepareFonts([slide]);
-      if (problem) { if (active) onError(problem.message); return; }
+      if (problem && active) onError(problem.message);
       const wanted = assetIdsOf(slide);
       const loaded = await Promise.all([...wanted].filter(id => !images.current.has(id)).map(id => new Promise<[string, HTMLImageElement | null]>(resolve => {
         const url = assets.url(id); const image = new Image();
@@ -55,10 +57,14 @@ export function SlideCanvas({ slide, preview, hiddenId, scale, assets, onError }
         image.onload = () => resolve([id, image]); image.onerror = () => resolve([id, null]); image.src = url;
       })));
       if (!active) return;
-      if (loaded.some(([, image]) => !image)) { onError('사진을 읽지 못했어요.'); return; }
+      const unreadable = loaded.some(([, image]) => !image);
+      if (unreadable) onError('사진을 읽지 못했어요.');
       for (const id of images.current.keys()) if (!wanted.has(id)) images.current.delete(id);
-      for (const [id, image] of loaded) images.current.set(id, image!);
-      for (const element of slide.elements) if (element.type === 'text') fonts.current.add(textKey(element));
+      for (const [id, image] of loaded) if (image) images.current.set(id, image);
+      if (problem || unreadable) {
+        if (incomplete.current === slide) return;
+        incomplete.current = slide;
+      } else for (const element of slide.elements) if (element.type === 'text') fonts.current.add(textKey(element));
       redraw(value => value + 1);
     })();
     return () => { active = false; };

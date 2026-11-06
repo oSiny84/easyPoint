@@ -189,6 +189,8 @@ test('같은 작품을 둘째 탭에서 열면 읽기 전용이고, 첫 탭을 �
   await expect(second.getByRole('button', { name: '페이지 추가' })).toHaveCount(0);
   await expect(second.getByRole('button', { name: '1번째 장 메뉴' })).toHaveCount(0);
   await expect(second.getByRole('textbox', { name: '작품 이름' })).not.toBeEditable();
+  await second.mouse.click((await second.getByTestId('paper').boundingBox())!.x + 150, (await second.getByTestId('paper').boundingBox())!.y + 70);
+  await expect(second.getByRole('toolbar', { name: '선택한 요소 설정' })).toHaveCount(0);
   // 장을 눌러 넘겨 보는 것은 된다.
   await second.getByRole('button', { name: '2번째 장' }).click();
   await second.getByRole('button', { name: '1번째 장' }).click();
@@ -340,4 +342,20 @@ test('잠금을 지원하지 않는 브라우저는 읽기 전용으로 열고 �
   await expect(saveState(page)).toHaveText('읽기 전용');
   await expect(status(page)).toContainText('브라우저');
   expect(await dispatch(page, { type: 'renameProject', title: '바꿈' })).toMatchObject({ ok: false, code: 'READ_ONLY' });
+});
+
+test('파일을 연 직후에는 저장을 마치기 전까지 저장됨으로 표시하지 않는다', async ({ page }) => {
+  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await page.evaluate(() => {
+    const seen: string[] = []; (window as any).labels = seen;
+    let last = '';
+    new MutationObserver(() => { const text = document.querySelector('[data-testid=save-state]')?.textContent ?? ''; if (text !== last) { last = text; seen.push(text); } }).observe(document.body, { subtree: true, childList: true, characterData: true });
+  });
+  await page.getByTestId('open-file').setInputFiles(await sampleFile('표시 시험'));
+  await expect(saveState(page)).toHaveText('저장됨');
+  const labels = await page.evaluate(() => (window as any).labels as string[]);
+  expect(labels.indexOf('저장됨')).toBeGreaterThan(labels.indexOf('저장 중…'));
+  expect(labels).toContain('저장 중…');
+  // 저장됨이 보이는 때에는 저장소에 이미 있다.
+  expect((await database(page)).projects.map((row: any) => row.title)).toEqual(['표시 시험']);
 });

@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc -b && vite build && node scripts/prune-dist.mjs",
+    "build": "tsc -b && vite build --base=./ --assetsInlineLimit=0 && node scripts/prune-dist.mjs",
+    "package": "npm run build && node scripts/package-release.mjs",
     "test": "playwright test --config playwright.config.ts",
-    "test:phase2": "playwright test --config playwright.phase2.config.ts"
+    "test:phase2": "playwright test --config playwright.phase2.config.ts",
+    "test:release": "npm run build && playwright test --config playwright.release.config.ts"
   },
   "dependencies": {
     "@fontsource/do-hyeon": "5.3.0",

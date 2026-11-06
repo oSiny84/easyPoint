@@ -68,6 +68,7 @@ export function Home({ note, onOpen, onNew, onFile, onTemplate }: Props) {
     <main className="home-body">
       <p className="home-status" role="status">{status}</p>
       <h2>내 작품</h2>
+      <p className="home-note">작품은 이 컴퓨터의 이 브라우저에만 저장돼요. 다른 컴퓨터로 옮기려면 원본을 내려받으세요. 공용 컴퓨터라면 다 쓴 뒤 원본을 내려받고 작품을 지워 주세요.</p>
       {summaries && summaries.length === 0 && <p className="panel-note">아직 저장된 작품이 없어요. 새 작품을 만들어 보세요.</p>}
       <ul className="work-grid" aria-label="내 작품">
         {summaries?.map(summary => <li key={summary.projectId} className="work-card">

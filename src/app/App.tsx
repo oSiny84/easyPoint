@@ -10,16 +10,15 @@ import { Menu, type MenuAnchor } from '../components/Menu';
 import { SlideList, type SlideActions } from '../components/SlideList';
 import { DEFAULT_FONT_ID, DEFAULT_LINE_HEIGHT, LIMITS } from '../domain/limits';
 import { createProject } from '../domain/project';
-import type { Asset, Project, Slide, SlideElement, TextElement } from '../domain/types';
-import type { Point } from '../editor/geometry';
+import { fail, type Asset, type Project, type Slide, type SlideElement, type TextElement } from '../domain/types';
+import { centeredAt, type Point } from '../editor/geometry';
 import { DrawLayer, type NewStroke } from '../editor/DrawLayer';
 import { menuItems, SelectionBar, type ElementActions, type StrokeStylePatch, type TextStylePatch } from '../editor/SelectionBar';
 import { SelectionLayer } from '../editor/SelectionLayer';
 import { SlideCanvas } from '../editor/SlideCanvas';
 import { TextEditor, type TextEditorHandle } from '../editor/TextEditor';
 import { caretOffsetAt, layoutText } from '../rendering/text/layoutText';
-import { exportPdf } from '../export/exportPdf';
-import { exportPptx } from '../export/exportPptx';
+import type { ExportResult } from '../export/exportPptx';
 import { createStore, type DispatchResult, type ProjectStore } from '../state/store';
 import { listSummaries, openProject, requestPersistence, saveProject } from '../storage/database';
 import { acquireSession, type SessionLock } from '../storage/locks';
@@ -30,7 +29,8 @@ import { deserializeProject, serializeProject } from '../storage/projectFile';
 import { BackgroundPanel, DesignPanel, DrawPanel, ElementsPanel, TextPanel, UploadPanel, type PenSettings, type TextPreset } from './panels';
 import { Home } from './Home';
 import { ToolRail, type ToolId } from './ToolRail';
-import { TopBar, type ExportKind } from './TopBar';
+import { Presenter } from './Presenter';
+import { TopBar, type ExportKind, type ExportProgress } from './TopBar';
 
 type Session = { store: ProjectStore; assets: AssetStore; lock: SessionLock };
 const newId = () => crypto.randomUUID();
@@ -42,6 +42,7 @@ const PHOTO_WIDTH = LIMITS.slideWidth * 0.6, PHOTO_HEIGHT = LIMITS.slideHeight *
 const PANEL_MIN_WINDOW = 1200;
 const THUMBNAIL_SCALE = 0.25;
 const CURRENT_KEY = 'canvacraft.current-project';
+const MISSING_PHOTO = '이 사진의 자료를 찾을 수 없어요. 파일 업로드로 다시 넣어 주세요.';
 const SAVE_LABEL: Record<SaveState, string> = { saved: '저장됨', dirty: '변경 있음', saving: '저장 중…', failed: '저장 실패' };
 
 function download(blob: Blob, name: string) {
@@ -91,10 +92,20 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
   const uploadTarget = useRef<'element' | 'background'>('element');
   const classified = useRef(new Set<string>());
   const [status, setStatus] = useState(initialNote ?? '');
-  const [saveState, setSaveState] = useState<SaveState>('saved');
+  // 저장하지 않은 문서(열어 온 파일, 템플릿)는 첫 화면부터 저장됨으로 보이면 안 된다.
+  const [saveState, setSaveState] = useState<SaveState>(() => initiallySaved || isUntouched(value.store.getProject()) ? 'saved' : 'dirty');
   const autosave = useRef<Autosave | null>(null);
   const [title, setTitle] = useState(project.title);
   const [exporting, setExporting] = useState<AbortController | null>(null);
+  const [exportProgress, setExportProgress] = useState<ExportProgress | null>(null);
+  const [exportNote, setExportNote] = useState('');
+  const [presenting, setPresenting] = useState<{ project: Project; slideId: string } | null>(null);
+  // 작품을 떠나면 만들던 파일도 멈춘다. 진행 표시가 사라진 채 나중에 파일이 내려오지 않게 한다.
+  const exportingRef = useRef<AbortController | null>(null);
+  exportingRef.current = exporting;
+  useEffect(() => () => exportingRef.current?.abort(), []);
+  const presentingRef = useRef(false);
+  presentingRef.current = !!presenting;
   // 저장에 실패한 채 다른 작품으로 넘어가려 할 때 잠시 보관하는 다음 동작.
   const [pending, setPending] = useState<{ next: () => void } | null>(null);
   const [zoom, setZoom] = useState<number | 'fit'>('fit');
@@ -255,7 +266,9 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
         if (templateAssets.has(asset.id)) continue;
         // 내장 그림·배경 PNG에는 라이선스 정보가 들어 있고, 재인코딩한 사용자 사진에는 없다.
         const blob = await assets.resolve(asset.id);
-        if (asset.mime === 'image/png' && blob && readPngText(new Uint8Array(await blob.arrayBuffer()), 'License')) continue;
+        // 자료를 잃은 사진은 넣어도 빈 칸이 되므로 목록에 내놓지 않는다.
+        if (!blob) continue;
+        if (asset.mime === 'image/png' && readPngText(new Uint8Array(await blob.arrayBuffer()), 'License')) continue;
         found.push(asset);
       }
       if (active && found.length) setPhotos(current => [...current, ...found.filter(asset => !current.some(item => item.id === asset.id))]);
@@ -266,6 +279,7 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
   // 새 요소는 현재 장의 맨 앞에 넣고 바로 선택한다. 기존 내용은 그대로다.
   function placeImage(asset: Asset, blob: Blob | null, box: { x: number; y: number; width: number; height: number }) {
     if (blob) assets.put(asset.id, blob);
+    if (!assets.has(asset.id)) { setStatus(MISSING_PHOTO); return false; }
     // 같은 그림을 연달아 넣어도 겹쳐 가려지지 않게 조금씩 옮긴다.
     let { x, y } = box;
     while (slide.elements.some(item => item.type === 'image' && item.assetId === asset.id && item.x === x && item.y === y)) { x += 20; y += 20; }
@@ -273,12 +287,15 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
     if (result.ok) setSelectedId(store.getProject().slides.find(item => item.id === slide.id)!.elements.at(-1)!.id);
     return result.ok;
   }
-  const placePhoto = (asset: Asset, blob: Blob | null) => placeImage(asset, blob, placeInCenter(asset.pixelWidth, asset.pixelHeight, PHOTO_WIDTH, PHOTO_HEIGHT));
+  const photoBox = (asset: Asset) => placeInCenter(asset.pixelWidth, asset.pixelHeight, PHOTO_WIDTH, PHOTO_HEIGHT);
+  const placePhoto = (asset: Asset, blob: Blob | null) => placeImage(asset, blob, photoBox(asset));
 
-  async function addLibraryItem(item: LibraryItem, variant?: ColorVariant) {
+  // 끌어다 놓으면 놓은 곳에, 누르기만 하면 가운데에 넣는다.
+  async function addLibraryItem(item: LibraryItem, variant?: ColorVariant, at?: Point) {
     const loaded = await loadLibraryImage(item, variant);
     if (!loaded.ok) { setStatus(loaded.message); return; }
-    placeImage(loaded.asset, loaded.blob, placeInCenter(item.width, item.height, item.defaultWidth, item.defaultHeight));
+    const box = placeInCenter(item.width, item.height, item.defaultWidth, item.defaultHeight);
+    placeImage(loaded.asset, loaded.blob, at ? centeredAt(box, at) : box);
   }
   async function useProvidedBackground(background: ProvidedBackground) {
     const loaded = await loadBackgroundImage(background);
@@ -286,7 +303,7 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
     assets.put(loaded.asset.id, loaded.blob);
     run({ type: 'setBackground', slideId: slide.id, background: { kind: 'image', assetId: loaded.asset.id, fit: 'center-cover' }, asset: loaded.asset });
   }
-  const usePhotoBackground = (asset: Asset) => { run({ type: 'setBackground', slideId: slide.id, background: { kind: 'image', assetId: asset.id, fit: 'center-cover' }, asset }); };
+  const usePhotoBackground = (asset: Asset) => { if (!assets.has(asset.id)) { setStatus(MISSING_PHOTO); return; } run({ type: 'setBackground', slideId: slide.id, background: { kind: 'image', assetId: asset.id, fit: 'center-cover' }, asset }); };
   const setSolid = useCallback((color: string) => { run({ type: 'setBackground', slideId: slide.id, background: { kind: 'solid', color } }); }, [run, slide.id]);
 
   // 파일 선택·끌어놓기·붙여넣기가 모두 이 경로를 쓴다. 실패한 파일은 작업 중인 문서를 건드리지 않는다.
@@ -303,6 +320,7 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
   importFilesRef.current = importFiles;
   useEffect(() => {
     const onPaste = (event: ClipboardEvent) => {
+      if (presentingRef.current) return;
       const target = event.target as HTMLElement;
       // 글씨 입력 중 Ctrl+V는 일반 글씨 붙여넣기다.
       if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
@@ -380,18 +398,28 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
       afterSaved(() => onOpen(result.project, result.assets, `${template.label} 템플릿을 새 작품으로 열었어요.`));
     } catch { setStatus('템플릿을 불러오지 못했어요. 다시 시도해 주세요.'); }
   }
+  function present() { flushEdit(() => setPresenting({ project: store.getProject(), slideId: slide.id })); }
   function exportFile(kind: ExportKind) { flushEdit(() => void exportNow(kind)); }
   async function exportNow(kind: ExportKind) {
     const controller = new AbortController(); setExporting(controller); setStatus('파일을 만들고 있어요…');
     const snapshot = store.getProject();
-    const onProgress = (done: number, total: number) => setStatus(`파일을 만들고 있어요… ${done} / ${total}장`);
-    const result = kind === 'pdf'
-      ? await exportPdf(snapshot, assets.resolve, { onProgress }, controller.signal)
-      : await exportPptx(snapshot, assets.resolve, kind === 'pptx' ? 'editable' : 'image', { onProgress }, controller.signal);
-    setExporting(null);
-    if (!result.ok) { setStatus(result.message); return; }
+    setExportNote(''); setExportProgress({ done: 0, total: snapshot.slides.length });
+    const onProgress = (done: number, total: number) => { setExportProgress({ done, total }); setStatus(`파일을 만들고 있어요… ${done} / ${total}장`); };
+    // 출력 라이브러리는 크므로 내려받을 때 불러온다. 앱을 연 뒤 새 버전이 배포되면 불러오지 못할 수 있다.
+    let result: ExportResult;
+    try {
+      result = kind === 'pdf'
+        ? await (await import('../export/exportPdf')).exportPdf(snapshot, assets.resolve, { onProgress }, controller.signal)
+        : await (await import('../export/exportPptx')).exportPptx(snapshot, assets.resolve, kind === 'pptx' ? 'editable' : 'image', { onProgress }, controller.signal);
+    } catch {
+      result = fail('EXPORT_FAILED', '파일 만드는 도구를 불러오지 못했어요. 새로고침한 뒤 다시 시도해 주세요.');
+    }
+    setExporting(null); setExportProgress(null);
+    if (!result.ok) { setStatus(result.message); setExportNote(result.message); return; }
     download(result.blob, downloadName(snapshot.title, kind === 'pdf' ? 'pdf' : 'pptx'));
-    setStatus(result.warnings[0] ? `파일을 내려받았어요. ${result.warnings[0]}` : '파일을 내려받았어요.');
+    // 내려받기 창이 상태 줄을 가리므로 창 안에도 같은 안내를 보여 준다.
+    const done = ['파일을 내려받았어요.', ...result.warnings].join(' ');
+    setStatus(done); setExportNote(done);
   }
 
   const actions: ElementActions | null = selected && {
@@ -420,9 +448,9 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
 
   const onCanvasError = useCallback((message: string) => setStatus(message), []);
 
-  const panel = tool === 'elements' ? <ElementsPanel onAdd={(item, variant) => void addLibraryItem(item, variant)} onError={onCanvasError} />
+  const panel = tool === 'elements' ? <ElementsPanel onAdd={(item, variant, at) => void addLibraryItem(item, variant, at)} onError={onCanvasError} />
     : tool === 'design' ? <DesignPanel onTemplate={template => void openTemplate(template)} onPick={background => void useProvidedBackground(background)} onError={onCanvasError} />
-    : tool === 'upload' ? <UploadPanel photos={photos} resolve={assets.resolve} onUpload={() => openUpload('element')} onPick={asset => { placePhoto(asset, null); }} />
+    : tool === 'upload' ? <UploadPanel photos={photos} resolve={assets.resolve} onUpload={() => openUpload('element')} onPick={asset => { placePhoto(asset, null); }} photoBox={photoBox} onDropPhoto={(asset, at) => { placeImage(asset, null, centeredAt(photoBox(asset), at)); }} />
     : tool === 'background' ? <BackgroundPanel current={slide.background} photos={photos} resolve={assets.resolve} onSolid={setSolid} onProvided={background => void useProvidedBackground(background)} onPhoto={usePhotoBackground} onUpload={() => openUpload('background')} onError={onCanvasError} />
     : tool === 'text' ? <TextPanel onAdd={addTextBox} />
     : <DrawPanel mode={drawMode} pen={pen} onMode={setDrawMode} onPen={setPen} onExit={() => changeTool(null)} />;
@@ -431,14 +459,14 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
     <TopBar title={title} onTitle={setTitle} onTitleCommit={() => run({ type: 'renameProject', title })} saveState={readOnly ? '읽기 전용' : isUntouched(project) ? '새 작품' : SAVE_LABEL[saveState]}
       canUndo={store.canUndo() || !!edit} canRedo={store.canRedo()} onUndo={() => flushEdit(() => report(store.undo()))} onRedo={() => flushEdit(() => report(store.redo()))}
       onOpenFile={() => openInput.current?.click()} onSaveFile={saveFile} onSave={save} readOnly={readOnly} saveDisabled={readOnly || saveState === 'saved' || saveState === 'saving'} onHome={() => afterSaved(onHome)} onNew={() => afterSaved(onNew)}
-      exporting={!!exporting} onExport={exportFile} onCancelExport={() => exporting?.abort()} />
+      exporting={!!exporting} exportProgress={exportProgress} exportNote={exportNote} onOpenDownload={() => setExportNote('')} onExport={exportFile} onCancelExport={() => exporting?.abort()} onPresent={present} />
     <input ref={openInput} data-testid="open-file" type="file" accept=".canvacraft" hidden onChange={event => { void openFile(event.target.files?.[0]); event.target.value = ''; }} />
     <input ref={uploadInput} data-testid="upload-file" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden onChange={event => { void importFiles([...(event.target.files ?? [])], uploadTarget.current); event.target.value = ''; }} />
     <div className="workspace">
       <ToolRail active={tool} onChange={changeTool} panel={panel} disabled={readOnly} />
       <main className="stage-area">
         <div className="selection-row">
-          <SelectionBar actions={actions} textStyle={edit?.draft ?? (selected?.type === 'text' ? selected : null)} onStyle={applyStyle} strokeStyle={selected?.type === 'stroke' ? selected : null} onStrokeStyle={applyStrokeStyle} />
+          {!readOnly && <SelectionBar actions={actions} textStyle={edit?.draft ?? (selected?.type === 'text' ? selected : null)} onStyle={applyStyle} strokeStyle={selected?.type === 'stroke' ? selected : null} onStrokeStyle={applyStrokeStyle} />}
           <p className="status" role="status">{readOnly ? (value.lock.reason === 'other-tab' ? '다른 탭에서 편집 중이라 읽기만 할 수 있어요.' : '이 브라우저에서는 편집할 수 없어요. Chrome이나 Edge를 써 주세요.') : status}</p>
         </div>
         <div ref={work} className="work" data-testid="work" onPointerDownCapture={event => { if ((event.target as HTMLElement).tagName !== 'TEXTAREA') flushEdit(); }} onPointerDown={event => { if (event.target === event.currentTarget) setSelectedId(null); }}>
@@ -473,11 +501,12 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
         <button className="outline" onClick={() => setPending(null)}>취소</button>
       </div>
     </div></div>}
+    {presenting && <Presenter project={presenting.project} startSlideId={presenting.slideId} resolve={assets.resolve} onClose={slideId => { setPresenting(null); selectSlide(slideId); }} />}
     {elementMenu && actions && <Menu anchor={elementMenu} label="요소 메뉴" onClose={() => setElementMenu(null)} items={menuItems(actions)} />}
   </div>;
 }
 
-type Screen = { kind: 'loading' } | { kind: 'home'; note?: string } | { kind: 'editor'; session: Session; note?: string; saved?: boolean; key: number };
+type Screen = { kind: 'loading' } | { kind: 'home'; note?: string; key: number } | { kind: 'editor'; session: Session; note?: string; saved?: boolean; key: number };
 
 export function App() {
   const [screen, setScreen] = useState<Screen>({ kind: 'loading' });
@@ -492,7 +521,7 @@ export function App() {
     remember(project.id);
     setScreen({ kind: 'editor', session, note, saved, key: ++editorKey.current });
   }, [closeCurrent]);
-  const showHome = useCallback((note?: string) => { closeCurrent(); remember(null); setScreen({ kind: 'home', note }); }, [closeCurrent]);
+  const showHome = useCallback((note?: string) => { closeCurrent(); remember(null); setScreen({ kind: 'home', note, key: ++editorKey.current }); }, [closeCurrent]);
   const showNew = useCallback(() => { void show(createProject(newId, now), undefined, undefined, true); }, [show]);
   const openSaved = useCallback(async (projectId: string, note: string) => {
     const opened = await openProject(projectId);
@@ -527,7 +556,7 @@ export function App() {
   }, [show, showHome]);
 
   if (screen.kind === 'loading') return <p className="status" role="status">작품을 준비하고 있어요…</p>;
-  if (screen.kind === 'home') return <Home note={screen.note} onOpen={id => void openSaved(id, '저장된 작품을 열었어요.')} onNew={showNew} onFile={file => void openFile(file)} onTemplate={template => void openTemplate(template)} />;
+  if (screen.kind === 'home') return <Home key={screen.key} note={screen.note} onOpen={id => void openSaved(id, '저장된 작품을 열었어요.')} onNew={showNew} onFile={file => void openFile(file)} onTemplate={template => void openTemplate(template)} />;
   return <Editor key={screen.key} value={screen.session} initialNote={screen.note} initiallySaved={screen.saved}
     onOpen={(project, assets, note) => void show(project, assets, note, false)} onHome={() => showHome()} onNew={showNew} />;
 }

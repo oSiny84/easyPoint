@@ -3,6 +3,7 @@ export function createAssetStore(initial?: Map<string, Blob>) {
   const blobs = new Map(initial); const urls = new Map<string, string>();
   return {
     resolve: async (id: string) => blobs.get(id),
+    has: (id: string) => blobs.has(id),
     put(id: string, blob: Blob) { blobs.set(id, blob); },
     // 화면 표시용 주소. 작품을 닫을 때 dispose로 해제한다.
     url(id: string) {

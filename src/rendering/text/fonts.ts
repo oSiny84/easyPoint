@@ -28,7 +28,7 @@ export async function prepareFonts(slides: readonly Slide[]): Promise<Failure | 
   try {
     const texts = slides.flatMap(slide => slide.elements.filter((element): element is TextElement => element.type === 'text'));
     for (const element of texts) await document.fonts.load(fontCss(element), element.text);
-    if (texts.length && !texts.every(element => document.fonts.check(fontCss(element), '가'))) return fail('FONT_UNAVAILABLE', '글꼴을 불러오지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.');
+    if (texts.length && !texts.every(element => document.fonts.check(fontCss(element), element.text))) return fail('FONT_UNAVAILABLE', '글꼴을 불러오지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.');
     return null;
   } catch { return fail('FONT_UNAVAILABLE', '글꼴을 불러오지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.'); }
 }

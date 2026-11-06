@@ -1,6 +1,7 @@
 // 앱 전용 단순 선 아이콘. 외부 자산을 쓰지 않는다.
 const PATHS: Record<string, string> = {
   back: 'M15 5l-7 7 7 7',
+  forward: 'M9 5l7 7-7 7',
   undo: 'M9 7L4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2',
   redo: 'M15 7l5 5-5 5M20 12H9a5 5 0 0 0 0 10h2',
   design: 'M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z',

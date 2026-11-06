@@ -89,3 +89,9 @@ export function resizeText(element: TextElement, handle: Handle, p: Point, measu
 }
 
 export const handlesFor = (element: SlideElement): Handle[] => element.type === 'image' ? ['nw', 'ne', 'sw', 'se'] : element.type === 'text' ? ['nw', 'ne', 'sw', 'se', 'w', 'e'] : [];
+
+// 놓은 곳이 그림의 가운데가 되게 하되, 슬라이드 밖으로 나가지 않게 한다.
+export function centeredAt(box: { width: number; height: number }, point: Point) {
+  const place = (center: number, size: number, limit: number) => Math.round(Math.max(0, Math.min(limit - size, center - size / 2)));
+  return { x: place(point.x, box.width, LIMITS.slideWidth), y: place(point.y, box.height, LIMITS.slideHeight), width: box.width, height: box.height };
+}

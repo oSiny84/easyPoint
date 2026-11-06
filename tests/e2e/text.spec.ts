@@ -387,3 +387,80 @@ test('글꼴: 고르면 바로 바뀌고 저장·출력되며 굵은 파일이 �
     await page.keyboard.press('Escape');
   }
 });
+
+// '가'가 든 글자 묶음을 받지 않는 글씨. 앱 화면은 기본 글씨만 쓰므로 다른 글꼴의 그 묶음은 저절로 받아지지 않는다.
+test('글꼴: 드문 글자로만 된 글씨도 바꾸면 캔버스에 바로 나타나고 출력된다', async ({ page }) => {
+  await open(page);
+  const canvasHash = () => page.evaluate(() => {
+    let value = 0;
+    for (const canvas of document.querySelectorAll<HTMLCanvasElement>('[data-testid=paper] canvas')) { const url = canvas.toDataURL(); for (let i = 0; i < url.length; i += 7) value = (value * 31 + url.charCodeAt(i)) | 0; }
+    return value;
+  });
+  await page.evaluate(id => {
+    const { store } = (window as any).__canvacraft; const p = store.getProject();
+    const result = store.dispatch(p.id, p.revision, { type: 'updateText', slideId: p.slides[0].id, elementId: id, text: '튼튼' });
+    if (!result.ok) throw new Error(result.message);
+  }, title);
+  const start = await screen(page, 150, 90);
+  await page.mouse.click(start.x, start.y);
+  expect(await selectedId(page)).toBe(title);
+  const font = bar(page).getByRole('combobox', { name: '글꼴' });
+  for (const fontId of ['round-jua', 'block-dohyeon', 'hand-gamja', 'hand-pen', 'hand-gaegu']) {
+    const before = await canvasHash();
+    await font.selectOption(fontId);
+    await expect.poll(canvasHash, { timeout: 2000 }).not.toBe(before);
+    await expect(page.locator('p.status')).not.toContainText('글꼴을 불러오지 못했어요');
+  }
+  // 고른 글꼴이 실제로 쓰였는지 본다. 대체 글꼴로 그렸으면 폭이 달라진다.
+  const used = await page.evaluate(async () => {
+    const { fontCss } = await import('/src/rendering/text/fonts.ts' as string);
+    const element = (window as any).__canvacraft.store.getProject().slides[0].elements.find((item: any) => item.text === '튼튼');
+    return document.fonts.check(fontCss(element), element.text);
+  });
+  expect(used).toBe(true);
+  // 출력도 같은 준비 과정을 거친다.
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: '공유' }).click();
+  await page.getByRole('menuitem', { name: '다운로드' }).click();
+  await page.getByRole('radio', { name: 'PDF' }).check();
+  await page.getByRole('button', { name: '내려받기', exact: true }).click();
+  await download;
+  await expect(page.locator('p.status')).toContainText('내려받았어요');
+});
+
+test('글꼴: 파일을 받지 못하면 안내하고, 화면은 지금 문서를 보여 주며, 출력은 멈춘다', async ({ page }) => {
+  await open(page);
+  await page.route(/gamja-flower/, route => route.abort());
+  const start = await screen(page, 150, 90);
+  await page.mouse.click(start.x, start.y);
+  const canvasHash = () => page.evaluate(() => {
+    let value = 0;
+    for (const canvas of document.querySelectorAll<HTMLCanvasElement>('[data-testid=paper] canvas')) { const url = canvas.toDataURL(); for (let i = 0; i < url.length; i += 7) value = (value * 31 + url.charCodeAt(i)) | 0; }
+    return value;
+  });
+  await bar(page).getByRole('combobox', { name: '글꼴' }).selectOption('hand-gamja');
+  await expect(page.locator('p.status')).toContainText('글꼴을 불러오지 못했어요');
+  // 받지 못한 뒤의 편집도 화면에 나타난다. 이전 모습에 멈추지 않는다.
+  const before = await canvasHash();
+  await bar(page).getByRole('button', { name: '가운데 정렬' }).click();
+  await expect.poll(canvasHash, { timeout: 2000 }).not.toBe(before);
+  // 대체 글꼴로 된 PDF를 정상 결과로 내주지 않는다.
+  await page.getByRole('button', { name: '공유' }).click();
+  await page.getByRole('menuitem', { name: '다운로드' }).click();
+  await page.getByRole('radio', { name: 'PDF' }).check();
+  await page.getByRole('button', { name: '내려받기', exact: true }).click();
+  await expect(page.locator('p.status')).toContainText('글꼴을 불러오지 못했어요');
+  await page.keyboard.press('Escape');
+  // 한 번 실패한 글꼴은 브라우저가 다시 받지 않는다. 새로고침하면 저장본이 고른 글꼴로 열린다.
+  await page.unroute(/gamja-flower/);
+  await expect(page.getByTestId('save-state')).toHaveText('저장됨', { timeout: 4000 });
+  await page.reload();
+  await expect(page.getByRole('status')).toContainText('저장된 작품을 열었어요');
+  await expect(page.locator('p.status')).not.toContainText('글꼴을 불러오지 못했어요');
+  const ready = await page.evaluate(async () => {
+    const { fontCss } = await import('/src/rendering/text/fonts.ts' as string);
+    const element = (window as any).__canvacraft.store.getProject().slides[0].elements.find((item: any) => item.fontId === 'hand-gamja');
+    return document.fonts.check(fontCss(element), element.text);
+  });
+  expect(ready).toBe(true);
+});

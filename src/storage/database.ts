@@ -38,7 +38,9 @@ export async function saveProject(project: Project, resolve: AssetResolver, extr
     db = await openDatabase();
     // 이미 저장한 사진은 다시 쓰지 않는다. 해시가 곧 ID라 내용이 같다.
     const known = extras.knownAssets ?? new Set<string>();
-    const needed = referencedAssets(project).filter(asset => !known.has(asset.id));
+    // 슬라이드에서 지운 사진도 넣은 사진 목록에 남으므로 함께 보관한다. 문서가 실제로 쓰는 사진만 없으면 실패다.
+    const required = new Set(referencedAssets(project).map(asset => asset.id));
+    const needed = project.assetManifest.filter(asset => !known.has(asset.id));
     if (needed.length) {
       const existing = new Set(await request(db.transaction('assets').objectStore('assets').getAllKeys()) as string[]);
       // Blob 준비는 트랜잭션 밖에서 한다. 트랜잭션은 기다리는 요청이 없으면 자동으로 끝나기 때문이다.
@@ -46,8 +48,8 @@ export async function saveProject(project: Project, resolve: AssetResolver, extr
       for (const asset of needed) {
         if (existing.has(asset.id)) { known.add(asset.id); continue; }
         const blob = await resolve(asset.id);
-        if (!blob) return fail('ASSET_MISSING', '사진 자료를 찾을 수 없어 저장하지 못했어요.');
-        blobs.push({ id: asset.id, blob });
+        if (blob) blobs.push({ id: asset.id, blob });
+        else if (required.has(asset.id)) return fail('ASSET_MISSING', '사진 자료를 찾을 수 없어 저장하지 못했어요.');
       }
       // 1단계: 자산 확정. 여기서 중단되면 고아 자산만 남고 이전 문서는 온전하다.
       if (blobs.length) {
@@ -97,24 +99,25 @@ export async function openProject(projectId: string): Promise<OpenResult> {
     const checked = validateProject(stored);
     if (!checked.ok) return checked;
     const assets = new Map<string, Blob>();
-    for (const asset of referencedAssets(checked.project)) {
+    const required = new Set(referencedAssets(checked.project).map(asset => asset.id));
+    for (const asset of checked.project.assetManifest) {
       const row = await request<{ id: string; blob: Blob } | undefined>(tx.objectStore('assets').get(asset.id));
-      if (!row) return fail('ASSET_MISSING', '저장된 사진 자료를 찾을 수 없어요.');
-      assets.set(asset.id, row.blob);
+      if (row) assets.set(asset.id, row.blob);
+      else if (required.has(asset.id)) return fail('ASSET_MISSING', '저장된 사진 자료를 찾을 수 없어요.');
     }
     return { ok: true, project: checked.project, assets };
   } catch (error) { return storageFailure(error); }
   finally { db?.close(); }
 }
 
-// 어떤 작품도 참조하지 않는 사진을 지운다. 배타 catalog 잠금 안에서만 부른다.
+// 어떤 작품의 자료 목록에도 없는 사진을 지운다. 배타 catalog 잠금 안에서만 부른다.
 export async function removeOrphanAssets(): Promise<number> {
   const db = await openDatabase();
   try {
     const tx = db.transaction(['projects', 'assets'], 'readwrite');
     const finished = done(tx);
     const projects = await request<Project[]>(tx.objectStore('projects').getAll());
-    const used = new Set(projects.flatMap(project => referencedAssets(project).map(asset => asset.id)));
+    const used = new Set(projects.flatMap(project => project.assetManifest.map(asset => asset.id)));
     const keys = await request(tx.objectStore('assets').getAllKeys()) as string[];
     const orphans = keys.filter(key => !used.has(key));
     for (const key of orphans) tx.objectStore('assets').delete(key);
