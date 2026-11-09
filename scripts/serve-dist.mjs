@@ -3,7 +3,7 @@ import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
 
-const ROOT = resolve('dist'), PORT = Number(process.env.PORT ?? 4180), BASE = process.env.BASE ?? '/canvacraft/';
+const ROOT = resolve(process.env.ROOT ?? 'dist'), PORT = Number(process.env.PORT ?? 4180), BASE = process.env.BASE ?? '/canvacraft/';
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8' };
 
 createServer((request, response) => {

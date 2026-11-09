@@ -22,6 +22,7 @@
     "@fontsource/noto-sans-kr": "5.3.1",
     "jszip": "3.10.2",
     "konva": "10.9.1",
+    "mediabunny": "1.62.1",
     "pdf-lib": "1.17.1",
     "pptxgenjs": "4.0.1",
     "react": "19.3.1",

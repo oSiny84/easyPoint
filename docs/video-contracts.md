@@ -1,8 +1,8 @@
 # CanvaCraft 영상 편집기 V1 데이터·명령·저장·출력 계약
 
-작성일: 2026-11-07
+작성일: 2026-11-07. 갱신: 2026-11-09(V2 측정 결과 반영, [VIDEO_PHASE2_RESULTS.md](VIDEO_PHASE2_RESULTS.md))
 
-상태: **구현 전 계약.** [VIDEO_EDITOR_PLAN.md](VIDEO_EDITOR_PLAN.md)(이하 기획안) §4~§7의 초안을 필드·명령·실패 조건·상한·저장·출력 규칙으로 확정한 문서다. 코드 수정, 라이브러리 설치, 브라우저 실행, 코덱·저장소 측정은 하지 않았다. 아래에서 "V2에서 결정"이라고 적은 값은 측정 전이라 비워 둔 것이고, 그 외의 값은 이 계약으로 확정한 것이다. 기획안 §4~§7과 이 문서가 다르면 이 문서가 우선하며, 달라진 점은 §10에 모았다.
+상태: **구현 전 계약.** [VIDEO_EDITOR_PLAN.md](VIDEO_EDITOR_PLAN.md)(이하 기획안) §4~§7의 초안을 필드·명령·실패 조건·상한·저장·출력 규칙으로 확정한 문서다. V1 작성 때는 코드·측정 없이 썼고, 2026-11-09에 V2 측정(개발 PC 1대, 합성 영상)으로 "V2에서 결정" 8개를 채웠다. 그중 작품 길이 상한과 공식 지원 형식은 RAM 8GB PC 측정 전이라 **잠정**이다. 기획안 §4~§7과 이 문서가 다르면 이 문서가 우선하며, 달라진 점은 §10에 모았다.
 
 슬라이드 편집기 계약은 [contracts.md](contracts.md)다. 두 편집기가 같은 규칙을 쓰는 곳은 "슬라이드 계약 §n과 같다"로만 적고 다시 쓰지 않는다. 이 문서에서 "슬라이드 계약"은 contracts.md를 뜻한다.
 
@@ -13,7 +13,7 @@
 | 사용자 결정(2026-11-07, 기본값으로 확정) | 밈은 움직이는 스티커 또는 소리 든 짧은 밈 영상이다. 밈·효과음·음악은 자리 표시 자산으로 개발하고 V6 전까지 출처를 다시 묻는다. 가로·세로 작품 모두 지원하며 첫 영상의 방향으로 정한다. 작품 길이 상한 10분. 영상 바이트는 브라우저 저장소에 복사한다. 사진 조각은 넣지 않는다. WebM으로 낼 때 결과 창에 형식을 보여 준다. 시작 화면 최근 작품 6개. 전체 목록은 §10 |
 | 이 문서 | 영상 작품의 데이터 필드, 모든 편집 명령과 취소 단위, 검사와 상한, 미디어 입력·저장·삭제, 미리보기·출력 규칙, 시작 화면이 두 편집기를 구분하는 방법 |
 | 슬라이드 계약에서 그대로 쓰는 것 | 상태 소유자 원칙(§2), 글씨 줄 배치·글꼴 등록표·IME·빈 글씨 규칙(§3 텍스트), 취소 기록의 revision·메모리 규칙(§4), 색·ID 형식(§5), 자동 저장 시점과 잠금 순서(§6), 파일명 처리와 네트워크 금지(§8) |
-| V2에서 결정 | 움직이는 스티커의 파일 형식, 영상 바이트 저장 위치(IndexedDB Blob / OPFS), 컨테이너 라이브러리, 출력 비트레이트 최종값, 작품 길이 상한 축소 여부, `.canvavideo` 대용량 쓰기·읽기 방법, 공식 지원 형식(MP4 우선 / WebM만), Worker 안 소리 섞기 방법. 8개, §10 둘째 표 |
+| V2 결정(2026-11-09) | 스티커 애니메이션 WebP, 영상 바이트 OPFS, Mediabunny 1.62.1, 영상 8Mbps, 길이 상한 10분(잠정), `.canvavideo` 자체 STORE ZIP 스트리밍, MP4 우선 + WebM 대체(잠정), Worker가 소리를 직접 합산. §10 둘째 표 |
 
 슬라이드 편집기의 코드·문서·시험은 이 계약으로 바뀌지 않는다. 바뀌어야 하는 곳(시작 화면 추가, `src/state/store.ts` 일반화, 캔버스 크기 인자화, CSP·실행 파일 MIME)은 §9의 V3·V8에 적고 각 단계에서 슬라이드 쪽 시험 전체가 통과하는 것을 조건으로 한다.
 
@@ -51,7 +51,7 @@
 | CaptionOverlay | 공통 + text, fontId, fontSize, bold, color, align, lineHeight, backdrop('none' 또는 'band'). 높이는 저장하지 않고 layoutText로 계산한다(슬라이드 TextElement와 같다) |
 | MemeOverlay | 공통 + height, memeId, memeKind('sticker' 또는 'clip'), soundOn(기본 true). memeKind는 내장 목록의 kind를 복사한 값이며 검사에서 일치해야 한다. 반복 여부는 저장하지 않는다(항상 반복, §3) |
 | AudioSettings | originalVolume(0, 0.5, 1 중 하나. 기본 1), musicId(내장 음악 ID 또는 null. 기본 null), musicVolume(0, 0.5, 1 중 하나. 기본 0.5) |
-| Media | id(원본 파일 바이트의 SHA-256, 64자리 hex), mime('video/mp4', 'video/quicktime', 'video/webm' 중 하나), byteLength, durationMs, width, height(회전을 적용한 표시 크기), rotation(0·90·180·270. 컨테이너가 알려 준 값), fps(원본 값, 소수 허용), hasAudio, videoCodec(예: 'avc1.64001f', 'hvc1.1.6.L93.B0', 'vp09.00.10.08'), audioCodec('mp4a.40.2', 'opus' 등, 없으면 null) |
+| Media | id(원본 파일 바이트의 **조각 해시**, 64자리 hex. 8MiB 조각마다 SHA-256을 구해 순서대로 이어 붙인 바이트의 SHA-256. 마지막 조각은 남은 길이. `crypto.subtle.digest`가 입력 전체를 메모리에 받아 2GiB 파일을 한 번에 해시할 수 없기 때문이다. 슬라이드 사진 id(전체 SHA-256)와 계산법이 다르며 두 저장소는 id를 섞지 않는다), mime('video/mp4', 'video/quicktime', 'video/webm' 중 하나), byteLength, durationMs, width, height(회전을 적용한 표시 크기), rotation(0·90·180·270. 컨테이너가 알려 준 값), fps(원본 값, 소수 허용), hasAudio, videoCodec(예: 'avc1.64001f', 'hvc1.1.6.L93.B0', 'vp09.00.10.08'), audioCodec('mp4a.40.2', 'opus' 등, 없으면 null) |
 | mediaManifest | Media 배열. 조각에서 지운 영상도 작품을 지울 때까지 남겨 다시 넣을 수 있게 한다(슬라이드의 assetManifest와 같은 규칙) |
 | VideoProjectSummary | projectId, kind='video', title, updatedAt, revision, durationMs, thumbnailRevision, thumbnail(첫 조각 첫 프레임의 320×180 또는 180×320 JPEG). 미리보기는 삭제·재생성 가능한 파생 저장물이다 |
 
@@ -71,9 +71,9 @@
 
 - 작품 길이 total = Σ(outMs − inMs). 조각이 없으면 0이다.
 - 출력 프레임 k(0부터)의 시각은 마이크로초 정수 t_k = ⌊k × 1,000,000 / fps⌋이고, 겹침 요소 비교에는 ms 단위 ⌊t_k / 1000⌋을 쓴다. 출력 프레임 수는 ⌈total × fps / 1000⌉이다.
-- 프레임 k가 보여 주는 조각은 start_c ≤ t_k/1000 < start_c + (outMs − inMs)인 조각 c이고, 원본 시각은 s = inMs + (t_k/1000 − start_c)다. 해독한 프레임 중 타임스탬프가 s 이하인 가장 늦은 프레임을 쓴다(이전 프레임 유지). 조각의 프레임률이 작품 fps와 달라도 이 규칙 하나로 맞춘다.
+- 프레임 k가 보여 주는 조각은 start_c ≤ t_k/1000 < start_c + (outMs − inMs)인 조각 c이고, 원본 시각은 s = inMs + (t_k/1000 − start_c)다. 해독한 프레임 중 타임스탬프가 **s + 1ms 이하**인 가장 늦은 프레임을 쓴다(이전 프레임 유지). 조각의 프레임률이 작품 fps와 달라도 이 규칙 하나로 맞춘다. 1ms 허용은 V2에서 추가했다: 내림한 t_k는 원본의 정확한 시각 k/fps보다 최대 1µs 작고 WebM은 시각을 1ms 단위로 반올림해 적으므로, "s 이하"만 쓰면 출력 프레임의 일부가 한 장 앞 프레임이 된다(1분 출력 표본 24개 중 MP4 14개·WebM 5개, 고친 뒤 0개).
 - 겹침 요소는 startMs ≤ t < startMs + durationMs인 프레임에 보인다(끝은 포함하지 않는다). §9의 "±1프레임"은 이 식으로 계산한 프레임과 실제 출력 파일의 프레임 차이를 뜻한다.
-- 밈 프레임: 보이는 동안 밈 길이 L(ms)로 반복한다. 프레임 시각 t에서의 밈 안 시각은 m = (t − startMs) mod L이고, 스티커는 프레임 번호 ⌊m × 밈fps / 1000⌋의 그림, 밈 영상은 타임스탬프 m 이하의 가장 늦은 해독 프레임을 쓴다. 반복 경계에서 프레임을 건너뛰지 않는다는 뜻은 m이 L 직전 값에서 0으로 돌아갈 때 마지막 프레임 다음에 첫 프레임이 온다는 것이다.
+- 밈 프레임: 보이는 동안 밈 길이 L(ms)로 반복한다. 프레임 시각 t에서의 밈 안 시각은 m = (t − startMs) mod L이고, 밈 영상은 타임스탬프가 m + 1ms 이하인 가장 늦은 프레임을, 스티커는 타임스탬프가 m 이하인 가장 늦은 프레임을 쓴다. 스티커(애니메이션 WebP)의 프레임 시각은 `ImageDecoder`가 주는 정수 ms 값(지속 시간의 누적, 24fps면 0·42·84ms…)이라 반올림 오차가 없으므로 1ms 허용을 두지 않는다. 밈fps로 계산하지 않는다(V2 측정). 반복 경계에서 프레임을 건너뛰지 않는다는 뜻은 m이 L 직전 값에서 0으로 돌아갈 때 마지막 프레임 다음에 첫 프레임이 온다는 것이다.
 - 겹침 요소의 startMs는 작품 시각으로 저장하지만, 조각을 바꾸는 명령은 그 시각이 가리키던 **원본 프레임**을 따라가도록 startMs를 다시 계산한다(§4 "겹침 요소 따라가기"). 아이가 앞부분을 잘라 내면 뒤의 자막이 같은 장면 위에 남아 있어야 하기 때문이다.
 
 ### 좌표
@@ -180,7 +180,7 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 2. 파일 앞부분으로 컨테이너 형식을 확인한다(MP4/MOV 'ftyp', WebM EBML). 아니면 ASSET_INVALID("영상 파일이 아니에요").
 3. 컨테이너를 읽어 트랙·길이·크기·회전·코덱 문자열을 얻는다. 영상 트랙이 없거나 읽을 수 없으면 ASSET_INVALID. 길이·크기 상한 초과는 LIMIT_EXCEEDED.
 4. `VideoDecoder.isConfigSupported()`로 이 PC가 해독할 수 있는지 확인한다. 소리 트랙이 있으면 `AudioDecoder.isConfigSupported()`도 확인한다. 하나라도 안 되면 MEDIA_UNSUPPORTED("이 영상은 이 컴퓨터에서 읽을 수 없어요. 휴대폰 설정에서 '호환성 높은 형식(MP4)'으로 다시 찍거나 변환해 주세요"). HEVC는 지원을 약속하지 않는다.
-5. 바이트를 저장소에 복사하면서 SHA-256을 계산한다. 메인 스레드가 아닌 Worker에서 하고, 2GiB 파일의 소요 시간은 V2에서 잰다. 같은 해시가 이미 있으면 복사하지 않는다.
+5. 바이트를 OPFS에 복사하면서 §2의 조각 해시를 계산한다. Worker에서 한다. V2 측정 690~760MB/s(2GiB 약 3초, 개발 PC 메인 스레드에서 잼. Worker 속도는 V4에서 확인). 복사는 임시 이름으로 쓰고 해시가 정해지면 `media/<id>`로 옮긴다. 같은 id가 이미 있으면 임시 파일을 지운다. 파일을 메모리 Blob으로 읽어 넣지 않는다(V2: 메모리에서 만든 500MB Blob은 Chrome·Edge IndexedDB에서 InvalidBlob으로 실패).
 6. 첫 프레임을 해독해 미리보기 그림을 만든다. 실패해도 가져오기는 성공이며 미리보기만 비운다.
 7. 결과 Media를 돌려주고, UI가 addClip을 보낸다. 2~6 어느 단계가 실패해도 작품은 바뀌지 않는다.
 
@@ -190,9 +190,9 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 
 | 항목 | 결정 |
 |---|---|
-| 데이터베이스 | 새 IndexedDB `canvacraft-video` 버전 1: projects, summaries, media(바이트 저장 위치가 OPFS로 정해지면 media에는 메타데이터만). 기존 `canvacraft` 데이터베이스의 구조·버전은 바꾸지 않는다(RELEASE.md: 버전을 올리면 앞 버전으로 되돌릴 수 없다) |
-| 바이트 위치 | 사용자 영상 바이트는 IndexedDB Blob과 OPFS 중 V2 측정으로 정한다. 조건은 500MB 파일 쓰기 30초 이내, 부분 읽기(Range) 가능, 삭제 즉시 용량 회수. 선택한 뒤 이 표를 갱신한다 |
-| 임시 파일 | 내보내기 결과를 흘려 쓰는 임시 파일(§8)과 `.canvavideo` 스트리밍 쓰기(아래)는 영상 바이트 위치와 무관하게 **OPFS**를 쓴다(Worker에서 `createSyncAccessHandle`). IndexedDB는 조각 단위로 이어 쓰기가 안 되기 때문이다. OPFS 쓰기 속도와 용량 회수는 V2에서 함께 잰다 |
+| 데이터베이스 | 새 IndexedDB `canvacraft-video` 버전 1: projects, summaries, media(Media 메타데이터만. 바이트는 OPFS). 기존 `canvacraft` 데이터베이스의 구조·버전은 바꾸지 않는다(RELEASE.md: 버전을 올리면 앞 버전으로 되돌릴 수 없다) |
+| 바이트 위치 | **OPFS** `canvacraft-video/media/<id>`(V2 결정). 500MB 쓰기 1.1초, 가운데 1MB 읽기 1.5ms, 지우면 사용량이 즉시 줄었다. IndexedDB Blob은 쓰기·읽기는 비슷했지만 지우고 DB까지 삭제해도 5초 뒤 사용량이 줄지 않았다 |
+| 임시 파일 | 내보내기 결과를 흘려 쓰는 임시 파일(§8)과 `.canvavideo` 스트리밍 쓰기(아래)는 영상 바이트 위치와 무관하게 **OPFS**를 쓴다(Worker에서 `createSyncAccessHandle`). IndexedDB는 조각 단위로 이어 쓰기가 안 되기 때문이다. V2에서 10분 출력(최대 2GB)을 이 방식으로 흘려 썼다 |
 | 저장 순서 | 바이트는 가져올 때 이미 저장돼 있다. 자동 저장은 projects와 summaries를 한 트랜잭션으로 갱신하며 이 성공이 저장 확정이다. 더 새로운 revision이 저장돼 있으면 REVISION_CONFLICT(슬라이드 계약 §6과 같다) |
 | 자동 저장 시점 | 변경 1초 뒤, 연속 편집 중 최대 5초(슬라이드와 같다. `autosave.ts` 재사용) |
 | 잠금 | Web Locks 이름은 `canvacraft-video-catalog`(공유)와 `canvacraft-video-project-<id>`(배타). 순서는 catalog → project. 슬라이드 잠금과 이름이 달라 같은 id의 작품이 있어도 충돌하지 않는다. 잠금이 없으면 읽기 전용(슬라이드 계약 §6 Phase 8 결정과 같다). 둘째 탭은 읽기 전용 |
@@ -214,9 +214,9 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 | 구조 | ZIP. manifest.json `{ format: 'canvavideo', schemaVersion: 1 }`, project.json(조각이 쓰는 Media만 든 mediaManifest), media/<sha256>.mp4 / .mov / .webm(STORE, 압축 안 함). 밈·효과음·음악은 ID로만 참조하므로 넣지 않는다 |
 | 형식 구분 | format이 'canvavideo'가 아니면 영상 편집기는 INVALID_VALUE("영상 작품 파일이 아니에요")로 거부한다. 슬라이드 편집기가 format 'canvacraft'가 아닌 파일을 거부하는 것은 코드에서 확인됨(`src/storage/projectFile.ts` 101행, "CanvaCraft 작품 파일이 아니에요"). 그래서 `.canvavideo`를 슬라이드 편집기에서 열어도 깨지지 않는다 |
 | 열기 | 검증 후 새 projectId, revision 0으로 가져온다(슬라이드 계약 §6과 같다). media/ 항목은 해시를 다시 계산해 파일명과 비교하고 저장소에 복사한다 |
-| 검사 | 허용 경로만, 중복·절대·상위 경로·암호화 항목 거부, 헤더 크기를 믿지 않고 실제 해제 바이트에 상한 적용(슬라이드 계약 §5와 같다). 항목 수 ≤ 22(manifest, project, media 20) |
+| 검사 | 허용 경로만, 중복·절대·상위 경로·암호화 항목 거부. media 항목은 STORE(압축 없음)만 허용하고, 중앙 디렉터리와 로컬 헤더의 크기·위치가 서로 맞고 파일 범위 안이어야 한다. manifest·project.json은 슬라이드 계약 §5처럼 실제 해제 바이트에 상한을 둔다. 항목 수 ≤ 22(manifest, project, media 20) |
 | 크기 | 저장 전에 예상 크기(media byteLength 합 + 1MiB)를 보여 주고 확인을 받는다 |
-| 대용량 | JSZip은 ZIP 전체를 메모리에 만들고 읽을 때도 전체를 올린다. 4GiB 작품에는 쓸 수 없다. **V2에서** 스트리밍 ZIP 쓰기·읽기(예: 저장소 임시 파일로 흘려 쓰기, File System Access API) 가능 여부를 측정해 정한다. 정해지기 전의 규칙: media 합계 1GiB 이하만 원본 저장을 허용하고, 넘으면 "영상이 커서 원본 파일로 저장할 수 없어요. 이 컴퓨터에는 자동 저장돼 있어요"로 안내한다 |
+| 대용량 | JSZip을 쓰지 않는다(ZIP 전체를 메모리에 올린다). **자체 STORE ZIP**(V2 결정): 쓰기는 헤더 바이트와 OPFS 파일 Blob을 `new Blob([...])`으로 이어 붙여 흘려 쓰고 CRC-32는 스트림으로 계산한다. 읽기는 끝 레코드와 중앙 디렉터리만 읽고 항목은 `Blob.slice`로 꺼낸다. 4GiB를 넘을 수 있으므로 ZIP64를 지원한다. V2에서 1GB를 쓰기 10초·목록 읽기 3ms·CRC 일치·JS 힙 변화 없이 확인했다(ZIP32 시험 코드). 구현(V3) 전까지 임시 규칙: media 합계 1GiB 이하만 원본 저장을 허용하고, 넘으면 "영상이 커서 원본 파일로 저장할 수 없어요. 이 컴퓨터에는 자동 저장돼 있어요"로 안내한다. 구현과 ZIP64 시험이 끝나면 이 상한을 없앤다 |
 
 ## 7. 모듈 API와 오류
 
@@ -240,19 +240,20 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 
 ### 미리보기
 
-재생 시계는 Web Audio `AudioContext.currentTime`이다. 영상 조각은 숨긴 `<video>`(저장소 Blob URL)를 시계에 맞춰 재생하고 프레임을 캔버스에 그린 뒤 composeFrame으로 자막·밈을 겹친다. 밈 영상은 보이는 것마다 숨긴 `<video>` 하나를 §3의 m 시각에 맞춘다. 스티커는 `ImageDecoder`(또는 V2에서 정한 방법)로 풀어 둔 프레임 중 §3의 프레임 번호를 그린다. 효과음·음악·밈 소리는 Web Audio로 같은 시계에 맞춘다. 재생 막대를 끌 때는 그 시각의 프레임을 seek해 그린다. 미리보기는 출력과 1프레임 차이를 허용하고 끊김도 허용하지만, 자막·밈이 **보이기 시작하는 시각과 끝나는 시각**은 §3의 식과 같아야 한다.
+재생 시계는 Web Audio `AudioContext.currentTime`이다. 영상 조각은 숨긴 `<video>`(저장소 Blob URL)를 시계에 맞춰 재생하고 프레임을 캔버스에 그린 뒤 composeFrame으로 자막·밈을 겹친다. 밈 영상은 보이는 것마다 숨긴 `<video>` 하나를 §3의 m 시각에 맞춘다. 스티커(애니메이션 WebP)는 `ImageDecoder`로 §3의 프레임만 그때그때 푼다(512² 프레임당 약 1.3ms). 모든 프레임을 미리 풀어 두지 않는다(512²×120프레임이면 126MB). 효과음·음악·밈 소리는 Web Audio로 같은 시계에 맞춘다. 재생 막대를 끌 때는 그 시각의 프레임을 seek해 그린다. 미리보기는 출력과 1프레임 차이를 허용하고 끊김도 허용하지만, 자막·밈이 **보이기 시작하는 시각과 끝나는 시각**은 §3의 식과 같아야 한다.
 
 ### 출력
 
 | 항목 | 결정 |
 |---|---|
-| 처리 위치 | Worker. 메인 화면은 진행률·취소만 맡는다. 슬라이드 계약 §8의 "worker는 쓰지 않는다"는 영상 모드에 적용하지 않는다(개정). contracts.md §8 그 문장 뒤에 "영상 모드는 video-contracts.md §8을 따른다"를 V8에서 한 문장 추가한다(슬라이드 계약의 다른 내용은 바꾸지 않는다). 같은 origin 스크립트 Worker라 현재 CSP `script-src 'self'`로 허용된다. 라이브러리가 WASM을 쓰면 `'wasm-unsafe-eval'`을 더해야 하며 V2에서 확인한다 |
+| 처리 위치 | Worker. 메인 화면은 진행률·취소만 맡는다. 슬라이드 계약 §8의 "worker는 쓰지 않는다"는 영상 모드에 적용하지 않는다(개정). contracts.md §8 그 문장 뒤에 "영상 모드는 video-contracts.md §8을 따른다"를 V8에서 한 문장 추가한다(슬라이드 계약의 다른 내용은 바꾸지 않는다). 같은 origin 스크립트 Worker라 현재 CSP `script-src 'self'`로 허용된다(V2 배포 형식 빌드로 확인). Mediabunny는 WASM·eval을 쓰지 않아 `'wasm-unsafe-eval'`은 필요 없다 |
 | 순서 | 입력 확정 → snapshot → 글꼴·밈 프레임·소리 준비 → 프레임 k = 0부터 §3의 식으로 조각 프레임 해독·composeFrame(scale 1.5)·`VideoEncoder` → 소리 섞기·`AudioEncoder` → 컨테이너 쓰기 → 다운로드. 출력 중 편집은 snapshot에 섞지 않는다 |
 | 해상도 | 가로 1920×1080, 세로 1080×1920. 조각은 contain으로 맞추고 여백은 검은색(§3) |
-| 프레임률 | 작품 fps. 조각 프레임률이 달라도 §3의 "타임스탬프 s 이하의 가장 늦은 프레임" 규칙으로 맞춘다 |
-| 형식 선택 | **쌍으로 정한다.** H.264(High, 'avc1.640028')와 AAC-LC('mp4a.40.2')가 **둘 다** `isConfigSupported()`를 통과하면 MP4. 하나라도 안 되면 파일 전체를 WebM(VP9 'vp09.00.40.08' + Opus)으로 낸다. 둘 다 안 되면 ENCODER_UNAVAILABLE. V2에서 두 조합을 각각 시험한다 |
-| 비트레이트 | 시작값 1080p30 영상 10Mbps VBR, 소리 AAC 192kbps 또는 Opus 128kbps. V2 결과와 YouTube 권장값 재확인으로 조정한다 |
-| 소리 섞기 | 48kHz 스테레오로 섞는다. 섞는 위치는 **V2에서 결정**한다: Web Audio `OfflineAudioContext`는 메인 스레드에서만 만들 수 있다고 알려져 있어(미확인) Worker 안에서 쓸 수 없으면, Worker가 `AudioDecoder`의 Float32 출력을 직접 더해 섞는다. 메인 스레드에서 섞으면 10분 작품의 소리 버퍼(약 230MB)가 메인 메모리에 올라가고 "메인 화면은 진행률·취소만"이라는 규칙이 깨지므로 그 방법은 마지막 선택이다. 섞는 규칙은 어느 위치든 같다: 조각 원본 소리(muted가 아닌 조각, × originalVolume) + 밈 영상 소리(soundOn인 밈, §3의 반복 포함, × 1) + 효과음(soundOn인 밈의 startMs에 1회, 반복마다 다시 내지 않음) + 배경음악(musicId가 있으면 0초부터, 음악 길이가 작품보다 짧으면 반복, 작품 끝에서 자름, 페이드 없음, × musicVolume). 합은 −1~1로 자르고 압축기는 쓰지 않는다. 자주 잘리면 V7에서 음량 단계를 조정하고 이 표를 갱신한다. 소리가 전혀 없는 작품도 무음 소리 트랙을 넣는다 |
+| 프레임률 | 작품 fps. 조각 프레임률이 달라도 §3의 "타임스탬프 s + 1ms 이하의 가장 늦은 프레임" 규칙으로 맞춘다 |
+| 형식 선택 | **쌍으로 정한다.** H.264(High, 'avc1.640028')와 AAC-LC('mp4a.40.2')가 **둘 다** `isConfigSupported()`를 통과하면 MP4. 하나라도 안 되면 파일 전체를 WebM(VP9 'vp09.00.40.08' + Opus)으로 낸다. 둘 다 안 되면 ENCODER_UNAVAILABLE. V2: 개발 PC의 Chrome·Edge·번들 Chromium 모두 MP4 조합이 통과했다(8GB PC 미측정, 잠정) |
+| MP4 배치 | Mediabunny `fastStart: 'reserve'`에 트랙별 최대 패킷 수(영상 = 프레임 수 + 2, AAC = ⌈길이 × 48000 / 1024⌉ + 64)를 준다. moov가 앞에 오고(`ftyp, moov, free, mdat`) 흘려 쓰기가 유지된다. 편집 목록은 쓰지 않는다. YouTube 권장값(moov 앞쪽, 편집 목록 없음)을 따르기 위해서다(V2) |
+| 비트레이트 | 영상 8Mbps VBR(YouTube 1080p 24~30fps SDR 권장값, 2026-11-09 확인), 키 프레임 2초(YouTube 권장 GOP 0.5초와의 화질 비교는 V7). 소리 AAC 192kbps 또는 Opus 128kbps(YouTube 권장 384kbps는 미측정이라 유지). V2에서 10Mbps를 요청했을 때 소프트웨어 H.264는 약 26Mbps, VP9는 약 13Mbps를 냈다(합성 잡음 영상). V7에서 두 경로의 설정을 따로 정한다 |
+| 소리 섞기 | 48kHz 스테레오로 섞는다. **Worker가 `AudioDecoder`의 Float32 출력을 직접 더해 섞는다**(V2 결정). Worker에는 `OfflineAudioContext`·`AudioContext`가 없다(만들면 ReferenceError, Chrome·Edge·Chromium). 영상 프레임보다 0.5초 앞서 조금씩 섞어 인코더에 넣으므로 소리 버퍼 전체를 메모리에 두지 않는다. 10분 작품의 섞기 계산은 2.0초였다. 섞는 규칙은 어느 위치든 같다: 조각 원본 소리(muted가 아닌 조각, × originalVolume) + 밈 영상 소리(soundOn인 밈, §3의 반복 포함, × 1) + 효과음(soundOn인 밈의 startMs에 1회, 반복마다 다시 내지 않음) + 배경음악(musicId가 있으면 0초부터, 음악 길이가 작품보다 짧으면 반복, 작품 끝에서 자름, 페이드 없음, × musicVolume). 합은 −1~1로 자르고 압축기는 쓰지 않는다. 자주 잘리면 V7에서 음량 단계를 조정하고 이 표를 갱신한다. 소리가 전혀 없는 작품도 무음 소리 트랙을 넣는다 |
 | 메모리 | 한 번에 쥐는 해독 프레임은 조각 1개분 + 밈 영상 2개분이며 그린 직후 close. 인코딩 결과는 OPFS 임시 파일(§6)로 흘려 쓰고 끝나면 File로 내려준다. 실패·취소 시 임시 파일을 지운다 |
 | 진행·취소 | 진행률 = 인코딩한 프레임 / 전체 프레임. 취소는 CANCELLED이며 부분 파일을 내려주지 않는다. 취소 뒤 다시 내보낼 수 있다 |
 | 결과 창 | 파일 형식(MP4 / WebM), 길이, 크기. WebM이면 "YouTube에 올릴 수 있어요"를 함께 쓴다. YouTube 안내는 "보호자 계정으로 올리기" 한 문단, 외부 링크 없음 |
@@ -265,7 +266,7 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 
 | 파일 | 변경 | 시점 |
 |---|---|---|
-| `scripts/prune-dist.mjs` CSP | `media-src 'self' blob:` 추가(필수. 지금은 `default-src 'none'`에 media-src가 없어 배포본에서 `<video src="blob:…">`·`<audio>`가 막힌다). WASM이면 `script-src`에 `'wasm-unsafe-eval'` | V2에서 확인, V8에서 반영 |
+| `scripts/prune-dist.mjs` CSP | `media-src 'self' blob:`와 `worker-src 'self'` 추가. V2 확인: 지금 CSP에서는 `<video src="blob:…">`가 막혔고("media-src 미지정 → default-src"), 추가한 CSP에서는 출력·재생이 위반 0건으로 통과했다. WASM 없음 | V8에서 반영 |
 | `launcher/CanvaCraftLauncher.cs` `TypeOf` | `.mp4`, `.webm`, `.mp3`, `.ogg`, `.wasm` MIME 추가(`nosniff`를 보내므로 없으면 거부된다) | V8 |
 | `scripts/serve-dist.mjs` | 같은 MIME 추가 | V8 |
 | 내장 소리·밈 파일 받기 | `fetch()`로 통째로 받아 Blob URL로 쓴다. 실행 파일 서버가 Range를 지원하지 않기 때문이다. 사용자 영상은 저장소에서 읽어 서버를 거치지 않는다 | V6 |
@@ -302,18 +303,20 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 | WebM 안내 | 결과 창에 형식과 "YouTube에 올릴 수 있어요" 표시 | §8 결과 창 |
 | 최근 작품 수 | 6개 | §6 시작 화면 |
 
-### V2 측정 후 결정 (측정 전에 임의 값으로 확정하지 않는다)
+### V2 측정 후 결정 (2026-11-09, 근거는 VIDEO_PHASE2_RESULTS.md)
 
-| 항목 | 선택지 | 결정 조건 |
-|---|---|---|
-| 스티커 파일 형식 | 애니메이션 WebP / APNG(`ImageDecoder`) 또는 투명 WebM(VP9 알파, WebCodecs 알파 전달 여부 미확인) | 프레임 시각을 얻을 수 있고 512×512×5초 프레임 메모리가 허용 범위인 것 |
-| 영상 바이트 저장 위치 | IndexedDB Blob / OPFS | 500MB 쓰기 30초 이내, 부분 읽기, 삭제 즉시 회수 |
-| 컨테이너 라이브러리 | Mediabunny(후보) / mp4-muxer+webm-muxer 조합 | 설치·MP4·MOV·WebM 읽기·쓰기·회전 정보·WebCodecs 연결·라이선스·번들 크기·WASM 여부 |
-| 비트레이트 | 10Mbps 시작값 | 두 PC 출력 시간·파일 크기, YouTube 권장값 현재 페이지 |
-| 작품 길이 상한 | 10분 유지 / 축소 | 8GB PC에서 10분 출력이 시간·메모리 목표를 넘는지 |
-| `.canvavideo` 대용량 | 스트리밍 ZIP 쓰기·읽기(OPFS 임시 파일 경유) / 1GiB 제한 유지 | 메모리에 올리지 않고 쓰고 읽을 수 있는지 |
-| 공식 지원 형식 | MP4 우선 + WebM 대체 / WebM만 | H.264+AAC가 두 PC에서 모두 안 되면 WebM만 |
-| Worker 안 소리 섞기 | `OfflineAudioContext`(Worker에서 만들 수 있으면) / Worker가 `AudioDecoder` 출력을 직접 합산 / 메인 스레드에서 섞기(마지막 선택) | Worker에서 Web Audio 사용 가능 여부, 10분 작품 소리 섞기의 시간·메모리 |
+| 항목 | 결정 | 근거(개발 PC) | 상태 |
+|---|---|---|---|
+| 스티커 파일 형식 | 애니메이션 WebP, `ImageDecoder`로 필요한 프레임만 | 512²×120프레임 674KB(APNG 2.0MB), 프레임당 1.3ms. 투명 WebM은 되지만 라이브러리가 `blob:` Worker를 더 띄운다 | 확정 |
+| 영상 바이트 저장 위치 | OPFS | 삭제 즉시 용량 회수는 OPFS만 만족 | 확정 |
+| 컨테이너 라이브러리 | Mediabunny 1.62.1(MPL-2.0) 정확한 버전 고정 | WASM 없음, 시험 Worker 묶음 589KB(gzip 147KB), MP4·WebM 쓰기·읽기, Fast Start. MOV·회전 정보는 실제 파일로 미확인 | 확정(MOV는 V4에서 확인) |
+| 비트레이트 | 영상 8Mbps VBR | YouTube 권장값 | 확정 |
+| 작품 길이 상한 | 10분 유지 | 10분 출력 최악 192초·메모리 1.2GB(목표 1,200초·1.5GB) | **잠정**(8GB PC 측정 후 확정) |
+| `.canvavideo` 대용량 | 자체 STORE ZIP 스트리밍 + ZIP64 | 1GB 쓰기 10초, 목록 3ms, 힙 변화 없음 | 확정(구현 V3) |
+| 공식 지원 형식 | MP4 우선 + WebM 대체 | H.264+AAC 인코딩이 3개 브라우저에서 통과 | **잠정**(8GB PC 측정 후 확정) |
+| Worker 안 소리 섞기 | Worker가 직접 합산 | Worker에 OfflineAudioContext 없음, 10분 섞기 2.0초 | 확정 |
+
+V2에서 함께 바꾼 규칙: 원본 프레임 찾기에 1ms 허용(§3), Media id를 조각 해시로(§2·§6), 스티커 프레임 시각은 해독기 값(§3), MP4 Fast Start(§8).
 
 ### 기획안과 달라진 점
 
@@ -330,6 +333,6 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 
 ## 11. 다음 할 일
 
-1. V2 기술 검증. 산출물은 `docs/VIDEO_PHASE2_RESULTS.md`이고 이 문서의 "V2에서 결정" 8개를 채운다.
-2. V2 결과로 §5 상한과 §8 형식 규칙을 고치고, 바뀐 이유를 §10에 적는다.
+1. ~~V2 기술 검증~~ 2026-11-09 개발 PC 측정 완료(VIDEO_PHASE2_RESULTS.md). 남은 V2 확인: RAM 8GB PC 측정(길이 상한·공식 형식 확정), 실제 휴대폰 영상 2~3개, Windows 미디어 플레이어 재생.
+2. V3 시작 화면·문서·명령·저장 틀. 이 문서 §2·§4·§5·§6을 따른다.
 3. 진행 상황은 PROGRESS.md에 남긴다.
