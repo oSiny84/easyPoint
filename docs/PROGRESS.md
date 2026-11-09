@@ -1,11 +1,12 @@
 # 개발 진행 및 다음 AI 인계
 
-갱신: 2026-11-06. AI 고정 담당은 없고, 한 AI가 개발하다 다음 AI가 이어받는다.
+갱신: 2026-11-07. AI 고정 담당은 없고, 한 AI가 개발하다 다음 AI가 이어받는다.
 
 ## 3분 요약
 
 **현재 상태**
 
+- 어린이용 **영상 편집기**를 기획하고 V1 계약을 썼다(2026-11-07, [VIDEO_EDITOR_PLAN.md](VIDEO_EDITOR_PLAN.md), [video-contracts.md](video-contracts.md)). 같은 앱에 시작 화면(슬라이드 만들기 / 영상 만들기)을 추가하고, 영상 가져오기·자르기·자막(보이는 시간 지정)·움직이는 밈(투명 스티커·소리 든 짧은 밈 영상)·효과음·소리·YouTube용 MP4 내보내기를 8단계(V1~V8)로 만든다. 사용자 결정 7개는 모두 기본값으로 확정됐고(2026-11-07 "기본값으로 진행"), 밈·효과음 자산의 출처만 V6 전까지 다시 묻는다. 계약은 필드·명령 18개·검사·상한·저장·출력 규칙을 정했고, 스티커 파일 형식·영상 바이트 저장 위치·라이브러리·비트레이트·Worker 안 소리 섞기 등 8개는 V2 측정 후 결정으로 비워 두었다. **문서만 있고 코드·라이브러리·코덱 동작은 미검증이다.**
 - GPT가 만든 그림 배경 16종을 배경 패널에 연결했다. 패널에서 기존 24종보다 먼저 나오고, 16장 모두 저장·다시 열기·PPT·PDF 시험을 통과했다. 파일 크기는 [ILLUSTRATED_BACKGROUNDS_READY.md](ILLUSTRATED_BACKGROUNDS_READY.md)에 있다. 배포 결과는 24MB에서 64MB로, 실행 파일은 16MB에서 56MB로 커졌다. 실행 파일은 릴리스 `v0.0.2`로 올렸다. 처음에는 프리릴리스였고 사용자 요청으로 정식 릴리스로 바꿨다.
 - 집 PC용 단일 실행 파일을 만들었다(`npm run exe` → `artifacts/release/CanvaCraft.exe`). 더블클릭하면 브라우저로 앱이 열리고 Node.js가 필요 없다. 자동 시험을 통과했고 사용자 PC에서 실행됐다. 다른 PC와 알림 영역 아이콘 메뉴는 사용자 확인을 받지 않았다. GitHub에 프리릴리스 `v0.0.1`로 올렸다.
 - Phase 10의 자동 점검과 산출물을 마쳤다. 배포본으로 대표 시나리오 7개를 통과했고 결과는 [통합 시험 보고서](INTEGRATION_REPORT_2026-11-06.md)에 있다. 사용 설명과 배포 패키지 절차도 만들었다. **어린이 사용성 관찰은 미실시이고 공개 배포도 하지 않았다.**
@@ -26,10 +27,11 @@
 
 **다음 액션**
 
-1. `CanvaCraft.exe`를 집 PC에서 실행해 보기 (사용자)
-2. 터치 기기 확인, 어린이 사용성 관찰 (사용자, 보호자·교사 입회)
-3. 웹 호스트 선택, 이름·화면 권리 검토. 실행 파일은 검토 전에 공개된 상태다 (사용자, [RELEASE.md](RELEASE.md))
-4. RAM 8GB 기기에서 사진이 많은 문서 확인 (사용자)
+1. 영상 편집기 V2 기술 검증([video-contracts.md](video-contracts.md) §10 "V2 측정 후 결정" 8개: WebCodecs 해독·인코딩 두 조합, 스티커 형식, 저장 위치, 라이브러리, Worker+CSP, Worker 안 소리 섞기, 8GB PC, `.canvavideo` 대용량). 산출물은 `docs/VIDEO_PHASE2_RESULTS.md`. V2 결과로 범위를 다시 정한다
+2. `CanvaCraft.exe`를 집 PC에서 실행해 보기 (사용자)
+3. 터치 기기 확인, 어린이 사용성 관찰 (사용자, 보호자·교사 입회)
+4. 웹 호스트 선택, 이름·화면 권리 검토. 실행 파일은 검토 전에 공개된 상태다 (사용자, [RELEASE.md](RELEASE.md))
+5. RAM 8GB 기기에서 사진이 많은 문서 확인 (사용자)
 
 **위험 요소**
 
@@ -155,8 +157,10 @@ Phase 2 결정과 근거는 [PHASE2_RESULTS.md](PHASE2_RESULTS.md) §1에 있다
 
 | 문서 | 이럴 때 연다 |
 |---|---|
-| [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) | 10단계 계획과 Phase별 완료 기준 |
-| [contracts.md](contracts.md) | 데이터·명령·저장·출력 규칙과 결정 |
+| [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) | 슬라이드 편집기 10단계 계획과 Phase별 완료 기준 |
+| [VIDEO_EDITOR_PLAN.md](VIDEO_EDITOR_PLAN.md) | 영상 편집기 기획: 시작 화면, 기능 범위, 내보내기 기술 후보, V1~V8 계획, 사용자 결정 항목(확정). 구현 전 |
+| [video-contracts.md](video-contracts.md) | 영상 편집기 데이터·명령·검사·상한·저장·출력 계약. 기획안과 다르면 이 문서가 우선. V2에서 채울 항목 8개 |
+| [contracts.md](contracts.md) | 슬라이드 편집기 데이터·명령·저장·출력 규칙과 결정 |
 | [PHASE2_RESULTS.md](PHASE2_RESULTS.md) | 측정 근거 수치, 재실행 방법, 미검증 목록 |
 | [DESIGN_REVIEW_2026-11-06.md](DESIGN_REVIEW_2026-11-06.md) | 설계 보강 19건과 사용자 결정 4건. 파일 소유권 관련 내용은 분담 폐지로 적용되지 않는다 |
 | [UI_REFERENCE.md](UI_REFERENCE.md) | 확정 화면 배치·도구·요소 라이브러리·조작과 Phase별 반영 |
