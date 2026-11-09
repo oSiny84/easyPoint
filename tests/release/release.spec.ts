@@ -6,6 +6,14 @@ import { PDFDocument } from 'pdf-lib';
 
 // 배포 결과로 하는 통합 시험(Phase 10). DEV 전용 시험 고리가 없으므로 화면 조작과 저장소 내용만으로 확인한다.
 const OUT = 'artifacts/release';
+
+// 기억한 작품이 없는 탭은 시작 화면에서 시작한다(영상 기획안 §2). 슬라이드 만들기 → 새 작품으로 편집기에 들어간다.
+async function newSlideProject(page: Page) {
+  await page.goto('./');
+  await page.getByRole('button', { name: '슬라이드 만들기' }).click();
+  await page.getByRole('button', { name: '새 작품' }).click();
+  await expect(page.getByTestId('paper')).toBeVisible();
+}
 const GPS = 'GPS-SECRET-37.5665N', FILE_NAME = 'secret-family-photo.jpg';
 
 type Watch = { errors: string[]; external: string[]; failed: string[]; csp: string[] };
@@ -100,8 +108,7 @@ test.beforeAll(async () => { await fs.mkdir(OUT, { recursive: true }); });
 
 test('대표 시나리오 1~6: 만들기, 꾸미기, 복원, 다른 프로필, 출력', async ({ page, browser }) => {
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
 
   // 1. 새 작품과 한글 제목.
   await page.getByRole('textbox', { name: '작품 이름' }).fill('우리 반 소풍');
@@ -174,8 +181,7 @@ test('대표 시나리오 1~6: 만들기, 꾸미기, 복원, 다른 프로필, �
   const original = await saveOriginal(page, 'scenario.canvacraft');
   const other: BrowserContext = await browser.newContext({ viewport: { width: 1366, height: 768 } });
   const otherPage = await other.newPage(); const otherSeen = watch(otherPage);
-  await otherPage.goto('./');
-  await expect(otherPage.getByTestId('paper')).toBeVisible();
+  await newSlideProject(otherPage);
   await otherPage.getByTestId('open-file').setInputFiles(original);
   await saved(otherPage);
   const copy = await project(otherPage);
@@ -208,8 +214,7 @@ test('대표 시나리오 1~6: 만들기, 꾸미기, 복원, 다른 프로필, �
 
 test('대표 시나리오 7: 손상 사진, 저장 용량 부족, 누락 자산, 긴 한글, 출력 취소', async ({ page }) => {
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
 
   // 사진이 아닌 파일과, 앞부분만 JPEG이고 나머지가 깨진 파일.
   await uploadPhoto(page, Buffer.from('이것은 사진이 아니에요'), 'broken.jpg');
@@ -274,8 +279,7 @@ test('개인정보: 위치 정보와 파일 이름이 저장소와 내보낸 파
   const seen = watch(page);
   const bodies: string[] = [];
   page.on('request', request => { if (request.method() !== 'GET') bodies.push(`${request.method()} ${request.url()}`); });
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   const photo = withGps(await jpeg(page, 640, 480, '#228844'));
   expect(photo.includes(GPS)).toBe(true);
   await uploadPhoto(page, photo, FILE_NAME);
@@ -312,8 +316,7 @@ test('개인정보: 위치 정보와 파일 이름이 저장소와 내보낸 파
 
 test('공용 PC: 작품을 지우면 브라우저 저장소에 작품과 사진이 남지 않는다', async ({ page }) => {
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await uploadPhoto(page, await jpeg(page, 640, 480, '#884422'), 'p.jpg');
   await expect.poll(async () => page.getByTestId('handle-se').count()).toBe(1);
   await saved(page);
@@ -339,8 +342,7 @@ test('공용 PC: 작품을 지우면 브라우저 저장소에 작품과 사진�
 test('저장소를 쓸 수 없는 브라우저에서도 시작하고 원본으로 받을 수 있다', async ({ page }) => {
   await page.addInitScript(() => { Object.defineProperty(window, 'indexedDB', { configurable: true, get: () => ({ open: () => { throw new DOMException('막힘', 'SecurityError'); } }) }); });
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();
   await expect(saveState(page)).toHaveText('저장 실패', { timeout: 8000 });
   const bytes = await saveOriginal(page, 'no-storage.canvacraft');
@@ -350,8 +352,7 @@ test('저장소를 쓸 수 없는 브라우저에서도 시작하고 원본으�
 });
 
 test('저장된 작품이 망가졌으면 열지 않고 알리며, 다른 작품은 쓸 수 있다', async ({ page }) => {
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();
   await saved(page);
   await page.evaluate(async () => {
@@ -363,6 +364,8 @@ test('저장된 작품이 망가졌으면 열지 않고 알리며, 다른 작품
     sessionStorage.removeItem('canvacraft.current-project');
   });
   await page.reload();
+  // 기억한 작품이 없으면 시작 화면이다.
+  await page.getByRole('button', { name: '슬라이드 만들기' }).click();
   await expect(works(page)).toHaveCount(1);
   await works(page).getByRole('button', { name: /열기$/ }).click();
   await expect(page.getByRole('status')).toContainText('형식');
@@ -371,9 +374,29 @@ test('저장된 작품이 망가졌으면 열지 않고 알리며, 다른 작품
   await expect(page.getByTestId('paper')).toBeVisible();
 });
 
-test('화면 오류가 나면 빈 화면 대신 안내하고 새로고침으로 돌아온다', async ({ page }) => {
+// 영상 V3: 배포본(CSP, 하위 경로, 나눠 받는 영상 편집기 파일)에서 시작 화면 → 영상 작품 → 저장 → 새로고침 복원 → 시작 화면 최근 작품.
+test('영상 만들기: 배포본에서 영상 편집기를 불러와 저장하고 새로고침해도 돌아온다', async ({ page }) => {
+  const seen = watch(page);
   await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await page.getByRole('button', { name: '영상 만들기' }).click();
+  await expect(page.getByRole('list', { name: '내 영상' })).toBeAttached();
+  await page.getByRole('button', { name: '새 작품' }).click();
+  await expect(page.getByTestId('video-stage')).toBeVisible();
+  await page.getByRole('textbox', { name: '작품 이름' }).fill('배포본 영상');
+  await page.getByRole('textbox', { name: '작품 이름' }).press('Enter');
+  await saved(page);
+  await page.reload();
+  await expect(page.getByRole('textbox', { name: '작품 이름' })).toHaveValue('배포본 영상');
+  await saved(page);
+  await page.getByRole('button', { name: '작품 목록' }).click();
+  await page.getByRole('button', { name: '시작 화면' }).click();
+  await expect(page.getByRole('list', { name: '최근 작품' }).getByRole('listitem')).toHaveCount(1);
+  await expect(page.getByRole('list', { name: '최근 작품' })).toContainText('배포본 영상');
+  expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
+});
+
+test('화면 오류가 나면 빈 화면 대신 안내하고 새로고침으로 돌아온다', async ({ page }) => {
+  await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();
   await saved(page);
   // 저장된 문서에는 없는 값으로 화면을 망가뜨린다. Konva 없이 재현하도록 React 렌더 오류를 일으킨다.
@@ -388,8 +411,7 @@ test('화면 오류가 나면 빈 화면 대신 안내하고 새로고침으로 
 
 test('화면 크기: 시작 화면과 편집 화면이 넘치지 않고 도구가 모두 보인다', async ({ page }) => {
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();
   await saved(page);
   for (const [width, height] of [[1920, 1080], [1366, 768], [1280, 720], [1024, 768]]) {
@@ -414,8 +436,7 @@ test('화면 크기: 시작 화면과 편집 화면이 넘치지 않고 도구�
 });
 
 test('키보드만으로 작품 목록에서 작품을 열고 발표를 시작한다. 포커스가 눈에 보인다', async ({ page }) => {
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();
   await saved(page);
   await page.getByRole('button', { name: '작품 목록' }).click();
@@ -444,8 +465,7 @@ test('터치: 그림을 눌러 넣고 끌어 옮기며, 발표를 눌러서 넘�
   const context = await browser.newContext({ baseURL: process.env.RELEASE_URL ?? 'http://127.0.0.1:4180/canvacraft/', viewport: { width: 1280, height: 800 }, hasTouch: true });
   const page = await context.newPage();
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await rail(page, '요소').tap();
   const card = page.getByRole('region', { name: '요소 목록' }).getByRole('button').first();
   await expect(card).toBeVisible();
@@ -477,8 +497,7 @@ test('터치: 그림을 눌러 넣고 끌어 옮기며, 발표를 눌러서 넘�
 test('큰 문서: 20장·장당 50요소를 저장·전환·선택·출력한다', async ({ page }) => {
   test.setTimeout(600000);
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   const photos = [await jpeg(page, 2400, 1600, '#335577'), await jpeg(page, 1600, 1600, '#775533'), await jpeg(page, 1600, 2400, '#337755')];
   const hash = async (bytes: Buffer) => (await import('node:crypto')).createHash('sha256').update(bytes).digest('hex');
   const assets = await Promise.all(photos.map(async (bytes, i) => ({ id: await hash(bytes), mime: 'image/jpeg', pixelWidth: [2400, 1600, 1600][i], pixelHeight: [1600, 1600, 2400][i], byteLength: bytes.length })));
@@ -528,8 +547,7 @@ test('큰 문서: 20장·장당 50요소를 저장·전환·선택·출력한다
 
 test('하위 경로에서 템플릿, 내장 그림, 제공 배경, 사용 조건 파일을 읽는다', async ({ page }) => {
   const seen = watch(page);
-  await page.goto('./');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await rail(page, '템플릿').click();
   await panel(page, '템플릿').getByRole('button', { name: '템플릿 내가 좋아하는 동물' }).click();
   await expect(status(page)).toContainText('내가 좋아하는 동물');

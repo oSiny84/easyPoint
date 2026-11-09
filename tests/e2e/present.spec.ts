@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { newSlideProject, slideHome } from './start';
 import JSZip from 'jszip';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -22,7 +23,7 @@ async function sampleFile() {
 }
 async function open(page: Page) {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByTestId('open-file').setInputFiles(await sampleFile());
   await expect(page.getByTestId('save-state')).toHaveText('저장됨');
 }
@@ -139,7 +140,7 @@ test('발표: 입력 중이면 글씨를 확정하고 시작하며, 읽기 전�
   expect((await doc(page)).slides[0].elements.at(-1).text).toBe('발표 전 글씨');
   await expect(page.getByTestId('save-state')).toHaveText('저장됨', { timeout: 4000 });
 
-  const second = await context.newPage(); await second.goto('/');
+  const second = await context.newPage(); await slideHome(second);
   await second.getByRole('list', { name: '내 작품' }).getByRole('button', { name: /열기$/ }).first().click();
   await expect(second.getByTestId('save-state')).toHaveText('읽기 전용');
   await present(second);

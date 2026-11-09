@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { newSlideProject } from './start';
 import JSZip from 'jszip';
 import { PDFDocument, PDFName } from 'pdf-lib';
 import fs from 'node:fs/promises';
@@ -20,7 +21,7 @@ async function sampleFile() {
   for (const asset of project.assetManifest) zip.file(`assets/${asset.id}.${asset.mime === 'image/png' ? 'png' : 'jpg'}`, sampleAssets().get(asset.id)!);
   return { name: 's.canvacraft', mimeType: 'application/zip', buffer: Buffer.from(await zip.generateAsync({ type: 'uint8array' })) };
 }
-async function start(page: Page) { await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible(); }
+async function start(page: Page) { await newSlideProject(page); }
 async function openSample(page: Page) { await start(page); await page.getByTestId('open-file').setInputFiles(await sampleFile()); await expect(status(page)).toContainText('새 작품'); }
 
 // 브라우저에서 시험 사진을 만든다.
@@ -408,7 +409,7 @@ test('라이브러리 그림·사진·배경 작품의 저장·열기·PPT·PDF 
   await (await waiting).saveAs(original);
   const other = await browser.newContext({ viewport: { width: 1440, height: 1000 } }); const otherPage = await other.newPage();
   await otherPage.route('**/library/png/**', route => route.abort());
-  await otherPage.goto('/'); await expect(otherPage.getByTestId('paper')).toBeVisible();
+  await newSlideProject(otherPage);
   await otherPage.getByTestId('open-file').setInputFiles(original);
   await expect(otherPage.getByRole('status')).toContainText('새 작품');
   expect(contentOf(await doc(otherPage))).toEqual(contentOf(project));
@@ -500,7 +501,7 @@ test('그림 배경 16종: 패널은 작은 미리보기만 받고, 고른 배�
   await (await waiting).saveAs(original);
   const other = await browser.newContext({ viewport: { width: 1440, height: 1000 } }); const otherPage = await other.newPage();
   await otherPage.route('**/backgrounds-illustrated/png/**', route => route.abort());
-  await otherPage.goto('/'); await expect(otherPage.getByTestId('paper')).toBeVisible();
+  await newSlideProject(otherPage);
   await otherPage.getByTestId('open-file').setInputFiles(original);
   await expect(otherPage.getByRole('status')).toContainText('새 작품');
   expect(contentOf(await doc(otherPage))).toEqual(contentOf(edited));

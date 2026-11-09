@@ -119,9 +119,22 @@ function syntheticTone(startFrame: number, frames: number) {
   return data;
 }
 
-function videoConfig(pair: Pair, hardware: HardwarePref, bitrate: number, onConfig: (config: VideoEncoderConfig) => void) {
+function videoConfig(pair: Pair, hardware: HardwarePref, bitrate: number, onConfig: (config: VideoEncoderConfig) => void, onPacket?: () => void) {
   const codec = CODECS[pair];
-  return { codec: codec.video, fullCodecString: codec.videoString, bitrate, hardwareAcceleration: hardware, keyFrameInterval: 2, onEncoderConfig: onConfig } as const;
+  return { codec: codec.video, fullCodecString: codec.videoString, bitrate, hardwareAcceleration: hardware, keyFrameInterval: 2, onEncoderConfig: onConfig, onEncodedPacket: onPacket } as const;
+}
+
+// 메모리 조사용 기록: 1초마다 [Date.now(), 넣은 프레임 수, 인코더가 내놓은 패킷 수, 쓴 바이트]. 운영체제 메모리 기록과 시각으로 맞춘다.
+class Tracer {
+  readonly rows: number[][] = [];
+  packets = 0;
+  private next = 0;
+  constructor(readonly on: boolean) {}
+  tick(frames: number, written: number) {
+    if (!this.on) return;
+    const now = Date.now(); if (now < this.next) return;
+    this.next = now + 1000; this.rows.push([now, frames, this.packets, written]);
+  }
 }
 function audioConfig(pair: Pair) {
   const codec = CODECS[pair];
@@ -143,7 +156,8 @@ async function makeSource(job: Extract<Job, { kind: 'makeSource' }>, progress: (
   const target = await opfsWritable(job.name);
   const output = new Output({ format: format(job.pair), target: new StreamTarget(target.stream, { chunked: true }) });
   let encoderConfig: VideoEncoderConfig | undefined;
-  const video = new CanvasSource(canvas, videoConfig(job.pair, job.hardware, 8_000_000, config => { encoderConfig = config; }));
+  const tracer = new Tracer(!!job.trace);
+  const video = new CanvasSource(canvas, videoConfig(job.pair, job.hardware, 8_000_000, config => { encoderConfig = config; }, () => { tracer.packets++; }));
   const audio = new AudioSampleSource(audioConfig(job.pair));
   output.addVideoTrack(video, { frameRate: job.fps }); output.addAudioTrack(audio);
   await output.start();
@@ -159,9 +173,10 @@ async function makeSource(job: Extract<Job, { kind: 'makeSource' }>, progress: (
       await audio.add(sample); sample.close(); audioFrame += audioChunk;
     }
     if (k % 30 === 0) progress(k / frames);
+    tracer.tick(k + 1, target.written());
   }
   await output.finalize();
-  return { name: job.name, frames, seconds: (performance.now() - started) / 1000, bytes: target.written(), encoderConfig };
+  return { name: job.name, frames, seconds: (performance.now() - started) / 1000, bytes: target.written(), encoderConfig, trace: tracer.on ? tracer.rows : undefined };
 }
 
 // ---- 작업: 내보내기(해독→합성→인코딩) ----
@@ -215,7 +230,8 @@ async function exportProject(job: Extract<Job, { kind: 'export' }>, progress: (v
   const target = await opfsWritable(job.name);
   const output = new Output({ format: format(job.pair, job.fastStart), target: new StreamTarget(target.stream, { chunked: true }) });
   let encoderConfig: VideoEncoderConfig | undefined;
-  const videoOut = new CanvasSource(canvas, videoConfig(job.pair, job.hardware, job.bitrate, config => { encoderConfig = config; }));
+  const tracer = new Tracer(!!job.trace);
+  const videoOut = new CanvasSource(canvas, videoConfig(job.pair, job.hardware, job.bitrate, config => { encoderConfig = config; }, () => { tracer.packets++; }));
   const audioOut = new AudioSampleSource(audioConfig(job.pair));
   const budget = packetBudget(job.pair, job.seconds, fps);
   output.addVideoTrack(videoOut, { frameRate: fps, maximumPacketCount: budget.video }); output.addAudioTrack(audioOut, { maximumPacketCount: budget.audio });
@@ -282,6 +298,7 @@ async function exportProject(job: Extract<Job, { kind: 'export' }>, progress: (v
     await pumpAudio(t + 0.5);
     k++;
     if (k % 30 === 0) progress(k / frames);
+    tracer.tick(k, target.written());
   }
   await pumpAudio(Infinity);
   await output.finalize();
@@ -289,7 +306,7 @@ async function exportProject(job: Extract<Job, { kind: 'export' }>, progress: (v
   sticker?.decoder.close();
   input.dispose();
   return { name: job.name, frames: k, missing, seconds: (performance.now() - started) / 1000, setupSeconds, bytes: target.written(), encoderConfig,
-    breakdownMs: { decodeWait: Math.round(decodeWaitMs), compose: Math.round(composeMs), sticker: Math.round(stickerMs), encodeWait: Math.round(encodeWaitMs), audioMix: Math.round(mixMs) } };
+    breakdownMs: { decodeWait: Math.round(decodeWaitMs), compose: Math.round(composeMs), sticker: Math.round(stickerMs), encodeWait: Math.round(encodeWaitMs), audioMix: Math.round(mixMs) }, trace: tracer.on ? tracer.rows : undefined };
 }
 
 // ---- 작업: 출력물 검사 ----

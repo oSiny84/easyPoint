@@ -24,9 +24,9 @@ function SummaryThumb({ summary }: { summary: ProjectSummary }) {
   return url ? <img src={url} alt="" /> : <span className="thumb-empty" />;
 }
 
-type Props = { note?: string; onOpen: (projectId: string) => void; onNew: () => void; onFile: (file: File) => void; onTemplate: (template: TemplateItem) => void };
+type Props = { note?: string; onOpen: (projectId: string) => void; onNew: () => void; onFile: (file: File) => void; onTemplate: (template: TemplateItem) => void; onStart: () => void };
 
-export function Home({ note, onOpen, onNew, onFile, onTemplate }: Props) {
+export function Home({ note, onOpen, onNew, onFile, onTemplate, onStart }: Props) {
   const [summaries, setSummaries] = useState<ProjectSummary[]>();
   const [templates, setTemplates] = useState<TemplateItem[]>([]);
   const [status, setStatus] = useState(note ?? '');
@@ -59,7 +59,8 @@ export function Home({ note, onOpen, onNew, onFile, onTemplate }: Props) {
 
   return <div className="home">
     <header className="topbar">
-      <strong className="brand">CanvaCraft</strong>
+      <button className="on-gradient icon-only" aria-label="시작 화면" title="시작 화면" onClick={onStart}><Icon name="home" /></button>
+      <strong className="brand">슬라이드</strong>
       <span className="spacer" />
       <button className="on-gradient" onClick={() => fileInput.current?.click()}>원본 열기</button>
       <button className="share" onClick={onNew}><Icon name="plus" size={18} />새 작품</button>

@@ -1,5 +1,5 @@
 // 편집 화면. 배치 기준은 docs/UI_REFERENCE.md다. 자동 저장·작품 목록은 Phase 8, 발표는 Phase 9에서 연결한다.
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createAssetStore, type AssetStore } from '../assets/assetStore';
 import { readPngText } from '../assets/imageHeader';
 import { importAsset } from '../assets/importAsset';
@@ -27,7 +27,9 @@ import { renderSlide } from '../rendering/renderSlide';
 import { downloadName } from '../storage/fileName';
 import { deserializeProject, serializeProject } from '../storage/projectFile';
 import { BackgroundPanel, DrawPanel, ElementsPanel, TemplatePanel, TextPanel, UploadPanel, type PenSettings, type TextPreset } from './panels';
+import { remember, remembered } from './currentProject';
 import { Home } from './Home';
+import { StartScreen, type EditorKind, type RecentWork } from './StartScreen';
 import { ToolRail, type ToolId } from './ToolRail';
 import { Presenter } from './Presenter';
 import { TopBar, type ExportKind, type ExportProgress } from './TopBar';
@@ -41,7 +43,6 @@ const PHOTO_WIDTH = LIMITS.slideWidth * 0.6, PHOTO_HEIGHT = LIMITS.slideHeight *
 // 넓은 화면은 처음부터 패널을 연다. 태블릿 폭에서는 슬라이드 공간을 위해 닫아 둔다(UI_REFERENCE §6).
 const PANEL_MIN_WINDOW = 1200;
 const THUMBNAIL_SCALE = 0.25;
-const CURRENT_KEY = 'canvacraft.current-project';
 const MISSING_PHOTO = '이 사진의 자료를 찾을 수 없어요. 파일 업로드로 다시 넣어 주세요.';
 const SAVE_LABEL: Record<SaveState, string> = { saved: '저장됨', dirty: '변경 있음', saving: '저장 중…', failed: '저장 실패' };
 
@@ -49,8 +50,6 @@ function download(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob); const anchor = document.createElement('a');
   anchor.href = url; anchor.download = name; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-const remember = (id: string | null) => { try { if (id) sessionStorage.setItem(CURRENT_KEY, id); else sessionStorage.removeItem(CURRENT_KEY); } catch { /* 새로고침 복원만 못 할 뿐이다. */ } };
-const rememberedProject = () => { try { return sessionStorage.getItem(CURRENT_KEY); } catch { return null; } };
 const isUntouched = (project: Project) => project.revision === 0 && project.slides.length === 1 && !project.slides[0].elements.length && project.slides[0].background.kind === 'solid' && project.slides[0].background.color === '#FFFFFF';
 
 async function openSession(project: Project, assets?: Map<string, Blob>): Promise<Session> {
@@ -506,7 +505,24 @@ function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved }: {
   </div>;
 }
 
-type Screen = { kind: 'loading' } | { kind: 'home'; note?: string; key: number } | { kind: 'editor'; session: Session; note?: string; saved?: boolean; key: number };
+type Screen = { kind: 'loading' } | { kind: 'start'; note?: string; key: number } | { kind: 'home'; note?: string; key: number }
+  | { kind: 'editor'; session: Session; note?: string; saved?: boolean; key: number } | { kind: 'video'; resumeId: string | null; key: number };
+
+// 영상 편집기는 처음 들어갈 때 불러온다. 슬라이드만 쓰는 첫 화면의 크기를 늘리지 않는다.
+const VideoApp = lazy(() => import('../video/VideoApp').then(module => ({ default: module.VideoApp })));
+
+// 시작 화면의 최근 작품: 슬라이드와 영상 저장소의 요약을 각각 읽어 최근순으로 섞는다. 한쪽을 읽지 못해도 다른 쪽은 보여 준다.
+async function loadRecentWorks(): Promise<RecentWork[]> {
+  const [slides, videos] = await Promise.allSettled([
+    listSummaries(),
+    import('../video/videoDatabase').then(module => module.listVideoSummaries()),
+  ]);
+  if (slides.status === 'rejected' && videos.status === 'rejected') throw slides.reason;
+  const rows: RecentWork[] = [];
+  if (slides.status === 'fulfilled') rows.push(...slides.value.map(row => ({ kind: 'slide' as const, projectId: row.projectId, title: row.title, updatedAt: row.updatedAt, thumbnail: row.thumbnail })));
+  if (videos.status === 'fulfilled') rows.push(...videos.value.map(row => ({ kind: 'video' as const, projectId: row.projectId, title: row.title, updatedAt: row.updatedAt, thumbnail: row.thumbnail })));
+  return rows.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
 
 export function App() {
   const [screen, setScreen] = useState<Screen>({ kind: 'loading' });
@@ -518,10 +534,12 @@ export function App() {
     closeCurrent();
     const session = await openSession(project, assets);
     current.current = session;
-    remember(project.id);
+    remember({ kind: 'slide', id: project.id });
     setScreen({ kind: 'editor', session, note, saved, key: ++editorKey.current });
   }, [closeCurrent]);
   const showHome = useCallback((note?: string) => { closeCurrent(); remember(null); setScreen({ kind: 'home', note, key: ++editorKey.current }); }, [closeCurrent]);
+  const showStart = useCallback((note?: string) => { closeCurrent(); remember(null); setScreen({ kind: 'start', note, key: ++editorKey.current }); }, [closeCurrent]);
+  const showVideo = useCallback((resumeId: string | null) => { closeCurrent(); setScreen({ kind: 'video', resumeId, key: ++editorKey.current }); }, [closeCurrent]);
   const showNew = useCallback(() => { void show(createProject(newId, now), undefined, undefined, true); }, [show]);
   const openSaved = useCallback(async (projectId: string, note: string) => {
     const opened = await openProject(projectId);
@@ -531,16 +549,24 @@ export function App() {
 
   useEffect(() => {
     void (async () => {
-      // 새로고침은 쓰던 작품으로 돌아온다. 저장된 작품이 있으면 목록에서, 없으면 바로 새 작품으로 시작한다.
-      const resume = rememberedProject();
-      try {
-        const summaries = await listSummaries();
-        if (resume && summaries.some(row => row.projectId === resume)) { await openSaved(resume, '저장된 작품을 열었어요.'); return; }
-        if (summaries.length) { showHome(); return; }
-      } catch { /* 브라우저 저장소를 쓸 수 없어도 메모리 편집과 원본 다운로드는 유지한다. */ }
-      showNew();
+      // 새로고침은 쓰던 작품의 편집기로 돌아온다. 기억한 작품이 없으면 항상 시작 화면이다(영상 기획안 §2).
+      const resume = remembered();
+      if (resume?.kind === 'video') { showVideo(resume.id); return; }
+      if (resume) {
+        try {
+          const summaries = await listSummaries();
+          if (summaries.some(row => row.projectId === resume.id)) { await openSaved(resume.id, '저장된 작품을 열었어요.'); return; }
+        } catch { /* 저장소를 쓸 수 없으면 시작 화면에서 안내한다. */ }
+      }
+      showStart();
     })();
-  }, [openSaved, showHome, showNew]);
+  }, [openSaved, showStart, showVideo]);
+
+  const choose = useCallback((kind: EditorKind) => { if (kind === 'slide') showHome(); else showVideo(null); }, [showHome, showVideo]);
+  const openRecent = useCallback((work: RecentWork) => {
+    if (work.kind === 'slide') void openSaved(work.projectId, '저장된 작품을 열었어요.');
+    else showVideo(work.projectId);
+  }, [openSaved, showVideo]);
 
   const openFile = useCallback(async (file: File) => {
     const result = await deserializeProject(file, newId);
@@ -556,7 +582,11 @@ export function App() {
   }, [show, showHome]);
 
   if (screen.kind === 'loading') return <p className="status" role="status">작품을 준비하고 있어요…</p>;
-  if (screen.kind === 'home') return <Home key={screen.key} note={screen.note} onOpen={id => void openSaved(id, '저장된 작품을 열었어요.')} onNew={showNew} onFile={file => void openFile(file)} onTemplate={template => void openTemplate(template)} />;
+  if (screen.kind === 'start') return <StartScreen key={screen.key} note={screen.note} loadRecent={loadRecentWorks} onChoose={choose} onOpen={openRecent} />;
+  if (screen.kind === 'video') return <Suspense fallback={<p className="status" role="status">영상 편집기를 준비하고 있어요…</p>}>
+    <VideoApp key={screen.key} resumeId={screen.resumeId} onStart={showStart} />
+  </Suspense>;
+  if (screen.kind === 'home') return <Home key={screen.key} note={screen.note} onOpen={id => void openSaved(id, '저장된 작품을 열었어요.')} onNew={showNew} onFile={file => void openFile(file)} onTemplate={template => void openTemplate(template)} onStart={() => showStart()} />;
   return <Editor key={screen.key} value={screen.session} initialNote={screen.note} initiallySaved={screen.saved}
     onOpen={(project, assets, note) => void show(project, assets, note, false)} onHome={() => showHome()} onNew={showNew} />;
 }

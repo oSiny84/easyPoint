@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "kind": "video",
+  "id": "00000000-0000-4000-8000-000000000100",
+  "title": "고양이 두 장면",
+  "revision": 3,
+  "createdAt": "2026-11-09T00:00:00.000Z",
+  "updatedAt": "2026-11-09T00:00:00.000Z",
+  "orientation": "landscape",
+  "fps": 30,
+  "clips": [
+    {
+      "id": "00000000-0000-4000-8000-000000000101",
+      "mediaId": "65d7d18d3702f2346783d5c0c63879fa97719e944de3ad1d88a7f7cc1c5369c0",
+      "inMs": 0,
+      "outMs": 2000,
+      "muted": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000102",
+      "mediaId": "469416f24558ae5d683488f6e99da4014da3652a9857465910100dffe19d0c4e",
+      "inMs": 0,
+      "outMs": 1500,
+      "muted": true
+    }
+  ],
+  "overlays": [
+    {
+      "id": "00000000-0000-4000-8000-000000000103",
+      "type": "caption",
+      "startMs": 500,
+      "durationMs": 1000,
+      "x": 160,
+      "y": 540,
+      "width": 960,
+      "text": "안녕 고양이 🐱",
+      "fontId": "sans-ko",
+      "fontSize": 48,
+      "bold": true,
+      "color": "#FFFFFF",
+      "align": "center",
+      "lineHeight": 1.3,
+      "backdrop": "band"
+    }
+  ],
+  "audio": {
+    "originalVolume": 1,
+    "musicId": null,
+    "musicVolume": 0.5
+  },
+  "mediaManifest": [
+    {
+      "id": "65d7d18d3702f2346783d5c0c63879fa97719e944de3ad1d88a7f7cc1c5369c0",
+      "mime": "video/webm",
+      "byteLength": 65063,
+      "durationMs": 2000,
+      "width": 640,
+      "height": 360,
+      "rotation": 0,
+      "fps": 29.995,
+      "hasAudio": true,
+      "videoCodec": "vp09.00.21.08.01.01.01.01.01",
+      "audioCodec": "opus"
+    },
+    {
+      "id": "469416f24558ae5d683488f6e99da4014da3652a9857465910100dffe19d0c4e",
+      "mime": "video/webm",
+      "byteLength": 38693,
+      "durationMs": 1500,
+      "width": 360,
+      "height": 640,
+      "rotation": 0,
+      "fps": 24.005,
+      "hasAudio": false,
+      "videoCodec": "vp09.00.21.08.01.01.01.01.01",
+      "audioCodec": null
+    }
+  ]
+}

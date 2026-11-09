@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { newSlideProject, slideHome } from './start';
 import JSZip from 'jszip';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -30,14 +31,19 @@ async function sampleFile(title = '우리 가족 소개') {
   return { name: 's.canvacraft', mimeType: 'application/zip', buffer: Buffer.from(await zip.generateAsync({ type: 'uint8array' })) };
 }
 async function openSample(page: Page, title?: string) {
-  await page.goto('/'); await expect(page.getByTestId('open-file')).toBeAttached();
+  await slideHome(page); await expect(page.getByTestId('open-file')).toBeAttached();
   await page.getByTestId('open-file').setInputFiles(await sampleFile(title));
   await expect(status(page)).toContainText('새 작품');
   await expect(saveState(page)).toHaveText('저장됨');
 }
 
-test('처음 들어오면 새 작품이고, 아무것도 안 하면 저장하지 않는다', async ({ page }) => {
+test('처음 들어오면 시작 화면이고, 새 작품은 아무것도 안 하면 저장하지 않는다', async ({ page }) => {
   await page.goto('/');
+  await expect(page.getByRole('button', { name: '슬라이드 만들기' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '영상 만들기' })).toBeVisible();
+  await expect(page.getByTestId('paper')).toHaveCount(0);
+  await page.getByRole('button', { name: '슬라이드 만들기' }).click();
+  await page.getByRole('button', { name: '새 작품' }).click();
   await expect(page.getByTestId('paper')).toBeVisible();
   await expect(saveState(page)).toHaveText('새 작품');
   await page.waitForTimeout(1300);
@@ -45,7 +51,7 @@ test('처음 들어오면 새 작품이고, 아무것도 안 하면 저장하지
 });
 
 test('바꾸면 저장 버튼 없이 저장되고 새로고침해도 남는다', async ({ page }) => {
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await addSlide(page);
   await expect(saveState(page)).toHaveText('변경 있음');
   await expect(saveState(page)).toHaveText('저장됨', { timeout: 3000 });
@@ -61,7 +67,7 @@ test('바꾸면 저장 버튼 없이 저장되고 새로고침해도 남는다',
 });
 
 test('탭을 숨기면 예약을 기다리지 않고 저장을 시도한다', async ({ page }) => {
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await addSlide(page);
   await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' }); document.dispatchEvent(new Event('visibilitychange')); });
   await expect.poll(async () => (await database(page)).projects.length, { timeout: 500, intervals: [50] }).toBe(1);
@@ -83,9 +89,9 @@ test('작품 목록: 새 탭에서 저장된 작품이 미리보기와 함께 �
   expect((await doc(page)).id).toBe(id);
   await page.getByRole('button', { name: '작품 목록' }).click();
   await expect(works(page)).toHaveCount(1);
-  // 새 탭은 목록에서 시작한다.
+  // 새 탭은 시작 화면에서 시작한다(기억한 작품은 탭마다 따로다).
   const other = await context.newPage();
-  await other.goto('/');
+  await slideHome(other);
   await expect(works(other)).toHaveCount(1);
   await other.close();
 });
@@ -164,7 +170,7 @@ test('지우기: 확인 후 지우고, 다른 작품이 쓰는 사진은 남긴�
 test('다른 탭이 작품을 열고 있으면 지우지 않는다', async ({ page, context }) => {
   await openSample(page, '열린 작품');
   const other = await context.newPage();
-  await other.goto('/');
+  await slideHome(other);
   await expect(works(other)).toHaveCount(1);
   await other.getByRole('button', { name: '열린 작품 지우기' }).click();
   await other.getByRole('alertdialog').getByRole('button', { name: '지우기' }).click();
@@ -179,7 +185,7 @@ test('다른 탭이 작품을 열고 있으면 지우지 않는다', async ({ pa
 test('같은 작품을 둘째 탭에서 열면 읽기 전용이고, 첫 탭을 닫은 뒤 새로 열면 편집된다', async ({ page, context }) => {
   await openSample(page, '탭 시험');
   const second = await context.newPage();
-  await second.goto('/');
+  await slideHome(second);
   await second.getByRole('button', { name: '탭 시험 열기' }).click();
   await expect(second.getByRole('status')).toContainText('다른 탭에서 편집 중');
   await expect(saveState(second)).toHaveText('읽기 전용');
@@ -217,7 +223,7 @@ test('같은 작품을 둘째 탭에서 열면 읽기 전용이고, 첫 탭을 �
 test('서로 다른 작품은 두 탭에서 동시에 편집한다', async ({ page, context }) => {
   await openSample(page, '왼쪽');
   const second = await context.newPage();
-  await second.goto('/');
+  await slideHome(second);
   await second.getByRole('button', { name: '새 작품' }).click();
   await addSlide(second);
   await expect(saveState(second)).toHaveText('저장됨', { timeout: 3000 });
@@ -284,7 +290,7 @@ test('강제로 닫아도 마지막 저장본으로 열린다', async ({ page, c
   await dispatch(page, { type: 'renameProject', title: '저장 전에 닫힘' });
   await page.close({ runBeforeUnload: false });
   const next = await context.newPage();
-  await next.goto('/');
+  await slideHome(next);
   await expect(works(next)).toHaveCount(1);
   await expect(works(next).first()).toContainText('강제 종료');
   await next.getByRole('button', { name: '강제 종료 열기' }).click();
@@ -308,7 +314,7 @@ test('사진·글씨·그림이 섞인 작품이 재시작과 원본 파일 왕�
   await fs.mkdir(OUT, { recursive: true });
   const file = path.join(OUT, 'roundtrip.canvacraft'); await (await waiting).saveAs(file);
   const other = await browser.newContext({ viewport: { width: 1440, height: 1000 } }); const otherPage = await other.newPage();
-  await otherPage.goto('/'); await expect(otherPage.getByTestId('paper')).toBeVisible();
+  await newSlideProject(otherPage);
   await otherPage.getByTestId('open-file').setInputFiles(file);
   await expect(saveState(otherPage)).toHaveText('저장됨', { timeout: 3000 });
   const opened = await doc(otherPage);
@@ -345,7 +351,7 @@ test('잠금을 지원하지 않는 브라우저는 읽기 전용으로 열고 �
 });
 
 test('파일을 연 직후에는 저장을 마치기 전까지 저장됨으로 표시하지 않는다', async ({ page }) => {
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.evaluate(() => {
     const seen: string[] = []; (window as any).labels = seen;
     let last = '';

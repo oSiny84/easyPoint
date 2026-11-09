@@ -27,6 +27,11 @@ const PATHS: Record<string, string> = {
   'align-left': 'M4 6h16M4 12h10M4 18h13',
   'align-center': 'M4 6h16M7 12h10M5.5 18h13',
   'align-right': 'M4 6h16M10 12h10M7 18h13',
+  video: 'M3 6h12v12H3zM15 10l6-3v10l-6-3',
+  caption: 'M3 5h18v14H3zM7 11h4M13 11h4M7 15h10',
+  meme: 'M12 3a9 9 0 1 0 .01 0M8.5 10h.01M15.5 10h.01M8 14.5c1 1.5 2.4 2.2 4 2.2s3-.7 4-2.2',
+  sound: 'M4 9h4l5-4v14l-5-4H4zM17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11',
+  home: 'M4 11l8-7 8 7M6 10v10h12V10',
 };
 
 export function Icon({ name, size = 20 }: { name: keyof typeof PATHS | string; size?: number }) {

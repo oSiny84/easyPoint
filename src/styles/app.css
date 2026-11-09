@@ -197,3 +197,36 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .crash { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; height: 100%; padding: 24px; text-align: center; }
 .crash h1 { margin: 0; font-size: 22px; }
 .crash p { margin: 0 0 8px; color: var(--muted); }
+
+/* 시작 화면(영상 기획안 §2): 큰 타일 2개와 최근 작품 */
+.start-title { margin: 24px 0 20px; font-size: 26px; text-align: center; }
+.start-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-bottom: 12px; }
+.start-tile { flex-direction: column; justify-content: center; gap: 14px; width: 260px; height: 200px; border-radius: 18px; color: #fff; font-size: 22px; font-weight: 700; box-shadow: 0 6px 18px #1f243026; }
+.start-tile.tile-slide { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.start-tile.tile-video { background: linear-gradient(135deg, #fb923c, #ea580c); }
+.start-tile.tile-slide:hover:not(:disabled) { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.start-tile.tile-video:hover:not(:disabled) { background: linear-gradient(135deg, #f97316, #c2410c); }
+.kind-badge { display: inline-flex; align-items: center; gap: 3px; margin-right: 6px; padding: 1px 6px; border-radius: 6px; font-size: 11px; vertical-align: 1px; }
+.kind-badge.kind-slide { background: var(--accent-soft); color: #5b21b6; }
+.kind-badge.kind-video { background: #ffedd5; color: #c2410c; }
+
+/* 영상 편집기 틀(영상 기획안 §3): 미리보기 자리, 아래 타임라인 띠, 영상 작품 목록 안내 */
+.video-work { align-items: center; justify-content: center; }
+.video-stage { display: flex; align-items: center; justify-content: center; max-width: 100%; max-height: 100%; background: #111; color: #c9ccd3; font-size: 15px; border-radius: 4px; box-shadow: 0 2px 10px #1f243033; }
+.video-stage.landscape { width: min(100%, 1280px); }
+.video-stage.portrait { height: 100%; }
+.timeline { gap: 12px; padding: 0 12px; }
+.timeline-total { flex: none; min-width: 48px; font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; }
+.clip-strip { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; height: 100%; margin: 0; padding: 0; overflow-x: auto; list-style: none; }
+.clip-chip { flex-direction: column; gap: 2px; min-width: 96px; height: 64px; border: 2px solid var(--line); border-radius: 8px; background: #fff7ed; font-size: 13px; }
+.clip-chip small { color: var(--muted); font-size: 12px; }
+.clip-chip.current { border-color: var(--accent); }
+.clip-empty { color: var(--muted); font-size: 14px; }
+.media-list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.media-list li { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
+.media-list small { margin-left: auto; color: var(--muted); }
+.video-thumb-empty { display: flex !important; align-items: center; justify-content: center; color: #9aa0ab; }
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.guide-card { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px var(--line); color: var(--ink); }
+.guide-card svg { color: #ea580c; }
+.guide-card span { font-size: 13px; line-height: 1.5; color: var(--muted); }

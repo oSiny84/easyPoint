@@ -5,7 +5,7 @@ import { fail, type Asset, type Background, type Failure, type ImageElement, typ
 export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const ASSET_ID = /^[0-9a-f]{64}$/;
 export const COLOR = /^#[0-9A-F]{6}$/;
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
+export const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
 
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
 const inRange = (value: unknown, min: number, max: number) => finite(value) && value >= min && value <= max;
@@ -17,7 +17,7 @@ export const normalizeColor = (color: unknown) => typeof color === 'string' ? co
 export const normalizeText = (text: string) => text.replace(/\r\n?/g, '\n');
 export const isBlankText = (text: string) => text.trim().length === 0;
 
-function onlyKeys(value: object, allowed: readonly string[], label: string): Failure | null {
+export function onlyKeys(value: object, allowed: readonly string[], label: string): Failure | null {
   const extra = Object.keys(value).find(key => !allowed.includes(key));
   return extra ? invalid(`${label}에 알 수 없는 값이 있어요.`) : null;
 }

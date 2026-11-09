@@ -1,10 +1,11 @@
-// 문서를 바꾸는 유일한 곳. 화면·저장·출력은 getProject()가 돌려주는 변경 불가능한 값을 읽기만 한다.
+// 슬라이드 작품을 바꾸는 유일한 곳. 화면·저장·출력은 getProject()가 돌려주는 변경 불가능한 값을 읽기만 한다.
+// 기록·revision·잠금 규칙은 공통 틀(history.ts)에 있고, 여기서는 슬라이드 문서에 맞는 내용 추출·메모리 추정·장 선택만 정한다.
 import { applyCommand, type Command } from '../commands/apply';
 import { LIMITS } from '../domain/limits';
-import { fail, type Failure, type Project, type ProjectContent, type Slide } from '../domain/types';
+import type { Failure, Project, ProjectContent, Slide } from '../domain/types';
+import { createHistoryStore, type HistoryResult } from './history';
 
 export type DispatchResult = { ok: true; revision: number; slideId: string | null; changed: boolean } | Failure;
-type HistoryEntry = { before: ProjectContent; after: ProjectContent; slideId: string | null };
 
 const contentOf = ({ title, slides, assetManifest }: ProjectContent): ProjectContent => ({ title, slides, assetManifest });
 
@@ -39,71 +40,28 @@ function nearestSlide(wanted: string | null, from: readonly Slide[], to: readonl
 
 export type StoreOptions = { newId?: () => string; now?: () => string; readOnly?: boolean; maxEntries?: number; maxBytes?: number };
 
+const toResult = (result: HistoryResult<string | null, never>): DispatchResult => result.ok ? { ok: true, revision: result.revision, slideId: result.focus, changed: result.changed } : result;
+
 export function createStore(initial: Project, options: StoreOptions = {}) {
-  const newId = options.newId ?? (() => crypto.randomUUID());
-  const now = options.now ?? (() => new Date().toISOString());
-  const maxEntries = options.maxEntries ?? LIMITS.undoEntries, maxBytes = options.maxBytes ?? LIMITS.undoBytes;
-  let project = initial;
-  let undoStack: HistoryEntry[] = [], redoStack: HistoryEntry[] = [];
-  let historyBytes = 0;
-  const listeners = new Set<() => void>();
-
-  function commit(content: ProjectContent) {
-    // 되돌리기도 새 번호를 받는다. 예전 번호를 다시 쓰면 늦게 끝난 저장이 최신 내용으로 표시된다.
-    project = { ...project, ...contentOf(content), revision: project.revision + 1, updatedAt: now() };
-    listeners.forEach(listener => listener());
-  }
-  const retained = () => undoStack.flatMap(entry => [entry.before, entry.after]).concat(redoStack.flatMap(entry => [entry.before, entry.after]));
-
-  function trimHistory() {
-    while (undoStack.length > maxEntries) undoStack.shift();
-    historyBytes = estimateBytes(retained());
-    while (historyBytes > maxBytes && undoStack.length > 1) { undoStack.shift(); historyBytes = estimateBytes(retained()); }
-  }
+  const store = createHistoryStore<Project, ProjectContent, Command, string | null, never>(initial, {
+    contentOf,
+    apply(content, command, newId) {
+      const result = applyCommand(content, command, { newId });
+      return result.ok ? { ok: true, content: result.content, focus: result.slideId, changed: result.changed } : result;
+    },
+    estimate: estimateBytes,
+    // 슬라이드를 지운 명령은 지운 장을 기억해 되돌릴 때 그 장으로 간다.
+    remember: (command, slideId) => command.type === 'deleteSlide' ? command.slideId : slideId,
+    restore: (slideId, from, to) => nearestSlide(slideId, from.slides, to.slides),
+    empty: null,
+  }, { newId: options.newId, now: options.now, readOnly: options.readOnly, maxEntries: options.maxEntries ?? LIMITS.undoEntries, maxBytes: options.maxBytes ?? LIMITS.undoBytes });
 
   return {
-    getProject: () => project,
-    subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },
-    canUndo: () => undoStack.length > 0,
-    canRedo: () => redoStack.length > 0,
-    historySize: () => ({ undo: undoStack.length, redo: redoStack.length, bytes: historyBytes }),
-
-    dispatch(projectId: string, expectedRevision: number, command: Command): DispatchResult {
-      if (options.readOnly) return fail('READ_ONLY', '다른 곳에서 편집 중이라 읽기만 할 수 있어요.');
-      if (projectId !== project.id || expectedRevision !== project.revision) return fail('REVISION_CONFLICT', '작품이 이미 바뀌었어요. 다시 시도해 주세요.');
-      const before = contentOf(project);
-      const result = applyCommand(before, command, { newId });
-      if (!result.ok) return result;
-      if (!result.changed) return { ok: true, revision: project.revision, slideId: result.slideId, changed: false };
-      undoStack.push({ before, after: result.content, slideId: touchedSlide(command, result.slideId) });
-      redoStack = [];
-      commit(result.content);
-      trimHistory();
-      return { ok: true, revision: project.revision, slideId: result.slideId, changed: true };
-    },
-
-    undo(): DispatchResult {
-      if (options.readOnly) return fail('READ_ONLY', '다른 곳에서 편집 중이라 읽기만 할 수 있어요.');
-      const entry = undoStack.pop();
-      if (!entry) return { ok: true, revision: project.revision, slideId: null, changed: false };
-      redoStack.push(entry); commit(entry.before);
-      return { ok: true, revision: project.revision, slideId: nearestSlide(entry.slideId, entry.after.slides, entry.before.slides), changed: true };
-    },
-
-    redo(): DispatchResult {
-      if (options.readOnly) return fail('READ_ONLY', '다른 곳에서 편집 중이라 읽기만 할 수 있어요.');
-      const entry = redoStack.pop();
-      if (!entry) return { ok: true, revision: project.revision, slideId: null, changed: false };
-      undoStack.push(entry); commit(entry.after);
-      return { ok: true, revision: project.revision, slideId: nearestSlide(entry.slideId, entry.before.slides, entry.after.slides), changed: true };
-    },
+    ...store,
+    dispatch: (projectId: string, expectedRevision: number, command: Command) => toResult(store.dispatch(projectId, expectedRevision, command)),
+    undo: () => toResult(store.undo()),
+    redo: () => toResult(store.redo()),
   };
 }
 
 export type ProjectStore = ReturnType<typeof createStore>;
-
-// 기록에 남길 장. 슬라이드를 지운 명령은 지운 장을 기억해 되돌릴 때 그 장으로 간다.
-function touchedSlide(command: Command, resultSlideId: string | null): string | null {
-  if (command.type === 'deleteSlide') return command.slideId;
-  return resultSlideId;
-}

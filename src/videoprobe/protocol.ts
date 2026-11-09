@@ -5,8 +5,8 @@ export type Pair = 'mp4' | 'webm';
 
 export type Job =
   | { kind: 'support' }
-  | { kind: 'makeSource'; name: string; pair: Pair; width: number; height: number; fps: number; seconds: number; hardware: HardwarePref }
-  | { kind: 'export'; input: string; name: string; pair: Pair; seconds: number; caption: boolean; sticker: boolean; memeClips: string[]; hardware: HardwarePref; bitrate: number; lookupToleranceS?: number; fastStart?: 'end' | 'reserve' }
+  | { kind: 'makeSource'; name: string; pair: Pair; width: number; height: number; fps: number; seconds: number; hardware: HardwarePref; trace?: boolean }
+  | { kind: 'export'; input: string; name: string; pair: Pair; seconds: number; caption: boolean; sticker: boolean; memeClips: string[]; hardware: HardwarePref; bitrate: number; lookupToleranceS?: number; fastStart?: 'end' | 'reserve'; trace?: boolean }
   | { kind: 'verify'; name: string; fps: number; samples: number }
   | { kind: 'decodeSpeed'; name: string }
   | { kind: 'alpha' }

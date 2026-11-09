@@ -7,7 +7,8 @@
 **현재 상태**
 
 - 어린이용 **영상 편집기**를 기획하고 V1 계약을 썼다(2026-11-07, [VIDEO_EDITOR_PLAN.md](VIDEO_EDITOR_PLAN.md), [video-contracts.md](video-contracts.md)). 같은 앱에 시작 화면(슬라이드 만들기 / 영상 만들기)을 추가하고, 영상 가져오기·자르기·자막(보이는 시간 지정)·움직이는 밈(투명 스티커·소리 든 짧은 밈 영상)·효과음·소리·YouTube용 MP4 내보내기를 8단계(V1~V8)로 만든다. 사용자 결정 7개는 모두 기본값으로 확정됐고(2026-11-07 "기본값으로 진행"), 밈·효과음 자산의 출처만 V6 전까지 다시 묻는다. 계약은 필드·명령 18개·검사·상한·저장·출력 규칙을 정했다.
-- 영상 편집기 **V2 기술 검증을 개발 PC에서 마쳤다**(2026-11-09, [VIDEO_PHASE2_RESULTS.md](VIDEO_PHASE2_RESULTS.md)). 브라우저 Worker 안에서 해독·자막·밈 합성·인코딩해 MP4(H.264+AAC)·WebM(VP9+Opus)으로 내는 경로가 Chrome·Edge·번들 Chromium에서 동작한다. 10분 1080p 작품 출력이 MP4 101초·WebM 192초, 브라우저 메모리 최대 1.2GB였고 출력 프레임 번호·길이·재생을 자동으로 확인했다. 계약의 V2 결정 8개를 채웠다(스티커 애니메이션 WebP, 영상 바이트 OPFS, Mediabunny 1.62.1, 8Mbps, Worker가 소리 직접 합산, `.canvavideo` 자체 스트리밍 ZIP 등). 측정 중 계약 결함 2건(원본 프레임 찾기 1ms 허용, 2GiB 해시 방식)을 고쳤다. **RAM 8GB PC, 실제 휴대폰 영상, Windows 미디어 플레이어·YouTube는 미검증**이라 길이 상한 10분과 MP4 우선은 잠정이다. 제품 코드는 아직 없다(`src/videoprobe`는 시험 페이지).
+- 영상 편집기 **V2 기술 검증을 개발 PC에서 마쳤다**(2026-11-09, [VIDEO_PHASE2_RESULTS.md](VIDEO_PHASE2_RESULTS.md)). 브라우저 Worker 안에서 해독·자막·밈 합성·인코딩해 MP4(H.264+AAC)·WebM(VP9+Opus)으로 내는 경로가 Chrome·Edge·번들 Chromium에서 동작한다. 10분 1080p 작품 출력이 MP4 101초·WebM 192초, 브라우저 메모리 최대 1.2GB였고 출력 프레임 번호·길이·재생을 자동으로 확인했다. 계약의 V2 결정 8개를 채웠다(스티커 애니메이션 WebP, 영상 바이트 OPFS, Mediabunny 1.62.1, 8Mbps, Worker가 소리 직접 합산, `.canvavideo` 자체 스트리밍 ZIP 등). 측정 중 계약 결함 2건(원본 프레임 찾기 1ms 허용, 2GiB 해시 방식)을 고쳤다. 같은 날 **RAM 8GB 가상 PC(VirtualBox, 그래픽 가속 없음)**에서도 10분 출력 6종이 모두 성공했고 가장 느린 출력이 1,048초로 시간 목표(1,200초) 안이었다. 그러나 **브라우저 메모리 최대값이 MP4 1.4~2.4GB, WebM 3.8~5.6GB로 목표 1.5GB를 넘었고 원인은 아직 모른다**(VIDEO_PHASE2_RESULTS.md §4.1). 개발 PC에서 그래픽 가속을 끄고 재현해 보았지만 메모리가 평평해 재현되지 않았고, 실제 PC는 이보다 나을 것으로 보고 조사를 보류했다(사용자 결정). 실제 휴대폰 영상, Windows 미디어 플레이어·YouTube도 미검증이라 길이 상한 10분과 MP4 우선은 잠정이다.
+- 영상 편집기 **V3(시작 화면·영상 문서·저장 틀)를 구현했다**(2026-11-09). 앱을 열면 시작 화면(슬라이드 만들기 / 영상 만들기 + 두 종류를 섞은 최근 작품 6개)이 나오고, 새로고침하면 쓰던 작품의 편집기로 돌아온다(기억 값은 `{kind,id}` JSON, 옛 문자열은 슬라이드). 영상 쪽은 작품 목록·편집기 틀(상단 바·도구 4개·미리보기 자리·조각 띠)·자동 저장·원본(`.canvavideo`) 열기·저장·지우기까지 동작한다. 문서·명령 18개·취소·겹침 요소 따라가기·동시 밈 상한·검사, IndexedDB `canvacraft-video` + OPFS 바이트 저장, 자체 STORE ZIP(ZIP64 포함)을 넣었다. 슬라이드 저장소는 공통 틀(`src/state/history.ts`)로 일반화했고 슬라이드 계약 시험은 고치지 않고 통과한다. **아직 영상을 직접 넣을 수 없다**(가져오기·미리보기·타임라인 조작은 V4). 영상 편집기 코드는 시작 화면에서 타일을 누를 때 불러온다.
 - GPT가 만든 그림 배경 16종을 배경 패널에 연결했다. 패널에서 기존 24종보다 먼저 나오고, 16장 모두 저장·다시 열기·PPT·PDF 시험을 통과했다. 파일 크기는 [ILLUSTRATED_BACKGROUNDS_READY.md](ILLUSTRATED_BACKGROUNDS_READY.md)에 있다. 배포 결과는 24MB에서 64MB로, 실행 파일은 16MB에서 56MB로 커졌다. 실행 파일은 릴리스 `v0.0.2`로 올렸다. 처음에는 프리릴리스였고 사용자 요청으로 정식 릴리스로 바꿨다.
 - 집 PC용 단일 실행 파일을 만들었다(`npm run exe` → `artifacts/release/CanvaCraft.exe`). 더블클릭하면 브라우저로 앱이 열리고 Node.js가 필요 없다. 자동 시험을 통과했고 사용자 PC에서 실행됐다. 다른 PC와 알림 영역 아이콘 메뉴는 사용자 확인을 받지 않았다. GitHub에 프리릴리스 `v0.0.1`로 올렸다.
 - Phase 10의 자동 점검과 산출물을 마쳤다. 배포본으로 대표 시나리오 7개를 통과했고 결과는 [통합 시험 보고서](INTEGRATION_REPORT_2026-11-06.md)에 있다. 사용 설명과 배포 패키지 절차도 만들었다. **어린이 사용성 관찰은 미실시이고 공개 배포도 하지 않았다.**
@@ -24,12 +25,15 @@
 
 - 10단계 중 Phase 10의 자동 점검까지 왔다. 사람이 해야 할 확인이 남았다. Phase 2 수동 확인 8개는 남아 있다.
 - 계약의 편집 명령 18개 중 18개 모두 화면에 연결됐다.
-- 도구 패널 6개가 모두 동작한다. 화면에서 준비 중으로 남은 것은 없다.
+- 슬라이드 편집기의 도구 패널 6개가 모두 동작한다. 슬라이드 쪽에는 준비 중으로 남은 화면이 없다.
+- 영상 편집기는 8단계 중 V3까지 왔다. 화면 틀(작품 목록·편집기·자동 저장·원본 파일)만 있고 **영상을 넣기 전 단계**다. 영상 도구 4개(영상·자막·밈·소리)는 "준비 중"으로 표시되고 내보내기 단추는 꺼져 있다.
 
 **다음 액션**
 
-1. 영상 편집기 V3(시작 화면·영상 문서·명령 18개·OPFS 저장·`.canvavideo`). [video-contracts.md](video-contracts.md) §2·§4~§6
-2. 영상 V2 남은 확인 (사용자): RAM 8GB PC에서 `video-probe.html` 1분·10분 시험(방법은 VIDEO_PHASE2_RESULTS.md §10), 휴대폰 영상 2~3개 제공, `artifacts/video-phase2/files`의 MP4·WebM을 Windows 미디어 플레이어로 열기
+1. 영상 편집기 V4(영상 가져오기·형식 검사·Worker 복사와 해시·미리보기·타임라인·자르기, 첫 프레임 미리보기 그림). [video-contracts.md](video-contracts.md) §3·§6·§8, V3에서 미룬 것은 계약 §9 V3 행
+2. 시작 화면이 생겼으니 슬라이드만 쓰던 사람도 첫 화면에서 "슬라이드 만들기"를 한 번 더 누른다. 실제 사용에서 불편한지 확인 (사용자)
+3. 영상 V2 남은 확인 (사용자): 휴대폰 영상 2~3개 제공, `artifacts/video-phase2/files`의 MP4·WebM을 Windows 미디어 플레이어로 열기
+4. (보류) 그래픽 가속 없는 가상 PC의 출력 메모리 초과 원인. 개발 PC에서는 재현되지 않았고 사용자가 보류했다(2026-11-09). 실제 저사양 PC에서 문제가 보이면 다시 연다. VIDEO_PHASE2_RESULTS.md §4.1
 3. `CanvaCraft.exe`를 집 PC에서 실행해 보기 (사용자)
 4. 터치 기기 확인, 어린이 사용성 관찰 (사용자, 보호자·교사 입회)
 5. 웹 호스트 선택, 이름·화면 권리 검토. 실행 파일은 검토 전에 공개된 상태다 (사용자, [RELEASE.md](RELEASE.md))
@@ -44,7 +48,7 @@
 
 **결론**
 
-만들고, 저절로 저장되고, 다시 열고, 출력하는 흐름이 동작한다. 발표까지 연결됐고 배포 패키지를 만들 수 있다. 남은 것은 사람·기기 확인과 공개 배포 결정이다.
+슬라이드는 만들고, 저절로 저장되고, 다시 열고, 출력하는 흐름이 동작한다. 발표까지 연결됐고 배포 패키지를 만들 수 있다. 남은 것은 사람·기기 확인과 공개 배포 결정이다. 영상은 시작 화면에서 들어가 작품을 만들고 저장·다시 열기·원본 왕복까지 되지만, 영상 넣기·편집·내보내기는 V4~V7에서 만든다.
 
 ## 사용자 확정 요구: Canva 편집기 UI 일치
 
@@ -74,6 +78,7 @@
 | 그리기 | 완료. 펜·색·굵기, 획 지우개, 슬라이드 밖 이탈·입력 취소·둘째 손가락·Esc, 배율 50·100·150%, 300획 장 프레임 간격 p95 16.8ms | 주의. 실제 펜·터치 기기 미확인 |
 | 글꼴 선택 | 6종. 글꼴별로 PowerPoint에서 폭·세로 위치를 재서 대응값을 정했다. 저장·PDF·모양 그대로 PPT에 반영. 굵은 파일이 있는 기본 글씨·개구쟁이체만 굵게 가능 | 주의. 편집용 PPT는 맑은 고딕으로 바뀐다 |
 | 발표 | 완료. 전체 화면, 키보드·누르기·버튼 이동, 끝내면 보던 장으로 복귀, 발표 중 문서 불변. 출력과 같은 그리기 코드를 쓴다 | 주의. 실제 프로젝터·터치 기기 미확인 |
+| 시작 화면·영상 편집기 틀(영상 V3) | 완료. 시작 화면 타일 2개·최근 작품 6개, 새로고침 복원(`{kind,id}`), 영상 문서·명령 18개·검사, OPFS·IndexedDB 저장, `.canvavideo`(ZIP64 포함) 왕복. npm test 382·배포본 13·실행 파일 시험 통과 | 주의. 영상 넣기·미리보기 전이라 실제 영상으로는 아직 쓸 수 없다. 미룬 것 6개는 video-contracts.md §9 V3 행 |
 | 단일 실행 파일 | 완료. 앱을 품고 127.0.0.1:47831로 내주며 기본 브라우저를 연다. 배포본 시험 전체, 끄고 다시 켜도 작품 유지 통과. 코드는 `launcher/`, 빌드는 `scripts/build-exe.mjs` | 주의. 다른 PC·알림 영역 아이콘 미확인. 코드 서명 없음 |
 | 배포 패키지 | 완료. 하위 경로 동작, 보안 정책, 외부 요청 0건, 사진 정보 미포함을 배포본으로 확인. `npm run package`. 실제 호스트에 올린 적은 없다 | 주의. HTTPS 필수 |
 | 준비 중으로 남긴 곳 | 없음 | 해당 Phase에서 연결 |
@@ -112,18 +117,18 @@ npm.cmd run dev
 - 고친 결함(2026-11-06, 사용자 발견): 공백·영문 없이 드문 한글로만 된 글씨(`튼튼` 등)를 선택해 글꼴을 바꾸면 문서는 바뀌는데 캔버스가 그대로이고 출력도 실패했다. 글꼴 확인을 글 내용이 아니라 고정 글자 `가`로 해서, 그 글자 묶음을 받지 않은 글꼴을 실패로 판단했기 때문이다. 앱 화면이 기본 글씨로 `가`를 늘 받아 두어 글꼴이 하나일 때는 드러나지 않았다. 이제 실제 글 내용으로 확인한다. 글꼴을 정말 받지 못하면 안내하고 화면은 대체 글꼴로 지금 문서를 보여 주며, 출력은 멈춘다. 실패한 글꼴은 새로고침해야 다시 받는다. 시험은 `tests/e2e/text.spec.ts`의 글꼴 항목이다. 수정 후 사용자가 실제 브라우저에서 글꼴이 바로 바뀌는 것을 확인했다.
 - Phase 10 확인: `npm run test:release` 12건. 결과와 큰 문서 측정은 통합 시험 보고서에 있다.
 - 측정 범위 밖: 프로젝터·터치 기기의 발표, 한쇼·Google Slides·PowerPoint 웹, 출력 중 메모리, 실제 저장 공간 부족, Chromium 외 브라우저의 잠금, 물리 터치, iPad, RAM 8GB 기기, 실제 사진이 많은 큰 문서, 실제 Canva 편집기와의 일치.
-- 편의 결정: 발표는 지금 보던 장에서 시작하고, 마지막 장에서 더 넘기면 끝나지 않고 멈춘다. 화면 왼쪽 4분의 1을 누르면 앞 장, 나머지는 다음 장이다. 조작 줄은 3초 뒤 숨는다. 파일을 만드는 동안에는 발표를 시작할 수 없고, 작품을 떠나면 만들던 파일은 취소된다. 저장 작품이 있으면 작품 목록에서 시작하고, 없으면 새 작품으로 바로 들어간다. 새로고침하면 같은 탭에서 보던 작품으로 돌아온다. 손대지 않은 새 작품은 저장하지 않아 목록에 남지 않는다. 다른 작품으로 넘어갈 때 묻지 않고 자동 저장하며, 실패할 때만 묻는다. 잠금 미지원 브라우저는 읽기 전용으로 연다. 고아 사진은 작품 목록에 들어올 때 다른 탭이 없으면 정리한다. Esc와 다른 곳 누르기는 입력을 확정한다(입력 취소는 입력 중 Ctrl+Z). Esc로 끝내면 글씨가 선택된 채로 남고, 빈 곳을 눌러 끝내면 선택도 풀린다. 입력 중 되돌리기 버튼은 입력을 확정한 뒤 되돌린다. 창 폭 1200px 이상이면 배경 패널을 연 채로 시작하고, 그보다 좁으면 닫고 시작한다. 불투명한 입력 사진은 JPEG(품질 0.9), 투명한 사진만 PNG로 저장한다. 안내 문구는 슬라이드를 덮지 않도록 설정 줄 오른쪽에 둔다. Backspace도 Delete와 같이 선택 요소를 지운다(되돌릴 수 있음). 슬라이드 끌어 옮기기는 마우스만 지원하고 터치는 장 메뉴를 쓴다. 패널 그림 끌어 넣기도 터치에서는 시작하지 않는다. 터치는 패널 스크롤에 쓰므로 누르기로 넣는다.
+- 편의 결정: 발표는 지금 보던 장에서 시작하고, 마지막 장에서 더 넘기면 끝나지 않고 멈춘다. 화면 왼쪽 4분의 1을 누르면 앞 장, 나머지는 다음 장이다. 조작 줄은 3초 뒤 숨는다. 파일을 만드는 동안에는 발표를 시작할 수 없고, 작품을 떠나면 만들던 파일은 취소된다. 앱은 항상 시작 화면에서 시작하고(영상 V3부터), 슬라이드 만들기를 누르면 작품 목록이 나온다. 새로고침하면 같은 탭에서 보던 작품으로 돌아온다. 손대지 않은 새 작품은 저장하지 않아 목록에 남지 않는다. 다른 작품으로 넘어갈 때 묻지 않고 자동 저장하며, 실패할 때만 묻는다. 잠금 미지원 브라우저는 읽기 전용으로 연다. 고아 사진은 작품 목록에 들어올 때 다른 탭이 없으면 정리한다. Esc와 다른 곳 누르기는 입력을 확정한다(입력 취소는 입력 중 Ctrl+Z). Esc로 끝내면 글씨가 선택된 채로 남고, 빈 곳을 눌러 끝내면 선택도 풀린다. 입력 중 되돌리기 버튼은 입력을 확정한 뒤 되돌린다. 창 폭 1200px 이상이면 배경 패널을 연 채로 시작하고, 그보다 좁으면 닫고 시작한다. 불투명한 입력 사진은 JPEG(품질 0.9), 투명한 사진만 PNG로 저장한다. 안내 문구는 슬라이드를 덮지 않도록 설정 줄 오른쪽에 둔다. Backspace도 Delete와 같이 선택 요소를 지운다(되돌릴 수 있음). 슬라이드 끌어 옮기기는 마우스만 지원하고 터치는 장 메뉴를 쓴다. 패널 그림 끌어 넣기도 터치에서는 시작하지 않는다. 터치는 패널 스크롤에 쓰므로 누르기로 넣는다.
 - 알려진 제약: 지운 사진도 작품의 사진 용량 한도(200MiB, 1000개)에 계속 포함된다. 넣은 사진 목록에서 지우는 기능은 없다. 번들 크기 경고가 남아 있다(첫 스크립트 756KB, 출력 도구는 내려받을 때 불러온다). 배포 결과 24MB. `.woff`는 빌드 때 지우고 `.woff2`만 남기며, 글꼴은 글자 묶음 단위로 필요할 때만 받는다. `.canvacraft`를 막는 호스트에서는 템플릿이 열리지 않는다([RELEASE.md](RELEASE.md)). 잘린 JPEG는 브라우저가 앞부분만 디코딩해 들어올 수 있다. 도형 색 변형 파일은 manifest에 해시가 없어 형식·크기·라이선스만 확인한다.
 
 ## 4. 완료된 것
 
-코드 구조. 문서를 바꾸는 곳은 `src/state/store.ts`의 dispatch·undo·redo뿐이다.
+코드 구조. 문서를 바꾸는 곳은 공통 틀 `src/state/history.ts`를 쓰는 `src/state/store.ts`(슬라이드)·`src/state/videoStore.ts`(영상)의 dispatch·undo·redo뿐이다.
 
 | 경로 | 내용 |
 |---|---|
 | `src/domain` | 문서 타입, 상한, `validateProject` |
 | `src/commands/apply.ts` | 편집 명령 18개. DOM을 쓰지 않는다 |
-| `src/state/store.ts` | dispatch, undo, redo, revision, 취소 기록 한도, 읽기 전용 |
+| `src/state/history.ts`, `store.ts`, `videoStore.ts` | 공통 dispatch·undo·redo·revision·취소 기록 한도·읽기 전용(`history.ts`)과 슬라이드·영상 어댑터 |
 | `src/state/autosave.ts` | 저장 예약·직렬화·재시도. DOM을 쓰지 않는다 |
 | `src/storage` | 원본 파일(ZIP) 읽기·쓰기, IndexedDB 작품·요약·사진 저장(`database.ts`), Web Locks(`locks.ts`), 파일 이름 |
 | `src/assets` | 이미지 헤더 읽기, `importAsset`(사진 입력), `library.ts`(라이브러리 읽기·검색·검증), 사진 Blob 보관 |
@@ -134,9 +139,14 @@ npm.cmd run dev
 | `src/editor` | `geometry.ts`(좌표·요소 찾기·크기 계산), `strokes.ts`(획 단순화·정규화), `SelectionLayer`(포인터 조작), `DrawLayer`(펜·획 지우개), `dragToSlide`(패널 그림 끌어 넣기), `SelectionBar`(설정 줄), `TextEditor`(글씨 입력), `SlideCanvas`(Konva 표시) |
 | `src/components`, `src/styles` | 슬라이드 목록, 메뉴, 아이콘, 화면 스타일 |
 | `src/probe` | Phase 2 측정 재현용 고정 코드. `/probe.html`. 제품 코드가 아니다 |
+| `src/domain/video*.ts`, `timeline.ts`, `src/commands/videoApply.ts` | 영상 문서 타입·상한(`VIDEO_LIMITS`)·검사(`validateVideoProject`)·작품 시각 계산·명령 18개(겹침 요소 따라가기 포함). DOM을 쓰지 않는다 |
+| `src/video` | 영상 편집기 화면(`VideoApp`·`VideoHome`·`VideoEditor`, 시작 화면에서 지연 로딩), OPFS 바이트(`mediaStore.ts`), IndexedDB `canvacraft-video`(`videoDatabase.ts`), 원본 파일(`videoFile.ts`) |
+| `src/storage/storeZip.ts`, `mediaHash.ts` | 자체 STORE ZIP 쓰기·읽기(ZIP64), 영상 조각 해시 id |
+| `src/app/StartScreen.tsx`, `currentProject.ts` | 시작 화면, 새로고침 복원 기억 값 |
+| `tests/fixtures/video` | 영상 공통 fixture(WebM 2개 + 문서). `scripts/make-video-fixture.mjs`로 다시 만든다(개발 서버 필요) |
 | `src/videoprobe` | 영상 V2 측정용 시험 페이지·Worker. `/video-probe.html`(다른 PC에서 단추로 실행해 JSON을 받는다). 자동 시험은 `tests/video-phase2`, `npx playwright test --config playwright.video-phase2.config.ts`(포트 5179, 설치된 Chrome·Edge 필요). 제품 코드가 아니다 |
 | `tests/release` | 배포본 통합 시험(`npm run test:release`). `scripts/serve-dist.mjs`가 `dist`를 하위 경로에서 내준다 |
-| `tests/contracts`, `tests/e2e`, `tests/fixtures/sample` | 계약·계산 시험, 전체 흐름(`flow.spec.ts`), 조작(`select.spec.ts`), 사진·요소·배경(`library.spec.ts`), 글씨(`text.spec.ts`), 그리기(`draw.spec.ts`), 저장·작품 목록·탭 잠금(`home.spec.ts`), 발표·출력 화면(`present.spec.ts`), 패널 그림 끌어 넣기(`drag.spec.ts`) 시험, 공통 샘플 문서(`scripts/make-fixture.mjs`로 생성) |
+| `tests/contracts`, `tests/e2e`, `tests/fixtures/sample` | 계약·계산 시험, 전체 흐름(`flow.spec.ts`), 조작(`select.spec.ts`), 사진·요소·배경(`library.spec.ts`), 글씨(`text.spec.ts`), 그리기(`draw.spec.ts`), 저장·작품 목록·탭 잠금(`home.spec.ts`), 발표·출력 화면(`present.spec.ts`), 패널 그림 끌어 넣기(`drag.spec.ts`) 시험, 공통 샘플 문서(`scripts/make-fixture.mjs`로 생성). 영상: 명령·검사(`contracts/videoCommands.spec.ts`), 조각 해시·원본 파일(`contracts/videoFile.spec.ts`), 저장소(`e2e/videoStorage.spec.ts`), 시작 화면·영상 화면(`e2e/video.spec.ts`). 슬라이드 시험은 `tests/e2e/start.ts`로 시작 화면을 지난다 |
 
 Phase 2 결정과 근거는 [PHASE2_RESULTS.md](PHASE2_RESULTS.md) §1에 있다.
 

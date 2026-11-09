@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { newSlideProject } from './start';
 import JSZip from 'jszip';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -22,7 +23,7 @@ async function sampleFile() {
 }
 async function open(page: Page, slide = 4, width = 1440, height = 1000) {
   await page.setViewportSize({ width, height });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByTestId('open-file').setInputFiles(await sampleFile());
   await expect(page.getByRole('status')).toContainText('새 작품');
   await page.getByRole('button', { name: `${slide}번째 장`, exact: true }).click();

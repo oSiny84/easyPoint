@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { newSlideProject } from './start';
 import JSZip from 'jszip';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -25,7 +26,7 @@ async function sampleFile() {
 }
 async function open(page: Page, width = 1440, height = 1000) {
   await page.setViewportSize({ width, height });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByTestId('open-file').setInputFiles(await sampleFile());
   await expect(page.getByRole('status')).toContainText('새 작품');
   await page.waitForTimeout(200);
@@ -308,7 +309,7 @@ test('Enter로 선택한 글씨 입력을 시작하고, 터치 두 번 누르기
 test('템플릿 글씨를 고치면 PPT와 PDF에 반영된다', async ({ page }) => {
   await fs.mkdir(OUT, { recursive: true });
   await page.setViewportSize({ width: 1366, height: 768 });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByRole('navigation', { name: '도구' }).getByRole('button', { name: '템플릿' }).click();
   await page.getByRole('region', { name: '템플릿 패널' }).getByRole('button', { name: '템플릿 나를 소개해요' }).click();
   await expect(page.getByRole('status')).toContainText('새 작품');

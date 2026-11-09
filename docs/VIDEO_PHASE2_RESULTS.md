@@ -4,9 +4,11 @@
 
 ## 1. 요약
 
-브라우저 안에서 영상을 해독·합성·인코딩해 MP4·WebM으로 내는 경로가 이 PC에서 동작한다. 10분 1080p30 작품(자막 + 움직이는 스티커 + 밈 영상 2개가 전 구간에 겹침)의 MP4 출력이 101초, WebM 출력이 192초 걸렸고, 브라우저 전체 메모리 최대값은 1.2GB 안팎이었다. 목표(출력 시간 영상 길이의 2배 이내, 탭 메모리 1.5GB 이내)를 이 PC에서는 만족한다. **RAM 8GB PC 측정, 실제 휴대폰 영상, Windows 미디어 플레이어·YouTube 확인은 하지 않았다.** 그래서 V2 완료가 아니라 "개발 PC 측정 완료"다.
+브라우저 안에서 영상을 해독·합성·인코딩해 MP4·WebM으로 내는 경로가 이 PC에서 동작한다. 10분 1080p30 작품(자막 + 움직이는 스티커 + 밈 영상 2개가 전 구간에 겹침)의 MP4 출력이 101초, WebM 출력이 192초 걸렸고, 브라우저 전체 메모리 최대값은 1.2GB 안팎이었다. 목표(출력 시간 영상 길이의 2배 이내, 탭 메모리 1.5GB 이내)를 이 PC에서는 만족한다.
 
-계약의 "V2에서 결정" 8개 중 6개를 정했고 2개(작품 길이 상한, 공식 지원 형식)는 이 PC 기준 잠정값이다.
+**RAM 8GB 가상 PC(그래픽 가속 없음)에서는 시간 목표는 통과했지만 메모리 목표를 넘었다(§4.1).** 10분 출력 6종이 모두 끝까지 만들어졌고 프레임 어긋남은 0건이었다. 가장 오래 걸린 출력은 1,048초로 목표 1,200초 안이었다. 그러나 브라우저 메모리 최대값이 MP4 1.4~2.4GB, WebM 3.8~5.6GB였다. 개발 PC에서는 같은 코드가 1.2GB 안에 있었으므로, 하드웨어 해독기가 없을 때 해독된 프레임이 쌓이는 것으로 의심하지만 원인은 확인하지 않았다. 실제 휴대폰 영상, Windows 미디어 플레이어·YouTube 확인도 하지 않았다. 그래서 V2는 완료가 아니다.
+
+계약의 "V2에서 결정" 8개 중 6개를 정했고 2개(작품 길이 상한, 공식 지원 형식)는 잠정값이다. 길이 상한은 메모리 원인을 찾을 때까지 잠정으로 둔다.
 
 | 항목 | 결정 | 근거(이 PC) |
 |---|---|---|
@@ -14,9 +16,9 @@
 | 영상 바이트 위치 | **OPFS**. IndexedDB `media`에는 메타데이터만 | 500MB 저장은 둘 다 2초 이내. IndexedDB는 지우고 DB까지 삭제해도 5초 뒤 사용량이 줄지 않았고 OPFS는 즉시 줄었다 |
 | 컨테이너 라이브러리 | **Mediabunny 1.62.1**(MPL-2.0, 정확한 버전 고정) | 순수 TypeScript, WASM 없음. 시험 Worker 묶음 589KB(gzip 147KB). MP4·WebM 쓰기·읽기, OPFS 흘려 쓰기, Fast Start 확인 |
 | 비트레이트 | **영상 8Mbps VBR**(YouTube 1080p30 SDR 권장값). 소리는 AAC 192kbps / Opus 128kbps 유지 | YouTube 도움말 확인(§9). 10Mbps 1분 75MB, 8Mbps 1분 61MB |
-| 작품 길이 상한 | **10분 유지(잠정)** | 이 PC 최악 192초(목표 1,200초). 8GB PC 미측정 |
+| 작품 길이 상한 | **10분 유지(잠정)** | 이 PC 최악 192초, 8GB 가상 PC 최악 1,048초(목표 1,200초). 8GB 가상 PC 메모리 최대 5.6GB로 목표 1.5GB 초과, 원인 미확인(§4.1) |
 | `.canvavideo` 대용량 | **자체 STORE ZIP 스트리밍 쓰기·읽기**. JSZip을 영상 원본에 쓰지 않는다. 1GiB 임시 상한은 구현 후 해제 | 1GB 원본 쓰기 10초, 목록 읽기 3ms, CRC 검사 통과, JS 힙 변화 없음 |
-| 공식 지원 형식 | **MP4 우선 + WebM 대체 유지(잠정)** | H.264+AAC 인코딩이 Chrome·Edge(하드웨어·소프트웨어)와 번들 Chromium(소프트웨어)에서 모두 통과 |
+| 공식 지원 형식 | **MP4 우선 + WebM 대체 유지(잠정)** | H.264+AAC 인코딩이 Chrome·Edge(하드웨어·소프트웨어)와 번들 Chromium(소프트웨어), 하드웨어 인코더가 없는 8GB 가상 PC Edge에서 모두 통과. 가상 PC에서 MP4가 WebM보다 메모리를 덜 썼다 |
 | Worker 안 소리 섞기 | **Worker가 `AudioDecoder` 출력을 직접 더한다** | Worker에는 `OfflineAudioContext`·`AudioContext`가 없다(만들면 ReferenceError, 3개 브라우저). 10분 소리 섞기 2.0초 |
 
 측정 중 계약의 결함 2건을 찾았다.
@@ -76,6 +78,30 @@
 - 밈 영상 2개는 같은 파일을 두 번 열어 썼다. 해독기는 2개가 따로 돌았으므로 해독 비용은 실제와 비슷하다고 보지만, 서로 다른 해상도·코덱의 밈 2개는 시험하지 않았다.
 - **Fast Start.** 기본 설정은 moov 상자가 파일 끝에 간다(`ftyp, mdat, moov`). 트랙별 최대 패킷 수를 주고 `fastStart: 'reserve'`로 쓰면 흘려 쓰기를 유지하면서 `ftyp, moov, free, mdat`이 됐다. 시간 차이는 1% 이내. 편집 목록(`elst`)은 어느 출력에도 없었다. YouTube 권장(§9)에 맞춰 MP4는 'reserve'로 쓴다.
 - **자막 1.5배.** 출력 프레임 PNG(`artifacts/video-phase2/frame-mp4-chrome.png`)를 눈으로 확인했다. Noto Sans KR 굵게 72px(논리 48px), 반투명 띠, 컬러 이모지, 투명 스티커 가장자리가 깨끗했고 프레임 번호는 165(5.5초 × 30)로 맞았다.
+
+### 4.1 RAM 8GB 가상 PC (2026-11-09)
+
+**환경.** 개발 PC 위 VirtualBox 가상 PC. Windows 11 Home, RAM 8,077MB, CPU 4개, Edge 157.0.4341.42(개발 PC와 같은 판). 그래픽은 SwiftShader(소프트웨어)여서 **하드웨어 인코더·해독기가 모두 없다**(`prefer-hardware`는 모든 코덱에서 N, HEVC 해독도 N). 실제 저가 PC보다 나쁜 조건이다. CPU는 개발 PC의 Ryzen 7 8700G를 나눠 쓰므로 **시간은 실제 PC 속도가 아니다.** 판단은 메모리와 성공 여부로 한다. 실행은 `scripts/videoprobe-vm-test.cmd`로 했다. 공유 폴더에 이 파일과 `canvacraft\`(커밋 `de3a8d7` 사본 + node_modules), `node\`(Node.js 폴더)를 나란히 두고 가상 PC에서 두 번 클릭하면, 가상 PC 디스크로 복사한 뒤 `support export --project msedge --timeout=0`(MINUTES 기본 10)을 돌리고 결과를 `results-<컴퓨터 이름>\`으로 돌려놓는다. 전체 전체 1.6시간 걸렸다. 원자료는 `export-10m-msedge.json`·`support-msedge.json`(`artifacts/video-phase2/vm-win11/`, Git 제외. `systeminfo.txt` 포함)이다.
+
+| 10분 출력(Edge, 가상 PC) | 시간 | 크기 | 메모리 최대(전체 / 렌더러) |
+|---|---|---|---|
+| MP4, 자막만(no-preference → 소프트웨어) | 1,033초 | 3,071MB | 1.43GB / 1.03GB |
+| MP4, 자막+스티커+밈 영상 2 | 1,048초 | 2,719MB | 1.67GB / 1.31GB |
+| MP4 소프트웨어(prefer-software), 자막만 | 730초 | 3,071MB | 1.71GB / 1.34GB |
+| MP4, 자막+스티커+밈 영상 2, 8Mbps·Fast Start | 878초 | 2,721MB | **2.43GB** / 2.05GB |
+| WebM VP9, 자막만 | 511초 | 992MB | **5.59GB** / 5.24GB |
+| WebM VP9, 자막+스티커+밈 영상 2 | 739초 | 930MB | **3.76GB** / 3.40GB |
+
+- **통과한 것.** 6종 모두 18,000프레임, 600.000초, 빠진 프레임 0, 표본 24프레임 어긋남 0. Fast Start 출력은 `ftyp, moov, free, mdat`. 가장 느린 출력 1,048초가 목표 1,200초 안이다. 원본 해독은 MP4 351fps(실시간 11.7배), WebM 230fps(7.7배). 스티커 해독은 프레임당 2ms(중앙값).
+- **넘은 것: 메모리.** 6종 중 5종이 목표 1.5GB를 넘었다. WebM 자막만 출력은 5.59GB로 RAM 8GB 기기에서 다른 프로그램을 밀어낼 수준이다. 개발 PC에서는 같은 코드·같은 Edge 판에서 1.2GB 이내였고, 1분·10분 차이도 10% 안팎이었다.
+- **원인은 확인하지 않았다.** 후보는 셋이다. ① 하드웨어 해독기는 프레임 버퍼 수가 정해져 있어 해독이 저절로 멈추지만, 소프트웨어 해독기는 해독된 프레임(1080p 한 장 약 3MB)이 렌더러 메모리에 계속 쌓일 수 있다. 해독은 230~351fps로 합성·인코딩(약 17~35fps)보다 훨씬 빠르다. ② GPU가 없어 캔버스·`VideoFrame` 사본이 렌더러 메모리로 옮겨 왔고, 인코더 대기열에 쌓인 프레임이 늘었다. ③ 측정 방식(작업 집합 합)이 공유 페이지나 파일 캐시를 더 크게 셌다. 렌더러 하나가 5.24GB여서 ③만으로는 설명하기 어렵다.
+- **조사는 보류했다(2026-11-09 사용자 결정).** 실제 PC는 그래픽 해독기가 있어 이 조건보다 낫다고 보고 더 쓰지 않기로 했다. 보류 전에 한 것:
+  - Mediabunny 코드를 읽어 보니 해독 쪽(꺼낸 프레임 + 해독 대기 ≤ 4)과 인코딩 쪽(`encodeQueueSize` ≥ 4면 대기)에 모두 상한이 있다.
+  - 개발 PC Edge를 `--disable-gpu --disable-accelerated-video-decode --disable-accelerated-video-encode`로 띄워(SwiftShader 확인) 3분 WebM을 만들고 자막만 넣어 출력했다. 메모리는 처음부터 끝까지 평평했다(전체 약 1.4GB, 렌더러 작업 집합 약 1.0GB, 렌더러 전용 커밋 약 0.53GB). 넣은 프레임과 나온 패킷의 차이도 8~9장으로 일정했다. 이 조건에서는 ①(해독 프레임 누적)과 인코더 대기열 누적이 일어나지 않았다. **가상 PC 현상은 재현하지 못했다.**
+  - 남은 후보: CPU 코어 수(가상 PC 4개), 가상 PC 고유 조건, 또는 같은 브라우저에서 앞선 출력·검사가 남긴 메모리(가상 PC 시험은 출력 6종과 검사를 한 브라우저에서 이어 돌렸고 MP4 최대값이 1.43→1.67→1.71→2.43GB로 차례로 올랐으며 WebM이 마지막이었다).
+  - 다시 조사할 때: `tests/video-phase2/memory.spec.ts`(단계별 메모리·프레임·패킷 시간 기록, `PAIR`·`SECONDS`·`LABEL`·`PROBE_ARGS`)를 가상 PC에서 `scripts/videoprobe-vm-memory.cmd`로 돌린다(약 20분). 분석 기준은 전용 커밋도 같이 느는지, 프레임−패킷 차이가 느는지, 만들기 단계에서도 느는지다.
+- **소프트웨어 H.264 비트레이트 초과가 더 컸다.** 10Mbps 요청에 약 41Mbps(10분 3.07GB), 8Mbps 요청에 약 36Mbps였다. 개발 PC 소프트웨어 경로는 26Mbps였다. VP9는 약 13Mbps로 개발 PC와 같았다. 가상 PC에서는 `no-preference`도 소프트웨어 인코더(`avc1.640c28`)로 갔다.
+- `no-preference`(1,033초)가 `prefer-software`(730초)보다 느렸고 인코딩 대기 시간이 514초 대 183초였다. 둘 다 같은 코덱 문자열이어서 다른 인코더인지 알 수 없다. 원인 미조사.
 
 ## 5. 해독과 재생
 
@@ -143,7 +169,8 @@
 
 | 항목 | 상태 | 누가·언제 |
 |---|---|---|
-| RAM 8GB PC 출력 시간·메모리 | 미측정. 길이 상한·공식 형식이 잠정인 이유 | 사용자. 그 PC에 Node.js와 Chrome이 있으면 저장소를 받아 `npm ci` 후 `MINUTES=10 npx playwright test --config playwright.video-phase2.config.ts export --project chrome`(PowerShell은 `$env:MINUTES=10` 먼저)를 실행한다. 운영체제 메모리까지 `artifacts/video-phase2/export-10m-chrome.json`에 남는다. 대안: `npx vite --host 127.0.0.1 --port 5179` 후 Chrome으로 `http://127.0.0.1:5179/video-probe.html`을 열어 "1분 시험"·"10분 시험"을 누르면 결과 JSON이 내려받아진다(이 경로는 운영체제 메모리를 못 재므로 작업 관리자 최대값을 함께 적는다). 단추 경로는 이 PC Chrome에서 1분 묶음 전체가 끝까지 돌고 JSON이 내려받아지는 것을 확인했다 |
+| 그래픽 가속 없는 환경의 출력 메모리 | **목표 초과, 원인 미확인**(§4.1). MP4 1.4~2.4GB, WebM 3.8~5.6GB. 길이 상한이 잠정인 이유 | **보류**(2026-11-09 사용자 결정). 개발 PC에서는 재현되지 않았다(§4.1). 다시 볼 때는 가상 PC에서 `scripts/videoprobe-vm-memory.cmd` |
+| 실제 RAM 8GB PC(그래픽 해독기 있음) | 미측정. 가상 PC는 더 나쁜 조건만 쟀다 | 사용자, 기기가 있을 때. 저장소를 받아 `npm ci` 후 `MINUTES=10 npx playwright test --config playwright.video-phase2.config.ts export --project chrome`(cmd는 `set MINUTES=10`, PowerShell은 `$env:MINUTES=10` 먼저). Node.js가 없으면 §4.1의 `scripts/videoprobe-vm-test.cmd` 묶음을 넘겨 두 번 클릭한다 |
 | 실제 휴대폰 영상(Android MP4, iPhone MOV·HEVC, 세로·회전) | 미검증. 회전 정보 읽기·가변 프레임률·편집 목록 처리도 미확인 | 사용자가 1분 안팎 파일 2~3개를 주면 V4 시작 전에 해독·출력 시험 |
 | Windows 미디어 플레이어·영화 및 TV 앱 재생 | 미검증 | 사용자. `artifacts/video-phase2/files/`의 MP4·WebM |
 | YouTube 비공개 업로드 처리 | 미검증 | 사용자(보호자 계정), V7 |
@@ -151,5 +178,5 @@
 | 미리보기(`<video>` + `AudioContext` 동기) | 미검증 | V4 |
 | 세로 1080×1920 실제 인코딩 | `isConfigSupported`만 통과 | V7 |
 | 실행 파일에서 Worker·라이브러리 | 미검증 | V8 |
-| 소프트웨어 H.264 비트레이트 초과(26Mbps) | 원인 미조사 | V7 |
+| 소프트웨어 H.264 비트레이트 초과(개발 PC 26Mbps, 가상 PC 36~41Mbps) | 원인 미조사 | V7 |
 | Mediabunny 라이선스(MPL-2.0) 안내 | 배포본이 코드 의존성 라이선스를 어떻게 안내하는지 확인하지 않았다(`src/export/notices.ts`는 내장 그림의 MIT 고지만 다룬다). MPL-2.0은 실행 형태로 배포할 때 원본 코드를 구할 수 있는 곳을 알리도록 요구한다(수정하지 않고 쓰는 경우 포함) | V8 |

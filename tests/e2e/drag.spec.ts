@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { newSlideProject } from './start';
 import fs from 'node:fs/promises';
 
 // 왼쪽 패널의 그림을 끌어 슬라이드에 넣기.
@@ -12,7 +13,7 @@ const ghost = (page: Page) => page.locator('.drag-ghost');
 
 async function open(page: Page) {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await rail(page, '요소').click();
   await expect(card(page)).toBeVisible();
 }
@@ -178,7 +179,7 @@ test('최근 사용에 남고, 도형 색을 고르면 그 색으로 들어가�
 
 test('넣은 사진도 끌어서 넣는다. 배경 패널의 사진은 끌어도 넣지 않는다', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   const png = await page.evaluate(async () => { const c = document.createElement('canvas'); c.width = 400; c.height = 200; const x = c.getContext('2d')!; x.fillStyle = '#3a7'; x.fillRect(0, 0, 400, 200); const blob = await new Promise<Blob>(next => c.toBlob(b => next(b!), 'image/jpeg')); const r = new FileReader(); return new Promise<string>(next => { r.onload = () => next(String(r.result).split(',')[1]); r.readAsDataURL(blob); }); });
   await rail(page, '업로드').click();
   const chooser = page.waitForEvent('filechooser');
@@ -265,7 +266,7 @@ async function dragPhoto(page: Page, x: number, y: number) {
 
 test('슬라이드에서 지운 사진은 작품을 닫았다 열어도 넣은 사진에서 끌어 넣을 수 있다', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await uploadRedPhoto(page);
   await deleteOnlyPhoto(page);
   // 작품 목록에 들어가면 안 쓰는 사진을 정리한다. 넣은 사진 목록에 있는 것은 남아야 한다.
@@ -299,7 +300,7 @@ test('슬라이드에서 지운 사진은 작품을 닫았다 열어도 넣은 �
 
 test('이미 자료를 잃은 작품: 목록에 내놓지 않고, 자동 저장과 원본 저장은 계속된다', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await uploadRedPhoto(page);
   const [photo] = (await doc(page)).assetManifest;
   await deleteOnlyPhoto(page);
@@ -326,7 +327,7 @@ test('이미 자료를 잃은 작품: 목록에 내놓지 않고, 자동 저장�
 
 test('자료가 없는 사진이 문서에 있어도 안내하고 다른 편집은 화면에 나타난다', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/'); await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await uploadRedPhoto(page);
   // 문서에는 있는데 자료가 사라진 사진을 만든다.
   await page.evaluate(async () => {

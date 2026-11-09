@@ -15,7 +15,9 @@ export const test = base.extend({
     void browserName;
     const dir = path.join(os.tmpdir(), `${PROFILE_TAG}-${testInfo.project.name}`);
     await fs.rm(dir, { recursive: true, force: true });
-    const context = await chromium.launchPersistentContext(dir, { channel, headless, viewport, baseURL: testInfo.project.use.baseURL, acceptDownloads: true });
+    // PROBE_ARGS: 브라우저 실행 인자(예: 그래픽 가속을 끈 환경 재현). 공백으로 나눈다.
+    const args = process.env.PROBE_ARGS?.split(' ').filter(Boolean);
+    const context = await chromium.launchPersistentContext(dir, { channel, headless, viewport, baseURL: testInfo.project.use.baseURL, acceptDownloads: true, args });
     await use(context);
     await context.close();
     await fs.rm(dir, { recursive: true, force: true }).catch(() => undefined);
@@ -46,26 +48,35 @@ export async function save(testInfo: TestInfo, name: string, data: unknown) {
 
 // 브라우저 전체 프로세스(브라우저·GPU·렌더러·유틸리티)의 작업 집합을 운영체제에서 2초마다 잰다.
 // performance.memory는 VideoFrame이 쓰는 네이티브·GPU 메모리를 보지 못하기 때문이다. 공유 페이지가 중복 합산될 수 있다.
+// series: [Date.now(), 전체 작업 집합 MB, 렌더러 작업 집합 MB, GPU 작업 집합 MB, 렌더러 전용 커밋(PrivatePageCount) MB]를 2초마다 남긴다.
 export function startMemorySampler() {
   const script = `while ($true) { $p = Get-CimInstance Win32_Process -Filter "Name='chrome.exe' or Name='msedge.exe' or Name='chrome-headless-shell.exe'" | Where-Object { $_.CommandLine -like '*canvacraft-videoprobe-profile*' };
-    $sum = ($p | Measure-Object WorkingSetSize -Sum).Sum; $r = ($p | Where-Object { $_.CommandLine -like '*--type=renderer*' } | Measure-Object WorkingSetSize -Maximum).Maximum; $g = ($p | Where-Object { $_.CommandLine -like '*--type=gpu-process*' } | Measure-Object WorkingSetSize -Maximum).Maximum;
-    Write-Output "$sum $r $g"; Start-Sleep -Seconds 2 }`;
+    $rp = $p | Where-Object { $_.CommandLine -like '*--type=renderer*' };
+    $sum = ($p | Measure-Object WorkingSetSize -Sum).Sum; $r = ($rp | Measure-Object WorkingSetSize -Maximum).Maximum; $g = ($p | Where-Object { $_.CommandLine -like '*--type=gpu-process*' } | Measure-Object WorkingSetSize -Maximum).Maximum; $rc = ($rp | Measure-Object PrivatePageCount -Maximum).Maximum;
+    $now = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds();
+    Write-Output "$sum $r $g $rc $now"; Start-Sleep -Seconds 2 }`;
   const child = spawn('powershell', ['-NoProfile', '-Command', script], { stdio: ['ignore', 'pipe', 'ignore'] });
   const peak = { total: 0, renderer: 0, gpu: 0, samples: 0 };
+  const mb = (value: number) => Math.round(value / 1024 / 1024);
+  const series: number[][] = [];
   child.stdout.setEncoding('utf8');
+  // 출력 덩어리가 줄 중간에서 끊길 수 있어 마지막 미완성 줄은 다음 덩어리와 잇는다.
+  let pending = '';
   child.stdout.on('data', (text: string) => {
-    for (const line of text.split(/\r?\n/)) {
-      const [total, renderer, gpu] = line.trim().split(' ').map(Number);
+    const lines = (pending + text).split(/\r?\n/); pending = lines.pop() ?? '';
+    for (const line of lines) {
+      const [total, renderer, gpu, rendererPrivate, at] = line.trim().split(' ').map(Number);
       if (!Number.isFinite(total)) continue;
       peak.samples++; peak.total = Math.max(peak.total, total); peak.renderer = Math.max(peak.renderer, renderer || 0); peak.gpu = Math.max(peak.gpu, gpu || 0);
+      series.push([at, mb(total), mb(renderer || 0), mb(gpu || 0), mb(rendererPrivate || 0)]);
     }
   });
   return {
     stop() {
       child.kill();
-      const mb = (value: number) => Math.round(value / 1024 / 1024);
       return { peakTotalMB: mb(peak.total), peakRendererMB: mb(peak.renderer), peakGpuMB: mb(peak.gpu), samples: peak.samples };
     },
+    series: () => series,
   };
 }
 

@@ -72,6 +72,9 @@ try {
   let context = await chromium.launchPersistentContext(profile);
   let tab = await context.newPage();
   await tab.goto(URL);
+  // 기억한 작품이 없으면 시작 화면에서 시작한다.
+  await tab.getByRole('button', { name: '슬라이드 만들기' }).click();
+  await tab.getByRole('button', { name: '새 작품' }).click();
   await tab.getByRole('button', { name: '페이지 추가' }).click();
   await tab.getByTestId('save-state').filter({ hasText: '저장됨' }).waitFor({ timeout: 8000 });
   await context.close();
@@ -82,6 +85,7 @@ try {
   context = await chromium.launchPersistentContext(profile);
   tab = await context.newPage();
   await tab.goto(URL);
+  await tab.getByRole('button', { name: '슬라이드 만들기' }).click();
   await tab.getByRole('list', { name: '내 작품' }).getByRole('button', { name: /열기$/ }).first().click();
   await tab.getByRole('button', { name: '2번째 장', exact: true }).waitFor({ timeout: 8000 });
   check('실행 파일을 다시 켜도 작품이 남는다', (await saveState(tab).textContent()) === '저장됨');

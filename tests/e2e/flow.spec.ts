@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { newSlideProject } from './start';
 import JSZip from 'jszip';
 import { PDFDocument } from 'pdf-lib';
 import fs from 'node:fs/promises';
@@ -32,8 +33,7 @@ function watch(page: Page) {
 }
 
 async function openSample(page: Page) {
-  await page.goto('/');
-  await expect(page.getByTestId('paper')).toBeVisible();
+  await newSlideProject(page);
   await page.getByTestId('open-file').setInputFiles(await sampleFile());
   await expect(page.getByRole('status')).toContainText('새 작품으로 열었어요');
   await expect(slideButtons(page)).toHaveCount(4);
@@ -148,8 +148,7 @@ test('공통 샘플 문서의 전체 흐름', async ({ page, context, browser })
   expect(original.suggestedFilename()).toBe('우리 가족 소개.canvacraft');
   const originalPath = path.join(OUT, 'sample.canvacraft'); await original.saveAs(originalPath);
   const other = await browser.newContext({ viewport: { width: 1440, height: 1000 } }); const otherPage = await other.newPage();
-  await otherPage.goto('/');
-  await expect(otherPage.getByTestId('paper')).toBeVisible();
+  await newSlideProject(otherPage);
   await otherPage.getByTestId('open-file').setInputFiles(originalPath);
   await expect(otherPage.getByRole('status')).toContainText('새 작품으로 열었어요');
   const reopened = await dev(otherPage);
@@ -189,7 +188,7 @@ test('공통 샘플 문서의 전체 흐름', async ({ page, context, browser })
 });
 
 test('마지막 장 삭제 안내와 빈 작품 시작', async ({ page }) => {
-  await page.goto('/');
+  await newSlideProject(page);
   await expect(slideButtons(page)).toHaveCount(1);
   await slideMenu(page, 0, '삭제');
   await expect(page.getByRole('status')).toContainText('내용 비우기');

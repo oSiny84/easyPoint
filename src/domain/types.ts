@@ -30,7 +30,9 @@ export type ProjectSummary = { projectId: string; title: string; updatedAt: stri
 
 export type ErrorCode =
   | 'INVALID_VALUE' | 'LIMIT_EXCEEDED' | 'ASSET_MISSING' | 'ASSET_INVALID' | 'FONT_UNAVAILABLE' | 'REVISION_CONFLICT'
-  | 'READ_ONLY' | 'UNSUPPORTED_VERSION' | 'STORAGE_UNAVAILABLE' | 'STORAGE_FULL' | 'EXPORT_FAILED' | 'CANCELLED';
+  | 'READ_ONLY' | 'UNSUPPORTED_VERSION' | 'STORAGE_UNAVAILABLE' | 'STORAGE_FULL' | 'EXPORT_FAILED' | 'CANCELLED'
+  // 영상 편집기(영상 계약 §7): 이 PC가 해독할 수 없는 코덱·형식, 쓸 수 있는 출력 코덱 조합 없음.
+  | 'MEDIA_UNSUPPORTED' | 'ENCODER_UNAVAILABLE';
 // 예상 실패는 예외가 아니라 구조화된 결과로 돌려준다. 메시지에 사진 내용이나 원본 파일명을 넣지 않는다.
 export type Failure = { ok: false; code: ErrorCode; message: string };
 export const fail = (code: ErrorCode, message: string): Failure => ({ ok: false, code, message });
