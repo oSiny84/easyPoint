@@ -32,6 +32,8 @@ const PATHS: Record<string, string> = {
   meme: 'M12 3a9 9 0 1 0 .01 0M8.5 10h.01M15.5 10h.01M8 14.5c1 1.5 2.4 2.2 4 2.2s3-.7 4-2.2',
   sound: 'M4 9h4l5-4v14l-5-4H4zM17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11',
   home: 'M4 11l8-7 8 7M6 10v10h12V10',
+  pause: 'M8 5v14M16 5v14',
+  cut: 'M6 7a3 3 0 1 0 .01 0M6 17a3 3 0 1 0 .01 0M8.5 8.5L20 19M8.5 15.5L20 5',
 };
 
 export function Icon({ name, size = 20 }: { name: keyof typeof PATHS | string; size?: number }) {

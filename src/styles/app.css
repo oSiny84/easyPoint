@@ -210,21 +210,47 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .kind-badge.kind-slide { background: var(--accent-soft); color: #5b21b6; }
 .kind-badge.kind-video { background: #ffedd5; color: #c2410c; }
 
-/* 영상 편집기 틀(영상 기획안 §3): 미리보기 자리, 아래 타임라인 띠, 영상 작품 목록 안내 */
+/* 영상 편집기(영상 기획안 §3): 미리보기, 재생 줄, 아래 타임라인 띠, 영상 작품 목록 안내 */
 .video-work { align-items: center; justify-content: center; }
-.video-stage { display: flex; align-items: center; justify-content: center; max-width: 100%; max-height: 100%; background: #111; color: #c9ccd3; font-size: 15px; border-radius: 4px; box-shadow: 0 2px 10px #1f243033; }
+.video-stage { position: relative; display: flex; align-items: center; justify-content: center; max-width: 100%; max-height: 100%; background: #111; color: #c9ccd3; font-size: 15px; border-radius: 4px; box-shadow: 0 2px 10px #1f243033; overflow: hidden; }
 .video-stage.landscape { width: min(100%, 1280px); }
 .video-stage.portrait { height: 100%; }
-.timeline { gap: 12px; padding: 0 12px; }
-.timeline-total { flex: none; min-width: 48px; font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; }
-.clip-strip { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; height: 100%; margin: 0; padding: 0; overflow-x: auto; list-style: none; }
-.clip-chip { flex-direction: column; gap: 2px; min-width: 96px; height: 64px; border: 2px solid var(--line); border-radius: 8px; background: #fff7ed; font-size: 13px; }
-.clip-chip small { color: var(--muted); font-size: 12px; }
-.clip-chip.current { border-color: var(--accent); }
-.clip-empty { color: var(--muted); font-size: 14px; }
+.video-stage canvas { display: block; width: 100%; height: 100%; }
+.stage-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; }
+.player-bar { flex: none; display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 12px; background: var(--surface); border-top: 1px solid var(--line); }
+.play-button { width: 48px; min-height: 40px; height: 40px; padding: 0; border-radius: 20px; background: var(--accent); color: #fff; }
+.play-button:hover:not(:disabled) { background: #6d28d9; }
+.player-time { font-variant-numeric: tabular-nums; font-size: 15px; }
+.player-note { margin-left: auto; color: var(--muted); font-size: 13px; }
+.import-progress { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.import-progress button { min-height: 32px; height: 32px; }
+.timeline { gap: 0; padding: 0; height: 120px; }
+.timeline-box { flex: 1; min-width: 0; height: 100%; }
+.timeline-scroll { width: 100%; min-width: 0; height: 100%; overflow-x: auto; overflow-y: hidden; }
+.timeline-track { position: relative; height: 100%; min-width: 100%; }
+.timeline-ruler { position: absolute; left: 0; right: 0; top: 0; height: 24px; border-bottom: 1px solid var(--line); cursor: pointer; touch-action: none; }
+.tick { position: absolute; top: 4px; padding-left: 3px; border-left: 1px solid #b7bcc7; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; pointer-events: none; }
+.clip-strip { position: absolute; left: 0; right: 0; top: 32px; height: 76px; margin: 0; padding: 0; list-style: none; touch-action: none; }
+.clip-slot { position: absolute; top: 0; height: 100%; }
+/* 선택한 조각의 다듬기 손잡이가 옆 조각에 가려지지 않게 위로 올린다. */
+.clip-slot.selected { z-index: 1; }
+.clip-block { position: relative; width: 100%; height: 100%; min-height: 0; padding: 0; overflow: hidden; border: 2px solid #fdba74; border-radius: 8px; background: #fff7ed; justify-content: flex-start; align-items: stretch; touch-action: none; }
+.clip-block img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .9; pointer-events: none; }
+.clip-block.current { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.clip-label { position: relative; align-self: flex-end; display: flex; gap: 6px; max-width: 100%; margin: 4px; padding: 1px 6px; overflow: hidden; border-radius: 6px; background: #ffffffe6; font-size: 12px; white-space: nowrap; text-overflow: ellipsis; }
+.clip-label small { color: var(--muted); }
+.trim-handle { position: absolute; top: 0; bottom: 0; width: 12px; border-radius: 6px; background: var(--accent); cursor: ew-resize; touch-action: none; }
+.trim-handle.in { left: -6px; }
+.trim-handle.out { right: -6px; }
+.playhead { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #e03131; cursor: ew-resize; touch-action: none; z-index: 2; }
+.playhead::before { content: ''; position: absolute; top: 0; left: -6px; width: 14px; height: 14px; border-radius: 0 0 7px 7px; background: #e03131; }
+.clip-empty { position: absolute; left: 12px; top: 26px; color: var(--muted); font-size: 14px; }
 .media-list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
-.media-list li { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
-.media-list small { margin-left: auto; color: var(--muted); }
+.media-list li { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
+.media-list li img, .media-thumb-empty { flex: none; display: flex; align-items: center; justify-content: center; width: 64px; height: 36px; border-radius: 4px; background: #111; color: #9aa0ab; object-fit: cover; }
+.media-list li span { display: flex; flex-direction: column; }
+.media-list small { color: var(--muted); }
+.media-list button { margin-left: auto; min-height: 36px; height: 36px; font-size: 13px; }
 .video-thumb-empty { display: flex !important; align-items: center; justify-content: center; color: #9aa0ab; }
 .guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 .guide-card { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px var(--line); color: var(--ink); }

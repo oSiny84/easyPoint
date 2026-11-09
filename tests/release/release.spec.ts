@@ -395,6 +395,29 @@ test('영상 만들기: 배포본에서 영상 편집기를 불러와 저장하�
   expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
 });
 
+// 영상 V4: 배포본에서 가져오기 Worker(나눠 받는 파일)와 blob: 영상 미리보기가 CSP 위반 없이 동작한다.
+test('영상 가져오기와 미리보기: 배포본에서 영상 2개를 넣고 끝까지 재생한다', async ({ page }) => {
+  const seen = watch(page);
+  await page.goto('./');
+  await page.getByRole('button', { name: '영상 만들기' }).click();
+  await page.getByRole('button', { name: '새 작품' }).click();
+  const fixture = (name: string) => fs.readFile(path.join('tests/fixtures/video', name)).then(buffer => ({ name, mimeType: 'video/webm', buffer }));
+  await page.getByTestId('import-video').setInputFiles([await fixture('a.webm'), await fixture('b.webm')]);
+  await expect(status(page)).toContainText('영상 2개를 넣었어요', { timeout: 20000 });
+  await saved(page);
+  const ruler = (await page.getByTestId('timeline-ruler').boundingBox())!;
+  await page.mouse.click(ruler.x + 12, ruler.y + ruler.height / 2);
+  await page.getByRole('button', { name: '재생' }).click();
+  await expect(page.getByRole('button', { name: '일시정지' })).toBeVisible();
+  const total = await page.getByTestId('timeline-total').textContent();
+  await expect(page.getByTestId('player-time')).toHaveText(`${total} / ${total}`, { timeout: 10000 });
+  // 미리보기에 실제 영상 프레임이 그려졌다(검은 화면이 아니다).
+  const pixel = await page.evaluate(() => { const canvas = document.querySelector('[data-testid=preview]') as HTMLCanvasElement; return [...canvas.getContext('2d')!.getImageData(canvas.width / 2, canvas.height / 4, 1, 1).data].slice(0, 3).reduce((a, b) => a + b, 0); });
+  expect(pixel).toBeGreaterThan(60);
+  await page.screenshot({ path: path.join(OUT, 'video-preview.png') });
+  expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
+});
+
 test('화면 오류가 나면 빈 화면 대신 안내하고 새로고침으로 돌아온다', async ({ page }) => {
   await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();

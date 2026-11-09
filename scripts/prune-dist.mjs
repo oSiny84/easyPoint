@@ -16,7 +16,8 @@ for (const name of readdirSync('dist/assets')) if (name.endsWith('.woff')) rmSyn
 
 // 사진과 작품이 외부로 나갈 경로를 막는다(계약 §8). 개발 서버는 인라인 스크립트를 쓰므로 배포 결과에만 넣는다.
 // React style 속성과 글씨 입력 칸의 cssText 때문에 style-src에 unsafe-inline이 필요하다.
-const CSP = ["default-src 'none'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "img-src 'self' blob: data:", "font-src 'self'", "connect-src 'self' blob: data:", "base-uri 'self'", "form-action 'none'"].join('; ');
+// 영상 편집기(영상 계약 §8): 미리보기는 저장소 영상을 blob: 주소의 <video>로 재생하고(media-src), 가져오기는 같은 origin의 Worker 파일에서 한다(worker-src).
+const CSP = ["default-src 'none'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "img-src 'self' blob: data:", "media-src 'self' blob:", "worker-src 'self'", "font-src 'self'", "connect-src 'self' blob: data:", "base-uri 'self'", "form-action 'none'"].join('; ');
 const page = readFileSync('dist/index.html', 'utf8');
 if (!page.includes('<head>')) throw new Error('dist/index.html에 head가 없어요.');
 writeFileSync('dist/index.html', page.replace('<head>', `<head><meta http-equiv="Content-Security-Policy" content="${CSP}"/><meta name="referrer" content="no-referrer"/>`));

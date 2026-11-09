@@ -133,9 +133,9 @@ test('원본 열기: fixture를 새 작품으로 열고 저장·새로고침·�
   const fixture = JSON.parse(await fs.readFile(path.join(FIXTURE, 'project.json'), 'utf8'));
   expect(opened.id).not.toBe(fixture.id);
   expect(videoContent(opened)).toEqual(videoContent(fixture));
-  await expect(page.getByRole('list', { name: '영상 조각' }).getByRole('button')).toHaveText([/영상 1\s*0:02/, /영상 2\s*0:02/]);
+  await expect(page.getByRole('list', { name: '영상 조각' }).getByRole('button')).toHaveText([/영상 1\s*0:02/, /영상 2 · 소리 끔\s*0:02/]);
   await expect(page.getByTestId('timeline-total')).toHaveText('0:04');
-  await expect(page.getByTestId('video-stage')).toContainText('영상 2조각');
+  await expect(page.getByTestId('preview')).toBeVisible();
 
   await page.reload();
   await expect(status(page)).toContainText('저장된 작품을 열었어요');
