@@ -5,6 +5,9 @@ import type { ImageElement, SlideElement, StrokeElement, TextElement } from '../
 import { elementBounds } from '../domain/validate';
 
 const WIDTH = LIMITS.slideWidth, HEIGHT = LIMITS.slideHeight;
+// 캔버스 크기. 슬라이드는 기본값(1280×720)을 쓰고, 영상 편집기는 작품 방향에 맞는 크기(1280×720 또는 720×1280)를 넘긴다(영상 계약 §3).
+export type Canvas = { width: number; height: number };
+const SLIDE: Canvas = { width: WIDTH, height: HEIGHT };
 export type Point = { x: number; y: number };
 export type Box = { left: number; top: number; right: number; bottom: number };
 export type Handle = 'nw' | 'ne' | 'sw' | 'se' | 'e' | 'w';
@@ -50,8 +53,8 @@ function clampAxis(delta: number, low: number, high: number, size: number) {
   const max = high - low <= size ? size - high : -low;
   return Math.max(Math.min(min, max), Math.min(Math.max(min, max), delta));
 }
-export function moveWithin(box: Box, dx: number, dy: number) {
-  return { dx: clampAxis(dx, box.left, box.right, WIDTH), dy: clampAxis(dy, box.top, box.bottom, HEIGHT) };
+export function moveWithin(box: Box, dx: number, dy: number, canvas: Canvas = SLIDE) {
+  return { dx: clampAxis(dx, box.left, box.right, canvas.width), dy: clampAxis(dy, box.top, box.bottom, canvas.height) };
 }
 
 const MIN_IMAGE_SIDE = 16;
@@ -71,9 +74,10 @@ export function resizeImage(element: ImageElement, handle: Handle, p: Point, asp
 const round = (value: number) => Math.round(value * 100) / 100;
 
 // 좌우 손잡이는 폭만, 모서리는 폭과 글씨 크기를 같은 비율로 바꾼다(계약 §3). 세로 손잡이는 없다.
-export function resizeText(element: TextElement, handle: Handle, p: Point, measure: TextMeasure): Pick<TextElement, 'x' | 'y' | 'width' | 'fontSize'> {
+export type TextBox = Pick<TextElement, 'x' | 'y' | 'width' | 'fontSize' | 'text' | 'fontId' | 'bold' | 'lineHeight'>;
+export function resizeText<T extends TextBox>(element: T, handle: Handle, p: Point, measure: (element: T) => number, canvas: Canvas = SLIDE): Pick<TextElement, 'x' | 'y' | 'width' | 'fontSize'> {
   const right = element.x + element.width; const east = handle.includes('e');
-  const room = Math.min(LIMITS.textWidthMax, east ? WIDTH - Math.max(0, element.x) : Math.min(WIDTH, right));
+  const room = Math.min(LIMITS.textWidthMax, canvas.width, east ? canvas.width - Math.max(0, element.x) : Math.min(canvas.width, right));
   let width = Math.max(LIMITS.textWidthMin, Math.min(room, east ? p.x - element.x : right - p.x));
   if (handle === 'e' || handle === 'w') return { x: east ? element.x : right - width, y: element.y, width: round(width), fontSize: element.fontSize };
 
@@ -91,7 +95,7 @@ export function resizeText(element: TextElement, handle: Handle, p: Point, measu
 export const handlesFor = (element: SlideElement): Handle[] => element.type === 'image' ? ['nw', 'ne', 'sw', 'se'] : element.type === 'text' ? ['nw', 'ne', 'sw', 'se', 'w', 'e'] : [];
 
 // 놓은 곳이 그림의 가운데가 되게 하되, 슬라이드 밖으로 나가지 않게 한다.
-export function centeredAt(box: { width: number; height: number }, point: Point) {
+export function centeredAt(box: { width: number; height: number }, point: Point, canvas: Canvas = SLIDE) {
   const place = (center: number, size: number, limit: number) => Math.round(Math.max(0, Math.min(limit - size, center - size / 2)));
-  return { x: place(point.x, box.width, LIMITS.slideWidth), y: place(point.y, box.height, LIMITS.slideHeight), width: box.width, height: box.height };
+  return { x: place(point.x, box.width, canvas.width), y: place(point.y, box.height, canvas.height), width: box.width, height: box.height };
 }

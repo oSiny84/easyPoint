@@ -51,7 +51,7 @@ test('시작 화면에서 영상 편집기로 들어가고, 바꾸면 저장되�
   await expect(page.getByTestId('video-stage')).toBeVisible();
   await expect(saveState(page)).toHaveText('새 작품');
   await page.getByRole('navigation', { name: '도구' }).getByRole('button', { name: '자막' }).click();
-  await expect(page.getByRole('region', { name: '자막 패널' })).toContainText('준비 중');
+  await expect(page.getByRole('region', { name: '자막 패널' }).getByRole('button', { name: '보통 자막 추가' })).toBeVisible();
   await page.getByRole('textbox', { name: '작품 이름' }).fill('우리 고양이');
   await page.getByRole('textbox', { name: '작품 이름' }).press('Enter');
   await expect(saveState(page)).toHaveText('저장됨', { timeout: 3000 });

@@ -7,11 +7,13 @@ import { layoutText, textCss } from '../rendering/text/layoutText';
 
 export type TextEditorHandle = { value: () => string; isComposing: () => boolean; blur: () => void };
 type Props = {
-  draft: TextElement; scale: number; initialText: string; caret: number | null; placeholder: string;
+  draft: Pick<TextElement, 'x' | 'y' | 'text' | 'width' | 'fontId' | 'fontSize' | 'bold' | 'lineHeight' | 'color' | 'align'>; scale: number; initialText: string; caret: number | null; placeholder: string;
+  // 화면 읽기 이름. 영상 편집기는 '자막 글씨'를 쓴다.
+  label?: string; maxLength?: number;
   onInput: (text: string) => void; onCommitRequest: () => void; onCompositionFinished: () => void;
 };
 
-export const TextEditor = forwardRef<TextEditorHandle, Props>(function TextEditor({ draft, scale, initialText, caret, placeholder, onInput, onCommitRequest, onCompositionFinished }, handle) {
+export const TextEditor = forwardRef<TextEditorHandle, Props>(function TextEditor({ draft, scale, initialText, caret, placeholder, label = '슬라이드 글씨', maxLength = 5000, onInput, onCommitRequest, onCompositionFinished }, handle) {
   const area = useRef<HTMLTextAreaElement>(null);
   const composing = useRef(false);
 
@@ -34,7 +36,7 @@ export const TextEditor = forwardRef<TextEditorHandle, Props>(function TextEdito
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <textarea ref={area} className="text-editor" aria-label="슬라이드 글씨" lang={TEXT_LANG} spellCheck={false} maxLength={5000} defaultValue={initialText} placeholder={placeholder}
+  return <textarea ref={area} className="text-editor" aria-label={label} lang={TEXT_LANG} spellCheck={false} maxLength={maxLength} defaultValue={initialText} placeholder={placeholder}
     onInput={event => onInput(event.currentTarget.value)}
     onCompositionStart={() => { composing.current = true; }}
     onCompositionEnd={() => { composing.current = false; onCompositionFinished(); }}

@@ -24,7 +24,8 @@ const stepDown = (value: number) => clampSize((Math.ceil(value / 4) - 1) * 4);
 // 입력 중인 글씨에서 초점을 빼앗지 않는다.
 const keepFocus = { onPointerDown: (event: { preventDefault: () => void }) => event.preventDefault() };
 
-function TextControls({ style, onStyle }: { style: TextElement; onStyle: (patch: TextStylePatch) => void }) {
+// 영상 편집기의 자막 설정 줄도 같은 글씨 설정을 쓴다.
+export function TextControls({ style, onStyle }: { style: Pick<TextElement, 'fontId' | 'fontSize' | 'bold' | 'color' | 'align'>; onStyle: (patch: TextStylePatch) => void }) {
   const [size, setSize] = useState(String(Math.round(style.fontSize * 10) / 10));
   const color = useRef<HTMLInputElement>(null);
   useEffect(() => { setSize(String(Math.round(style.fontSize * 10) / 10)); }, [style.fontSize]);

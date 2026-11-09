@@ -1,11 +1,14 @@
 // 미리보기 재생(영상 계약 §8). 재생 시계는 AudioContext.currentTime이다. 조각마다 숨긴 <video>를 시계에 맞춰 재생하고 캔버스에 그린다.
 // <video>는 두 개를 번갈아 쓴다: 지금 조각을 재생하는 동안 다른 하나에 다음 조각을 그 시작 위치로 미리 맞춰 두어 경계에서 덜 끊기게 한다.
 // 조각 전환은 <video>의 ended가 아니라 시계로 정한다(그렇지 않으면 outMs를 지나 재생된다). 미리보기는 출력과 1프레임 차이와 끊김을 허용한다.
-// 자막·밈 그리기(composeFrame)는 V5·V6에서 붙인다.
+// 자막·밈은 영상 프레임을 그린 뒤 painter(compose.ts drawOverlays를 쓰는 화면 쪽 함수)가 같은 캔버스에 겹친다.
 import { clipStarts, locate, totalMs } from '../domain/timeline';
 import { CANVAS } from '../domain/videoLimits';
 import type { Clip, VideoProject } from '../domain/videoTypes';
+import { drawContain } from './compose';
 import { readMedia } from './mediaStore';
+
+export type Painter = (ctx: CanvasRenderingContext2D, timeMs: number) => void;
 
 type Slot = { video: HTMLVideoElement; clipId: string | null; mediaId: string | null; ready: Promise<void> };
 export type FrameEvent = { at: number; clipIndex: number; mediaTime: number };
@@ -27,6 +30,8 @@ export class PreviewPlayer {
   private playing = false;
   private frame = 0;
   private destroyed = false;
+  private painter: Painter | null = null;
+  private lastVideo: HTMLVideoElement | null = null;
   // 화면에 붙어 있어야 프레임 표시 알림(requestVideoFrameCallback)이 온다. 보이지 않게 둔다.
   private holder = document.createElement('div');
   // 시험·조사용: 실제로 화면에 나온 영상 프레임 기록(requestVideoFrameCallback).
@@ -80,7 +85,7 @@ export class PreviewPlayer {
     const changedClips = project.clips !== this.project.clips || project.audio !== this.project.audio;
     this.project = project;
     this.resize();
-    if (!changedClips) return;
+    if (!changedClips) { if (!this.playing) this.redraw(); return; }
     if (this.playing) this.pause();
     for (const slot of this.slots) { slot.clipId = null; }
     void this.seek(Math.min(this.time, totalMs(project.clips)));
@@ -146,15 +151,18 @@ export class PreviewPlayer {
   }
 
   private draw(video: HTMLVideoElement | null) {
+    this.lastVideo = video;
     const ctx = this.canvas.getContext('2d')!;
     const { width, height } = this.canvas;
-    ctx.fillStyle = '#000'; ctx.fillRect(0, 0, width, height);
-    if (!video || video.readyState < 2 || !video.videoWidth) return;
     // 비율을 유지한 채 캔버스 안에 들어가도록 맞춘다(contain, 계약 §3).
-    const fit = Math.min(width / video.videoWidth, height / video.videoHeight);
-    const w = video.videoWidth * fit, h = video.videoHeight * fit;
-    ctx.drawImage(video, (width - w) / 2, (height - h) / 2, w, h);
+    const ready = video && video.readyState >= 2 && video.videoWidth;
+    drawContain(ctx, ready ? video : null, ready ? video.videoWidth : 0, ready ? video.videoHeight : 0, width, height);
+    if (totalMs(this.project.clips) > 0) this.painter?.(ctx, Math.floor(Math.min(this.time, totalMs(this.project.clips) - 1)));
   }
+
+  // 자막·밈을 그리는 함수를 정한다. 멈춘 상태에서 겹침 요소가 바뀌면 redraw로 다시 그린다.
+  setPainter(painter: Painter | null) { this.painter = painter; if (!this.playing) this.redraw(); }
+  redraw() { if (!this.destroyed) this.draw(this.lastVideo); }
 
   get state(): PlayerState { return { playing: this.playing, timeMs: this.time }; }
 

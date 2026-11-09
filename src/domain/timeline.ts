@@ -49,3 +49,17 @@ export function concurrencyProblem(overlays: readonly Overlay[]): 'sticker' | 'c
   }
   return null;
 }
+
+// 밈 안 시각 m = (t − startMs) mod L(계약 §3). 반복 경계에서 L 직전 값 다음에 0이 온다.
+export const memeTime = (elapsedMs: number, lengthMs: number) => lengthMs > 0 ? ((elapsedMs % lengthMs) + lengthMs) % lengthMs : 0;
+
+// 정렬된 프레임 시각 목록에서 시각 at 이하인 가장 늦은 프레임의 번호. 없으면 0(첫 프레임).
+// 스티커는 at = m(허용치 없음), 밈 영상은 at = m + 1ms로 부른다(계약 §3). 시각 단위는 부르는 쪽이 맞춘다.
+export function frameAtOrBefore(timestamps: readonly number[], at: number) {
+  let low = 0, high = timestamps.length - 1, found = 0;
+  while (low <= high) {
+    const mid = (low + high) >> 1;
+    if (timestamps[mid] <= at) { found = mid; low = mid + 1; } else high = mid - 1;
+  }
+  return found;
+}

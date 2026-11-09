@@ -212,7 +212,8 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 
 /* 영상 편집기(영상 기획안 §3): 미리보기, 재생 줄, 아래 타임라인 띠, 영상 작품 목록 안내 */
 .video-work { align-items: center; justify-content: center; }
-.video-stage { position: relative; display: flex; align-items: center; justify-content: center; max-width: 100%; max-height: 100%; background: #111; color: #c9ccd3; font-size: 15px; border-radius: 4px; box-shadow: 0 2px 10px #1f243033; overflow: hidden; }
+.video-stage { position: relative; display: flex; align-items: center; justify-content: center; max-width: 100%; max-height: 100%; background: #111; color: #c9ccd3; font-size: 15px; border-radius: 4px; box-shadow: 0 2px 10px #1f243033; }
+/* 화면 가장자리의 크기 조절 손잡이가 잘리지 않게 넘침을 숨기지 않는다. */
 .video-stage.landscape { width: min(100%, 1280px); }
 .video-stage.portrait { height: 100%; }
 .video-stage canvas { display: block; width: 100%; height: 100%; }
@@ -224,16 +225,16 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .player-note { margin-left: auto; color: var(--muted); font-size: 13px; }
 .import-progress { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
 .import-progress button { min-height: 32px; height: 32px; }
-.timeline { gap: 0; padding: 0; height: 120px; }
+.timeline { gap: 0; padding: 0; height: 176px; }
 .timeline-box { flex: 1; min-width: 0; height: 100%; }
-.timeline-scroll { width: 100%; min-width: 0; height: 100%; overflow-x: auto; overflow-y: hidden; }
+.timeline-scroll { width: 100%; min-width: 0; height: 100%; overflow-x: auto; overflow-y: auto; }
 .timeline-track { position: relative; height: 100%; min-width: 100%; }
 .timeline-ruler { position: absolute; left: 0; right: 0; top: 0; height: 24px; border-bottom: 1px solid var(--line); cursor: pointer; touch-action: none; }
 .tick { position: absolute; top: 4px; padding-left: 3px; border-left: 1px solid #b7bcc7; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; pointer-events: none; }
 .clip-strip { position: absolute; left: 0; right: 0; top: 32px; height: 76px; margin: 0; padding: 0; list-style: none; touch-action: none; }
 .clip-slot { position: absolute; top: 0; height: 100%; }
 /* 선택한 조각의 다듬기 손잡이가 옆 조각에 가려지지 않게 위로 올린다. */
-.clip-slot.selected { z-index: 1; }
+.clip-slot.selected { z-index: 3; }
 .clip-block { position: relative; width: 100%; height: 100%; min-height: 0; padding: 0; overflow: hidden; border: 2px solid #fdba74; border-radius: 8px; background: #fff7ed; justify-content: flex-start; align-items: stretch; touch-action: none; }
 .clip-block img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .9; pointer-events: none; }
 .clip-block.current { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
@@ -256,3 +257,20 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .guide-card { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px var(--line); color: var(--ink); }
 .guide-card svg { color: #ea580c; }
 .guide-card span { font-size: 13px; line-height: 1.5; color: var(--muted); }
+
+/* 자막·밈 막대 줄(영상 V5) */
+.overlay-lanes { position: absolute; left: 0; right: 0; top: 116px; margin: 0; padding: 0; list-style: none; }
+.overlay-bar { position: absolute; height: 22px; }
+.overlay-bar button { width: 100%; height: 100%; min-height: 0; padding: 0 6px; overflow: hidden; border-radius: 6px; font-size: 12px; justify-content: flex-start; white-space: nowrap; text-overflow: ellipsis; touch-action: none; }
+.overlay-bar.caption button { background: #ede7fb; color: #4c1d95; border: 1px solid #c4b5fd; }
+.overlay-bar.meme button { background: #ffedd5; color: #9a3412; border: 1px solid #fdba74; }
+.overlay-bar.current button { box-shadow: 0 0 0 2px var(--accent); }
+/* 고른 막대·조각의 손잡이는 재생 막대보다 위에 둔다. 고르면 재생 막대가 그 시작으로 와서 시작 손잡이를 덮기 때문이다. */
+.overlay-bar.current { z-index: 3; }
+.bar-handle { position: absolute; top: 0; bottom: 0; width: 10px; border-radius: 5px; background: var(--accent); cursor: ew-resize; touch-action: none; }
+.bar-handle.start { left: -5px; }
+.bar-handle.end { right: -5px; }
+.overlay-surface .handle { z-index: 2; }
+.caption-presets { display: flex; flex-direction: column; gap: 8px; }
+.time-control { display: inline-flex; align-items: center; gap: 2px; padding: 0 4px; border: 1px solid var(--line); border-radius: 8px; font-size: 13px; }
+.time-control span { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
