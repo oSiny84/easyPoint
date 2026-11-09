@@ -1,6 +1,6 @@
 // 영상 편집 화면(영상 기획안 §3). 상단 바·왼쪽 도구·가운데 작업 공간·아래 띠는 슬라이드 편집기와 같은 모양이고, 아래 띠만 타임라인이다.
 // 영상 가져오기(파일 선택·끌어놓기), 미리보기 재생, 타임라인(재생 막대·확대·다듬기), 자르기·지우기·순서·조각 소리(V4),
-// 자막 추가·입력·서식·끌기·크기·보이는 시간(V5), 움직이는 밈·밈 영상·효과음·원본 소리·배경음악(V6). 내보내기는 V7에서 연결한다.
+// 자막 추가·입력·서식·끌기·크기·보이는 시간(V5), 움직이는 밈·밈 영상·효과음·원본 소리·배경음악(V6), MP4/WebM 내보내기(V7).
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type MouseEvent } from 'react';
 import { Icon } from '../components/Icon';
 import { Menu, type MenuAnchor } from '../components/Menu';
@@ -24,6 +24,7 @@ import { importMedia } from './importMedia';
 import { freeBytes, readMedia } from './mediaStore';
 import { PreviewPlayer, type PlayerState } from './previewPlayer';
 import { saveVideoProject } from './videoDatabase';
+import { exportVideo } from './exportVideo';
 import { expectedFileBytes, serializeVideoProject } from './videoFile';
 import { builtinBlob, type Builtins, type MemeItem } from './builtins';
 import { cachedCaption } from './captionImage';
@@ -95,6 +96,8 @@ const DRAFT_ID = 'draft';
 // note: 새 자막을 만들며 시간을 줄였을 때의 안내. 확정 뒤에 보여 준다(확정 명령이 상태 줄을 비우기 때문).
 type CaptionEdit = { overlayId: string | null; draft: CaptionOverlay; initialText: string; session: number; note?: string };
 const seconds = (ms: number) => `${Math.round(ms / 100) / 10}초`;
+type Exporting = { done: number; total: number; controller: AbortController };
+type Exported = { file: File; container: 'mp4' | 'webm'; bytes: number; durationMs: number; name: string };
 
 // onOpenFile은 실패하면 안내 문구를 돌려준다. 그때 지금 작품은 그대로다.
 type Props = { value: VideoSession; builtins: Builtins | null; initialNote?: string; initiallySaved?: boolean; onHome: () => void; onNew: () => void; onOpenFile: (file: File) => Promise<string | null> };
@@ -124,6 +127,12 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
   const setSelectedOverlay = useCallback((id: string | null) => { setSelectedOverlayState(id); if (id) setSelectedClipState(null); }, []);
   const [pending, setPending] = useState<{ next: () => void } | null>(null);
   const [confirmSave, setConfirmSave] = useState<{ bytes: number } | null>(null);
+  const [exporting, setExporting] = useState<Exporting | null>(null);
+  const [exported, setExported] = useState<Exported | null>(null);
+  const exportingRef = useRef<Exporting | null>(null);
+  exportingRef.current = exporting;
+  // 작품을 떠나면 만들던 파일도 멈춘다.
+  useEffect(() => () => exportingRef.current?.controller.abort(), []);
   const [player, setPlayer] = useState<PlayerState>({ playing: false, timeMs: 0 });
   // 타임라인 배율(초당 픽셀). null이면 작품 전체가 띠에 들어가게 맞춘다.
   const [zoom, setZoom] = useState<number | null>(null);
@@ -419,6 +428,23 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
     const saved = readOnly || !autosave.current || isUntouchedVideo(store.getProject()) || await autosave.current.flush();
     if (saved) next(); else setPending({ next });
   }
+  // 내보내기: 지금 문서를 스냅숏으로 넘긴다. 끝나면 파일을 내려받고 결과 창을 보여 준다(계약 §8 결과 창).
+  function startExport() {
+    flushEdit(() => void (async () => {
+      preview.current?.pause();
+      const snapshot = store.getProject();
+      const controller = new AbortController();
+      setExported(null); setExporting({ done: 0, total: 1, controller });
+      const result = await exportVideo(snapshot, builtins, { signal: controller.signal, onProgress: (done, total) => setExporting({ done, total, controller }) });
+      setExporting(null);
+      if (!result.ok) { setStatus(result.message); return; }
+      const name = downloadName(snapshot.title, result.container);
+      download(result.file, name);
+      setExported({ file: result.file, container: result.container, bytes: result.bytes, durationMs: result.durationMs, name });
+      setStatus('영상 파일을 내려받았어요.');
+    })());
+  }
+
   async function saveFileNow() {
     setConfirmSave(null);
     setStatus('원본 파일을 만들고 있어요…');
@@ -497,7 +523,7 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
       <input className="title" aria-label="작품 이름" readOnly={readOnly} value={title} onChange={event => setTitle(event.target.value)} onBlur={() => run({ type: 'renameProject', title })} onKeyDown={event => { if (event.key === 'Enter') event.currentTarget.blur(); }} />
       <span className={saveState === 'failed' && !readOnly ? 'save-state failed' : 'save-state'} data-testid="save-state">{readOnly ? '읽기 전용' : isUntouchedVideo(project) ? '새 작품' : SAVE_LABEL[saveState]}</span>
       <span className="spacer" />
-      <button className="share" disabled title="다음 단계에서 열려요"><Icon name="download" size={18} />내보내기</button>
+      <button className="share" disabled={!total || !!exporting} title={total ? 'MP4 영상 파일로 만들기' : '영상을 넣으면 내보낼 수 있어요'} onClick={startExport}><Icon name="download" size={18} />내보내기</button>
       {fileMenu && <Menu anchor={fileMenu} label="파일 메뉴" onClose={() => setFileMenu(null)} items={[
         { label: '새 작품', onSelect: () => void afterSaved(onNew) },
         { label: '원본 열기', onSelect: () => openInput.current?.click() },
@@ -581,6 +607,24 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
       <div className="dialog-actions">
         <button className="primary" onClick={() => void saveFileNow()}>내려받기</button>
         <button className="outline" onClick={() => setConfirmSave(null)}>취소</button>
+      </div>
+    </div></div>}
+    {exporting && <div className="dialog-backdrop"><div className="dialog" role="dialog" aria-modal="true" aria-label="내보내기">
+      <h2>영상 파일을 만들고 있어요</h2>
+      <div className="export-progress">
+        <progress aria-label="영상 파일 만드는 중" value={exporting.done} max={exporting.total} />
+        <span>{Math.round((exporting.done / Math.max(1, exporting.total)) * 100)}%</span>
+      </div>
+      <p>다 만들면 저절로 내려받아요. 그동안 다른 창을 써도 돼요.</p>
+      <div className="dialog-actions"><button className="outline" onClick={() => exporting.controller.abort()}>멈추기</button></div>
+    </div></div>}
+    {exported && <div className="dialog-backdrop"><div className="dialog" role="dialog" aria-modal="true" aria-label="내보내기 결과">
+      <h2>영상 파일을 만들었어요</h2>
+      <p data-testid="export-result">{exported.container === 'mp4' ? 'MP4' : 'WebM'} 파일 · 길이 {formatDuration(exported.durationMs)} · 크기 약 {formatBytes(exported.bytes)}{exported.container === 'webm' ? ' · 이 파일도 YouTube에 올릴 수 있어요.' : ''}</p>
+      <p>YouTube에 올리려면 보호자 계정으로 올려 주세요. 보호자와 함께 YouTube 스튜디오에서 '만들기 → 동영상 업로드'를 누르고 이 파일을 고르면 돼요.</p>
+      <div className="dialog-actions">
+        <button className="outline" onClick={() => download(exported.file, exported.name)}>다시 받기</button>
+        <button className="primary" onClick={() => setExported(null)}>닫기</button>
       </div>
     </div></div>}
     {pending && <div className="dialog-backdrop"><div className="dialog" role="alertdialog" aria-modal="true" aria-label="저장 실패">

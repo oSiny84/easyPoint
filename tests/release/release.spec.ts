@@ -418,6 +418,39 @@ test('영상 가져오기와 미리보기: 배포본에서 영상 2개를 넣고
   expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
 });
 
+// 영상 V5~V7: 배포본(CSP·하위 경로·나눠 받는 Worker 파일·내장 밈과 소리 파일 형식)에서 자막·밈·음악을 넣고 MP4로 내보낸다.
+test('영상 내보내기: 배포본에서 자막·밈·음악을 넣은 작품을 MP4로 만든다', async ({ page }) => {
+  const seen = watch(page);
+  await page.goto('./');
+  await page.getByRole('button', { name: '영상 만들기' }).click();
+  await page.getByRole('button', { name: '새 작품' }).click();
+  const fixture = (name: string) => fs.readFile(path.join('tests/fixtures/video', name)).then(buffer => ({ name, mimeType: 'video/webm', buffer }));
+  await page.getByTestId('import-video').setInputFiles([await fixture('a.webm'), await fixture('b.webm')]);
+  await expect(status(page)).toContainText('영상 2개를 넣었어요', { timeout: 20000 });
+  const ruler = (await page.getByTestId('timeline-ruler').boundingBox())!;
+  await page.mouse.click(ruler.x + 12, ruler.y + ruler.height / 2);
+  await rail(page, '자막').click();
+  await page.getByRole('button', { name: '보통 자막 추가' }).click();
+  await page.keyboard.type('배포본 자막');
+  await page.keyboard.press('Escape');
+  await rail(page, '밈').click();
+  await page.getByRole('button', { name: '스티커 깡충 고양이 넣기' }).click();
+  await page.getByRole('button', { name: '밈 영상 와아 넣기' }).click();
+  await rail(page, '소리').click();
+  await page.getByRole('list', { name: '배경음악' }).getByRole('button', { name: '신나는 노래', exact: true }).click();
+  await saved(page);
+  const waiting = page.waitForEvent('download', { timeout: 60000 });
+  await page.getByRole('button', { name: '내보내기' }).click();
+  const download = await waiting;
+  expect(download.suggestedFilename()).toBe('내 영상.mp4');
+  const file = path.join(OUT, 'video-export.mp4'); await download.saveAs(file);
+  const bytes = await fs.readFile(file);
+  expect(bytes.subarray(4, 8).toString('latin1')).toBe('ftyp');
+  expect(bytes.length).toBeGreaterThan(100_000);
+  await expect(page.getByRole('dialog', { name: '내보내기 결과' })).toContainText('MP4 파일');
+  expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
+});
+
 test('화면 오류가 나면 빈 화면 대신 안내하고 새로고침으로 돌아온다', async ({ page }) => {
   await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();

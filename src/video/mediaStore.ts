@@ -7,7 +7,7 @@ import { createMediaHasher, HASH_CHUNK_BYTES } from '../storage/mediaHash';
 const ROOT = 'canvacraft-video', MEDIA = 'media', TEMP = 'tmp';
 const ID = /^[0-9a-f]{64}$/;
 
-// 가져오기 Worker(importWorker.ts)도 같은 폴더를 쓴다.
+// 영상 작업 Worker(mediaWorker.ts)도 같은 폴더를 쓴다.
 export async function directory(name: typeof MEDIA | typeof TEMP) {
   const root = await (await navigator.storage.getDirectory()).getDirectoryHandle(ROOT, { create: true });
   return root.getDirectoryHandle(name, { create: true });
@@ -43,7 +43,7 @@ async function moveInto(file: FileSystemFileHandle, media: FileSystemDirectoryHa
 
 export type StoredMedia = { ok: true; id: string; byteLength: number } | Failure;
 
-// 바이트를 복사하면서 id를 계산한다(메인 스레드 판). 제품의 영상 가져오기는 V4부터 Worker(importWorker.ts)가 같은 순서로 한다.
+// 바이트를 복사하면서 id를 계산한다(메인 스레드 판). 제품의 영상 가져오기는 V4부터 Worker(mediaWorker.ts)가 같은 순서로 한다.
 // 이 함수는 저장소 시험(tests/e2e/videoStorage.spec.ts)이 쓰는 기준 경로로 남긴다. 같은 id가 이미 있으면 임시 파일을 지우고 그대로 쓴다.
 export async function storeMedia(source: Blob, signal?: AbortSignal): Promise<StoredMedia> {
   if (!(await hasRoomFor(source.size))) return fail('STORAGE_FULL', '이 컴퓨터에 영상을 넣을 자리가 부족해요.');

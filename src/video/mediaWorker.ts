@@ -1,4 +1,6 @@
-// 영상 가져오기 Worker(영상 계약 §6 가져오기 2~6단계). 컨테이너 읽기 라이브러리(Mediabunny)는 이 Worker에만 들어간다.
+// 영상 작업 Worker. 컨테이너 읽기·쓰기 라이브러리(Mediabunny)는 이 Worker에만 들어간다(메인 화면 첫 로딩 크기를 늘리지 않는다).
+// 일: 가져오기(영상 계약 §6 가져오기 2~6단계)와 내보내기(§8 출력, exportJob.ts).
+// 가져오기
 // 순서: 앞부분 형식 확인 → 컨테이너 읽기(트랙·길이·크기·회전·코덱) → 이 PC의 해독 가능 여부 → OPFS 임시 파일로 복사하며 조각 해시
 // → media/<id>로 옮김 → 첫 프레임 해독(미리보기 그림). 어느 단계가 실패해도 임시 파일을 지우고, 작품은 부르는 쪽에서 바뀌지 않는다.
 import { ALL_FORMATS, BlobSource, Input, VideoSampleSink } from 'mediabunny';
@@ -6,16 +8,18 @@ import type { ErrorCode } from '../domain/types';
 import { VIDEO_LIMITS } from '../domain/videoLimits';
 import type { Media } from '../domain/videoTypes';
 import { createMediaHasher, HASH_CHUNK_BYTES } from '../storage/mediaHash';
+import { ExportStop, runExport, type ExportDone, type ExportProgress, type ExportRequest } from './exportJob';
 import { directory } from './mediaStore';
 import { documentMime, sniffContainer } from './sniff';
 
-export type ImportRequest = { type: 'import'; file: Blob } | { type: 'cancel' };
+export type ImportRequest = { type: 'import'; file: Blob } | ExportRequest | { type: 'cancel' };
 export type ImportReply =
   | { type: 'progress'; done: number; total: number }
   | { type: 'done'; media: Media; thumbnail: Blob | null }
+  | ExportDone
   | { type: 'fail'; code: ErrorCode; message: string };
 
-const scope = self as unknown as { postMessage(message: ImportReply): void; onmessage: ((event: MessageEvent<ImportRequest>) => void) | null };
+const scope = self as unknown as { postMessage(message: ImportReply | ExportProgress): void; onmessage: ((event: MessageEvent<ImportRequest>) => void) | null };
 class Stop extends Error { constructor(readonly code: ErrorCode, message: string) { super(message); } }
 let cancelled = false;
 const UNSUPPORTED = "이 영상은 이 컴퓨터에서 읽을 수 없어요. 휴대폰 설정에서 '호환성 높은 형식(MP4)'으로 다시 찍거나 변환해 주세요.";
@@ -110,12 +114,20 @@ async function firstFrame(file: Blob, landscape: boolean): Promise<Blob | null> 
 scope.onmessage = event => {
   const request = event.data;
   if (request.type === 'cancel') { cancelled = true; return; }
+  if (request.type === 'export') {
+    void runExport(request, () => cancelled, message => scope.postMessage(message)).then(done => scope.postMessage(done), error => {
+      if (error instanceof ExportStop) scope.postMessage({ type: 'fail', code: error.code, message: error.message });
+      else if (error instanceof DOMException && error.name === 'QuotaExceededError') scope.postMessage({ type: 'fail', code: 'STORAGE_FULL', message: '영상 파일을 만들 자리가 부족해요. 쓰지 않는 작품을 지워 주세요.' });
+      else scope.postMessage({ type: 'fail', code: 'EXPORT_FAILED', message: '영상 파일을 만들지 못했어요. 다시 시도해 주세요.' });
+    });
+    return;
+  }
   void (async () => {
     try {
       const facts = await probe(request.file);
       const id = await copy(request.file);
       const media: Media = { id, byteLength: request.file.size, ...facts };
-      scope.postMessage({ type: 'done', media, thumbnail: await firstFrame(request.file, facts.width >= facts.height) });
+      scope.postMessage({ type: 'done', media, thumbnail: await firstFrame(request.file, facts.width >= facts.height) } as ImportReply);
     } catch (error) {
       if (error instanceof Stop) scope.postMessage({ type: 'fail', code: error.code, message: error.message });
       else scope.postMessage({ type: 'fail', code: 'STORAGE_UNAVAILABLE', message: '영상을 넣지 못했어요. 다시 시도해 주세요.' });

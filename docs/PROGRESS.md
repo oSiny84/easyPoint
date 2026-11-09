@@ -8,6 +8,7 @@
 
 - 어린이용 **영상 편집기**를 기획하고 V1 계약을 썼다(2026-11-07, [VIDEO_EDITOR_PLAN.md](VIDEO_EDITOR_PLAN.md), [video-contracts.md](video-contracts.md)). 같은 앱에 시작 화면(슬라이드 만들기 / 영상 만들기)을 추가하고, 영상 가져오기·자르기·자막(보이는 시간 지정)·움직이는 밈(투명 스티커·소리 든 짧은 밈 영상)·효과음·소리·YouTube용 MP4 내보내기를 8단계(V1~V8)로 만든다. 사용자 결정 7개는 모두 기본값으로 확정됐고(2026-11-07 "기본값으로 진행"), 밈·효과음 자산의 출처만 V6 전까지 다시 묻는다. 계약은 필드·명령 18개·검사·상한·저장·출력 규칙을 정했다.
 - 영상 편집기 **V2 기술 검증을 개발 PC에서 마쳤다**(2026-11-09, [VIDEO_PHASE2_RESULTS.md](VIDEO_PHASE2_RESULTS.md)). 브라우저 Worker 안에서 해독·자막·밈 합성·인코딩해 MP4(H.264+AAC)·WebM(VP9+Opus)으로 내는 경로가 Chrome·Edge·번들 Chromium에서 동작한다. 10분 1080p 작품 출력이 MP4 101초·WebM 192초, 브라우저 메모리 최대 1.2GB였고 출력 프레임 번호·길이·재생을 자동으로 확인했다. 계약의 V2 결정 8개를 채웠다(스티커 애니메이션 WebP, 영상 바이트 OPFS, Mediabunny 1.62.1, 8Mbps, Worker가 소리 직접 합산, `.canvavideo` 자체 스트리밍 ZIP 등). 측정 중 계약 결함 2건(원본 프레임 찾기 1ms 허용, 2GiB 해시 방식)을 고쳤다. 같은 날 **RAM 8GB 가상 PC(VirtualBox, 그래픽 가속 없음)**에서도 10분 출력 6종이 모두 성공했고 가장 느린 출력이 1,048초로 시간 목표(1,200초) 안이었다. 그러나 **브라우저 메모리 최대값이 MP4 1.4~2.4GB, WebM 3.8~5.6GB로 목표 1.5GB를 넘었고 원인은 아직 모른다**(VIDEO_PHASE2_RESULTS.md §4.1). 개발 PC에서 그래픽 가속을 끄고 재현해 보았지만 메모리가 평평해 재현되지 않았고, 실제 PC는 이보다 나을 것으로 보고 조사를 보류했다(사용자 결정). 실제 휴대폰 영상, Windows 미디어 플레이어·YouTube도 미검증이라 길이 상한 10분과 MP4 우선은 잠정이다.
+- 영상 편집기 **V7(내보내기)를 구현했다**(2026-11-09). 상단 `내보내기`를 누르면 지금 작품을 스냅숏으로 넘겨 Worker가 조각 프레임을 해독하고, 미리보기와 같은 합성 함수로 자막(1.5배로 미리 그린 그림)·스티커·밈 영상을 1920×1080(세로 1080×1920)에 그리고, 원래 소리·밈 소리·효과음·배경음악을 48kHz로 섞어 H.264+AAC MP4(안 되면 VP9+Opus WebM)로 만든다. MP4는 moov를 앞에 둔다(YouTube 권장). 진행률·멈추기·결과 창(형식·길이·크기, 보호자 계정 안내)이 있다. 만든 파일을 다시 해독하는 시험에서 프레임 수(105 = ⌈3.5초×30⌉)·길이·소리 트랙과 소리 크기, 자막·밈이 보이기 시작·끝나는 프레임이 계약 식과 같았고, 프레임 번호(1.5초 → 45번째)도 눈으로 맞았다. 배포본에서도 CSP 위반 없이 만들어진다. **Windows 미디어 플레이어 재생과 YouTube 업로드, 실제 휴대폰 영상, 긴 작품(10분)의 출력 시간·메모리는 아직 확인하지 않았다.**
 - 영상 편집기 **V6(움직이는 밈·효과음·소리)를 구현했다**(2026-11-09). 밈 패널(찾기·분류 칩·카드)에서 움직이는 스티커와 소리 든 밈 영상을 누르거나 끌어다 놓아 넣고, 모서리로 비율을 지키며 크기를 바꾸고, 밈 소리를 끄고 켠다. 같은 시각 밈 영상 2개·스티커 4개 상한은 안내로 막는다. 소리 패널에서 영상 원래 소리(끄기·작게·크게), 배경음악, 음악 크기를 고른다. 미리보기는 스티커 프레임을 ImageDecoder로 그때그때 풀고, 밈 영상은 숨긴 `<video>`로, 효과음·배경음악은 Web Audio로 같은 시계에 맞춘다. **밈·소리는 직접 만든 자리 표시 자산(스티커 4·밈 영상 2·효과음 3·음악 2)이다.** 실제 자산 출처는 사용자 결정이 필요하다([asset-licenses.md](asset-licenses.md)). 실행 파일·배포 서버가 `.webp`·`.webm`·`.wav`·`.mp4` 형식을 알려 주게 했다(계약 V8 예정에서 앞당김).
 - 영상 편집기 **V5(자막)를 구현했다**(2026-11-09). 자막 패널의 보통·크게·띠 없음으로 재생 막대 위치부터 3초 보이는 자막을 넣고, 미리보기 위에서 두 번 눌러 고치며(한글 조합 규칙은 슬라이드와 같다), 끌기·크기 조절·서식(글꼴·크기·굵게·색·정렬·띠)·보이는 시간 −/+·지금부터·타임라인 막대 끌기로 바꾼다. 영상 끝을 넘으면 먼저 줄이고 알린다. 미리보기는 자막을 슬라이드와 같은 줄 배치로 미리 그린 그림으로 겹치며, 보이는 시각이 startMs ≤ t < 끝 규칙과 같음을 시험했다. `geometry.ts` 이동·글씨 크기·가운데 놓기가 캔버스 크기를 받는다(슬라이드 시험 무수정 통과). npm test 395 통과.
 - 영상 편집기 **V4(영상 넣기·미리보기·타임라인·자르기)를 구현했다**(2026-11-09). 영상 패널의 `영상 가져오기`나 끌어놓기로 MP4·MOV·WebM을 넣으면 Worker가 형식·해독 가능 여부를 확인하고 저장소에 복사하면서 조각 해시를 계산한다(파일 이름은 남기지 않는다). 미리보기는 숨긴 `<video>` 2개를 AudioContext 시계에 맞춰 번갈아 재생하며, 시험 영상을 이어 붙이고 잘라 재생하면 조각 경계 간격이 자른 자리 100~134ms, 다른 영상 사이 50~66ms였다(평소 프레임 간격 34ms, 목표 200ms 이내, 4회). 타임라인에서 재생 막대를 옮기고, 여기서 자르기·양 끝 끌어 다듬기·앞뒤 옮기기·조각 소리 끄기·지우기를 하며 각각 되돌리기 한 번에 돌아온다. 배포본 CSP에 `media-src 'self' blob:`·`worker-src 'self'`를 넣었다(계약은 V8 예정이었으나 미리보기가 생겨 앞당김). **실제 휴대폰 영상(MOV·HEVC·회전·편집 목록)은 아직 시험하지 않았다.** 자막·밈은 V5·V6이라 미리보기에 아직 그려지지 않는다.
@@ -29,19 +30,19 @@
 - 10단계 중 Phase 10의 자동 점검까지 왔다. 사람이 해야 할 확인이 남았다. Phase 2 수동 확인 8개는 남아 있다.
 - 계약의 편집 명령 18개 중 18개 모두 화면에 연결됐다.
 - 슬라이드 편집기의 도구 패널 6개가 모두 동작한다. 슬라이드 쪽에는 준비 중으로 남은 화면이 없다.
-- 영상 편집기는 8단계 중 V6까지 왔다. 영상을 넣고 미리 보고 자르고 다듬고 자막·밈·음악을 넣을 수 있다. 내보내기 단추는 꺼져 있다(V7).
+- 영상 편집기는 8단계 중 V7까지 왔다. 영상을 넣고 자르고 자막·밈·음악을 넣어 MP4로 내보낼 수 있다. 남은 V8은 통합 점검·실행 파일·안내 문구·어린이 관찰이다.
 
 **다음 액션**
 
-1. 영상 편집기 V5(자막: 추가·입력·IME·끌기·크기·보이는 시간·타임라인 막대, 미리보기에 자막 그리기, `geometry.ts`·`SelectionLayer` 캔버스 크기 인자화). [video-contracts.md](video-contracts.md) §3 자막, 미룬 것은 계약 §9 V3·V4 행
-2. 휴대폰으로 찍은 1분 안팎 영상 2~3개(안드로이드 MP4, 아이폰 MOV)를 넣어 보고 재생·자르기가 되는지 확인 (사용자). V4는 합성 WebM으로만 시험했다
-3. 시작 화면이 생겼으니 슬라이드만 쓰던 사람도 첫 화면에서 "슬라이드 만들기"를 한 번 더 누른다. 실제 사용에서 불편한지 확인 (사용자)
-4. 영상 V2 남은 확인 (사용자): `artifacts/video-phase2/files`의 MP4·WebM을 Windows 미디어 플레이어로 열기
-5. (보류) 그래픽 가속 없는 가상 PC의 출력 메모리 초과 원인. 개발 PC에서는 재현되지 않았고 사용자가 보류했다(2026-11-09). 실제 저사양 PC에서 문제가 보이면 다시 연다. VIDEO_PHASE2_RESULTS.md §4.1
-3. `CanvaCraft.exe`를 집 PC에서 실행해 보기 (사용자)
-4. 터치 기기 확인, 어린이 사용성 관찰 (사용자, 보호자·교사 입회)
-5. 웹 호스트 선택, 이름·화면 권리 검토. 실행 파일은 검토 전에 공개된 상태다 (사용자, [RELEASE.md](RELEASE.md))
-6. RAM 8GB 기기에서 사진이 많은 문서 확인 (사용자)
+1. 밈·효과음·배경음악의 실제 자산 출처 결정 (사용자). 지금은 직접 만든 자리 표시 자산이다([asset-licenses.md](asset-licenses.md))
+2. 휴대폰으로 찍은 영상 2~3개(안드로이드 MP4, 아이폰 MOV)로 넣기·재생·자르기·내보내기 확인, 내보낸 MP4를 Windows 미디어 플레이어로 열고 보호자 계정으로 YouTube 비공개 업로드 (사용자). 지금까지는 합성 WebM으로만 시험했다
+3. 영상 편집기 V8: 긴 작품(10분) 출력 시간·메모리 측정, 안내 문구 점검, USER_GUIDE·RELEASE 갱신, 슬라이드 계약 §8에 영상 모드 Worker 예외 한 문장. [video-contracts.md](video-contracts.md) §9 V7·V8 행
+4. 시작 화면이 생겼으니 슬라이드만 쓰던 사람도 첫 화면에서 "슬라이드 만들기"를 한 번 더 누른다. 실제 사용에서 불편한지 확인 (사용자)
+5. `CanvaCraft.exe`를 집 PC에서 실행해 보기 (사용자)
+6. 터치 기기 확인, 어린이 사용성 관찰 (사용자, 보호자·교사 입회)
+7. 웹 호스트 선택, 이름·화면 권리 검토. 실행 파일은 검토 전에 공개된 상태다 (사용자, [RELEASE.md](RELEASE.md))
+8. RAM 8GB 기기에서 사진이 많은 문서 확인 (사용자)
+9. (보류) 그래픽 가속 없는 가상 PC의 출력 메모리 초과 원인. 개발 PC에서는 재현되지 않았고 사용자가 보류했다(2026-11-09). 실제 저사양 PC에서 문제가 보이면 다시 연다. VIDEO_PHASE2_RESULTS.md §4.1
 
 **위험 요소**
 
@@ -52,7 +53,7 @@
 
 **결론**
 
-슬라이드는 만들고, 저절로 저장되고, 다시 열고, 출력하는 흐름이 동작한다. 발표까지 연결됐고 배포 패키지를 만들 수 있다. 남은 것은 사람·기기 확인과 공개 배포 결정이다. 영상은 시작 화면에서 들어가 영상을 넣고 미리 보고 자르고 다듬어 저장·다시 열기·원본 왕복까지 된다. 자막·밈·소리·내보내기는 V5~V7에서 만든다.
+슬라이드는 만들고, 저절로 저장되고, 다시 열고, 출력하는 흐름이 동작한다. 발표까지 연결됐고 배포 패키지를 만들 수 있다. 남은 것은 사람·기기 확인과 공개 배포 결정이다. 영상은 시작 화면에서 들어가 영상을 넣고 자르고 자막·밈·음악을 넣어 MP4로 내보내기까지 된다. 남은 것은 실제 휴대폰 영상·플레이어·YouTube 확인, 실제 밈 자산, 긴 작품 측정(V8)이다.
 
 ## 사용자 확정 요구: Canva 편집기 UI 일치
 
@@ -82,6 +83,7 @@
 | 그리기 | 완료. 펜·색·굵기, 획 지우개, 슬라이드 밖 이탈·입력 취소·둘째 손가락·Esc, 배율 50·100·150%, 300획 장 프레임 간격 p95 16.8ms | 주의. 실제 펜·터치 기기 미확인 |
 | 글꼴 선택 | 6종. 글꼴별로 PowerPoint에서 폭·세로 위치를 재서 대응값을 정했다. 저장·PDF·모양 그대로 PPT에 반영. 굵은 파일이 있는 기본 글씨·개구쟁이체만 굵게 가능 | 주의. 편집용 PPT는 맑은 고딕으로 바뀐다 |
 | 발표 | 완료. 전체 화면, 키보드·누르기·버튼 이동, 끝내면 보던 장으로 복귀, 발표 중 문서 불변. 출력과 같은 그리기 코드를 쓴다 | 주의. 실제 프로젝터·터치 기기 미확인 |
+| 자막·밈·소리·내보내기(영상 V5~V7) | 완료. 자막 입력·서식·시간, 밈 패널·끌어놓기·동시 상한, 소리 패널, Worker 내보내기(MP4/WebM, 소리 섞기, moov 앞), 출력 해독 시험 | 주의. 밈·소리는 자리 표시 자산. 플레이어·YouTube·실제 휴대폰 영상·10분 출력 미확인 |
 | 영상 넣기·미리보기·타임라인(영상 V4) | 완료. Worker 가져오기(형식·해독 가능 확인·복사·조각 해시·첫 프레임), 미리보기 재생(조각 경계 50~134ms), 재생 막대·맞춤 배율·자르기·다듬기·순서·소리·지우기, 끌어놓기, 배포본 CSP. npm test 389·배포본 14·실행 파일 시험 통과 | 주의. 실제 휴대폰 영상·큰 파일 복사 속도·터치 다듬기 미확인. 미룬 것은 video-contracts.md §9 V4 행 |
 | 시작 화면·영상 편집기 틀(영상 V3) | 완료. 시작 화면 타일 2개·최근 작품 6개, 새로고침 복원(`{kind,id}`), 영상 문서·명령 18개·검사, OPFS·IndexedDB 저장, `.canvavideo`(ZIP64 포함) 왕복. npm test 382·배포본 13·실행 파일 시험 통과 | 주의. 영상 넣기·미리보기 전이라 실제 영상으로는 아직 쓸 수 없다. 미룬 것 6개는 video-contracts.md §9 V3 행 |
 | 단일 실행 파일 | 완료. 앱을 품고 127.0.0.1:47831로 내주며 기본 브라우저를 연다. 배포본 시험 전체, 끄고 다시 켜도 작품 유지 통과. 코드는 `launcher/`, 빌드는 `scripts/build-exe.mjs` | 주의. 다른 PC·알림 영역 아이콘 미확인. 코드 서명 없음 |
@@ -145,14 +147,14 @@ npm.cmd run dev
 | `src/components`, `src/styles` | 슬라이드 목록, 메뉴, 아이콘, 화면 스타일 |
 | `src/probe` | Phase 2 측정 재현용 고정 코드. `/probe.html`. 제품 코드가 아니다 |
 | `src/domain/video*.ts`, `timeline.ts`, `src/commands/videoApply.ts` | 영상 문서 타입·상한(`VIDEO_LIMITS`)·검사(`validateVideoProject`)·작품 시각 계산·명령 18개(겹침 요소 따라가기 포함). DOM을 쓰지 않는다 |
-| `src/video` | 영상 편집기 화면(`VideoApp`·`VideoHome`·`VideoEditor`·`VideoTimeline`, 시작 화면에서 지연 로딩), 가져오기(`importMedia.ts` + `importWorker.ts`, Mediabunny는 이 Worker에만), 미리보기 재생(`previewPlayer.ts`), 프레임 그림(`frameAt.ts`), OPFS 바이트(`mediaStore.ts`), IndexedDB `canvacraft-video`(`videoDatabase.ts`), 원본 파일(`videoFile.ts`) |
+| `src/video` | 영상 편집기 화면(`VideoApp`·`VideoHome`·`VideoEditor`·`VideoTimeline`, 시작 화면에서 지연 로딩), 가져오기·내보내기 Worker(`mediaWorker.ts`, Mediabunny는 이 Worker에만; `importMedia.ts`·`exportVideo.ts`가 메인 쪽, `exportJob.ts`·`audioMix.ts`가 Worker 쪽), 미리보기 재생(`previewPlayer.ts`), 프레임 합성(`compose.ts`, 미리보기·출력 공용), 자막 그림(`captionImage.ts`), 밈 미리보기(`memePreview.ts`), 내장 밈·소리(`builtins.ts`), 조작 층(`OverlayLayer.tsx`), 패널(`MemePanel.tsx`·`SoundPanel.tsx`), 프레임 그림(`frameAt.ts`), OPFS 바이트(`mediaStore.ts`), IndexedDB `canvacraft-video`(`videoDatabase.ts`), 원본 파일(`videoFile.ts`) |
 | `vite.config.ts` | Worker를 ES 모듈로 묶는 설정만 둔다(가져오기 Worker). base 등 나머지는 `npm run build` 인자다 |
 | `src/storage/storeZip.ts`, `mediaHash.ts` | 자체 STORE ZIP 쓰기·읽기(ZIP64), 영상 조각 해시 id |
 | `src/app/StartScreen.tsx`, `currentProject.ts` | 시작 화면, 새로고침 복원 기억 값 |
 | `tests/fixtures/video` | 영상 공통 fixture(WebM 2개 + 문서). `scripts/make-video-fixture.mjs`로 다시 만든다(개발 서버 필요) |
 | `src/videoprobe` | 영상 V2 측정용 시험 페이지·Worker. `/video-probe.html`(다른 PC에서 단추로 실행해 JSON을 받는다). 자동 시험은 `tests/video-phase2`, `npx playwright test --config playwright.video-phase2.config.ts`(포트 5179, 설치된 Chrome·Edge 필요). 제품 코드가 아니다 |
 | `tests/release` | 배포본 통합 시험(`npm run test:release`). `scripts/serve-dist.mjs`가 `dist`를 하위 경로에서 내준다 |
-| `tests/contracts`, `tests/e2e`, `tests/fixtures/sample` | 계약·계산 시험, 전체 흐름(`flow.spec.ts`), 조작(`select.spec.ts`), 사진·요소·배경(`library.spec.ts`), 글씨(`text.spec.ts`), 그리기(`draw.spec.ts`), 저장·작품 목록·탭 잠금(`home.spec.ts`), 발표·출력 화면(`present.spec.ts`), 패널 그림 끌어 넣기(`drag.spec.ts`) 시험, 공통 샘플 문서(`scripts/make-fixture.mjs`로 생성). 영상: 명령·검사(`contracts/videoCommands.spec.ts`), 조각 해시·원본 파일(`contracts/videoFile.spec.ts`), 저장소(`e2e/videoStorage.spec.ts`), 시작 화면·영상 화면(`e2e/video.spec.ts`), 가져오기·미리보기·타임라인(`e2e/videoImport.spec.ts`, 경계 간격은 `artifacts/video-v4/boundary.json`), 형식 확인(`contracts/videoSniff.spec.ts`). 슬라이드 시험은 `tests/e2e/start.ts`로 시작 화면을 지난다 |
+| `tests/contracts`, `tests/e2e`, `tests/fixtures/sample` | 계약·계산 시험, 전체 흐름(`flow.spec.ts`), 조작(`select.spec.ts`), 사진·요소·배경(`library.spec.ts`), 글씨(`text.spec.ts`), 그리기(`draw.spec.ts`), 저장·작품 목록·탭 잠금(`home.spec.ts`), 발표·출력 화면(`present.spec.ts`), 패널 그림 끌어 넣기(`drag.spec.ts`) 시험, 공통 샘플 문서(`scripts/make-fixture.mjs`로 생성). 영상: 명령·검사(`contracts/videoCommands.spec.ts`), 조각 해시·원본 파일(`contracts/videoFile.spec.ts`), 저장소(`e2e/videoStorage.spec.ts`), 시작 화면·영상 화면(`e2e/video.spec.ts`), 가져오기·미리보기·타임라인(`e2e/videoImport.spec.ts`, 경계 간격은 `artifacts/video-v4/boundary.json`), 형식 확인(`contracts/videoSniff.spec.ts`), 자막(`e2e/videoCaption.spec.ts`), 밈·소리(`e2e/videoMeme.spec.ts`, `contracts/videoBuiltins.spec.ts`), 내보내기(`e2e/videoExport.spec.ts`, 출력을 다시 해독해 비교). 자리 표시 밈·소리는 `scripts/make-placeholder-assets.mjs`로 다시 만든다(개발 서버 필요). 슬라이드 시험은 `tests/e2e/start.ts`로 시작 화면을 지난다 |
 
 Phase 2 결정과 근거는 [PHASE2_RESULTS.md](PHASE2_RESULTS.md) §1에 있다.
 
