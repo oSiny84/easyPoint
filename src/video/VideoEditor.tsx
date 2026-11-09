@@ -1,6 +1,6 @@
 // 영상 편집 화면(영상 기획안 §3). 상단 바·왼쪽 도구·가운데 작업 공간·아래 띠는 슬라이드 편집기와 같은 모양이고, 아래 띠만 타임라인이다.
 // 영상 가져오기(파일 선택·끌어놓기), 미리보기 재생, 타임라인(재생 막대·확대·다듬기), 자르기·지우기·순서·조각 소리(V4),
-// 자막 추가·입력·서식·끌기·크기·보이는 시간(V5). 밈·소리 패널은 V6, 내보내기는 V7에서 연결한다.
+// 자막 추가·입력·서식·끌기·크기·보이는 시간(V5), 움직이는 밈·밈 영상·효과음·원본 소리·배경음악(V6). 내보내기는 V7에서 연결한다.
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type MouseEvent } from 'react';
 import { Icon } from '../components/Icon';
 import { Menu, type MenuAnchor } from '../components/Menu';
@@ -10,7 +10,8 @@ import { TextEditor, type TextEditorHandle } from '../editor/TextEditor';
 import type { VideoCommand } from '../commands/videoApply';
 import { clipLength, clipStarts, locate, totalMs } from '../domain/timeline';
 import { CANVAS, VIDEO_LIMITS } from '../domain/videoLimits';
-import type { CaptionOverlay, Media, Overlay, VideoProject } from '../domain/videoTypes';
+import type { AudioSettings, CaptionOverlay, Media, MemeOverlay, Overlay, VideoProject } from '../domain/videoTypes';
+import { centeredAt, toLogical, type Point } from '../editor/geometry';
 import { layoutText } from '../rendering/text/layoutText';
 import { createAutosave, type Autosave, type SaveState } from '../state/autosave';
 import type { VideoDispatchResult, VideoStore } from '../state/videoStore';
@@ -24,7 +25,11 @@ import { freeBytes, readMedia } from './mediaStore';
 import { PreviewPlayer, type PlayerState } from './previewPlayer';
 import { saveVideoProject } from './videoDatabase';
 import { expectedFileBytes, serializeVideoProject } from './videoFile';
+import { builtinBlob, type Builtins, type MemeItem } from './builtins';
 import { cachedCaption } from './captionImage';
+import { MEME_DRAG_TYPE, MemePanel } from './MemePanel';
+import { MemePreview } from './memePreview';
+import { SoundPanel } from './SoundPanel';
 import { drawOverlays, isVisible, type ComposeAssets } from './compose';
 import { OverlayLayer } from './OverlayLayer';
 import { VideoTimeline } from './VideoTimeline';
@@ -92,9 +97,9 @@ type CaptionEdit = { overlayId: string | null; draft: CaptionOverlay; initialTex
 const seconds = (ms: number) => `${Math.round(ms / 100) / 10}초`;
 
 // onOpenFile은 실패하면 안내 문구를 돌려준다. 그때 지금 작품은 그대로다.
-type Props = { value: VideoSession; initialNote?: string; initiallySaved?: boolean; onHome: () => void; onNew: () => void; onOpenFile: (file: File) => Promise<string | null> };
+type Props = { value: VideoSession; builtins: Builtins | null; initialNote?: string; initiallySaved?: boolean; onHome: () => void; onNew: () => void; onOpenFile: (file: File) => Promise<string | null> };
 
-export function VideoEditor({ value, initialNote, initiallySaved, onHome, onNew, onOpenFile }: Props) {
+export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHome, onNew, onOpenFile }: Props) {
   const { store } = value;
   const readOnly = value.lock.readOnly;
   const project = useSyncExternalStore(store.subscribe, store.getProject);
@@ -156,9 +161,53 @@ export function VideoEditor({ value, initialNote, initiallySaved, onHome, onNew,
   // 자막·밈 그리기. 끄는 중인 요소는 preview 값으로, 입력 중인 자막은 입력 칸이 보여 주므로 그리지 않는다.
   const paintState = useRef<{ overlays: readonly Overlay[]; hidden: string | null; drawn?: { t: number; ids: string[] } }>({ overlays: [], hidden: null });
   paintState.current = { ...paintState.current, overlays: overlayPreview ? project.overlays.map(item => item.id === overlayPreview.id ? overlayPreview : item) : project.overlays, hidden: edit?.overlayId ?? null };
+  // 밈 그림(스티커 프레임·밈 영상)과 효과음·배경음악(재생할 때 Web Audio로 같은 시계에 맞춘다).
+  const memes = useRef<MemePreview | null>(null);
+  const sounds = useRef(new Map<string, AudioBuffer | null>());
   useEffect(() => {
-    const assets: ComposeAssets = { caption: overlay => overlay.type === 'caption' ? cachedCaption(overlay, 1) : null, meme: () => null };
-    preview.current?.setPainter((ctx, t) => { paintState.current.drawn = { t, ids: drawOverlays(ctx, paintState.current.overlays, t, assets, 1, paintState.current.hidden) }; });
+    const instance = new MemePreview(() => { if (!preview.current?.state.playing) preview.current?.redraw(); });
+    memes.current = instance;
+    return () => { instance.destroy(); memes.current = null; };
+  }, []);
+  useEffect(() => { memes.current?.setItems(builtins?.memes ?? []); preview.current?.redraw(); }, [builtins]);
+  useEffect(() => { if (!player.playing) memes.current?.pauseAll(); }, [player.playing]);
+  // 쓰는 소리만 풀어 둔다(배경음악 + 소리 켠 밈의 효과음).
+  useEffect(() => {
+    if (!builtins) return;
+    const wanted = new Set<string>();
+    if (project.audio.musicId) wanted.add(project.audio.musicId);
+    for (const overlay of project.overlays) if (overlay.type === 'meme' && overlay.soundOn) { const soundId = builtins.memes.find(item => item.id === overlay.memeId)?.soundId; if (soundId) wanted.add(soundId); }
+    for (const id of wanted) {
+      if (sounds.current.has(id)) continue;
+      const item = [...builtins.sfx, ...builtins.music].find(sound => sound.id === id);
+      if (!item) continue;
+      sounds.current.set(id, null);
+      void builtinBlob('sounds', item).then(blob => blob && preview.current ? blob.arrayBuffer().then(bytes => preview.current!.decodeAudio(bytes)) : null)
+        .then(buffer => { if (buffer) sounds.current.set(id, buffer); else sounds.current.delete(id); }, () => sounds.current.delete(id));
+    }
+  }, [builtins, project.audio.musicId, project.overlays]);
+  useEffect(() => {
+    preview.current?.setSoundPlan(() => {
+      const current = store.getProject();
+      const music = current.audio.musicId ? sounds.current.get(current.audio.musicId) : null;
+      const effects = current.overlays.flatMap(overlay => {
+        if (overlay.type !== 'meme' || !overlay.soundOn) return [];
+        const soundId = builtins?.memes.find(item => item.id === overlay.memeId)?.soundId;
+        const buffer = soundId ? sounds.current.get(soundId) : null;
+        return buffer ? [{ atMs: overlay.startMs, buffer }] : [];
+      });
+      return { music: music ? { buffer: music, volume: current.audio.musicVolume } : null, effects };
+    });
+  }, [store, builtins]);
+  useEffect(() => {
+    const assets: ComposeAssets = {
+      caption: overlay => overlay.type === 'caption' ? cachedCaption(overlay, 1) : null,
+      meme: (overlay, elapsed) => memes.current?.frame(overlay, elapsed, !!preview.current?.state.playing) ?? null,
+    };
+    preview.current?.setPainter((ctx, t) => {
+      paintState.current.drawn = { t, ids: drawOverlays(ctx, paintState.current.overlays, t, assets, 1, paintState.current.hidden) };
+      memes.current?.settle(new Set(paintState.current.overlays.filter(item => item.type === 'meme' && item.memeKind === 'clip' && isVisible(item, t)).map(item => item.id)));
+    });
     if (import.meta.env.DEV) Object.assign(window, { __canvacraftVideo: { ...(window as unknown as { __canvacraftVideo: object }).__canvacraftVideo, drawn: () => paintState.current.drawn } });
   }, [store]);
   useEffect(() => { if (!player.playing) preview.current?.redraw(); }, [project.overlays, overlayPreview, edit?.overlayId, player.playing]);
@@ -246,6 +295,37 @@ export function VideoEditor({ value, initialNote, initiallySaved, onHome, onNew,
     setSelectedOverlay(caption.id);
     setEdit({ overlayId: caption.id, draft: caption, initialText: caption.text, session: ++editSession.current });
   }
+  // 밈 넣기: 누르면 가운데, 끌어다 놓으면 놓은 곳(계약 §3 새 밈 기본값). 스티커는 폭 320(더 작으면 원래 크기), 밈 영상은 가로 480·세로 360.
+  // 보이는 시간은 밈 길이를 1초 단위로 올린 값(최소 3초)이고, 영상 끝을 넘으면 먼저 줄인다.
+  function addMeme(item: MemeItem, at?: Point) {
+    flushEdit(() => {
+      const current = store.getProject(); const length = totalMs(current.clips);
+      if (!length) { setStatus('영상을 먼저 넣어 주세요.'); return; }
+      if (length < VIDEO_LIMITS.overlayMinMs) { setStatus('영상이 1초보다 짧아서 밈을 넣을 수 없어요.'); return; }
+      const canvasSize = CANVAS[current.orientation];
+      const width = item.kind === 'sticker' ? Math.min(320, item.width) : current.orientation === 'landscape' ? 480 : 360;
+      const height = Math.round((width * item.height / item.width) * 100) / 100;
+      const box = at ? centeredAt({ width, height }, at, canvasSize) : { x: Math.round((canvasSize.width - width) / 2), y: Math.round((canvasSize.height - height) / 2), width, height };
+      // 같은 자리에 연달아 넣어도 겹쳐 가려지지 않게 조금씩 옮긴다(슬라이드 그림과 같은 규칙). 화면 밖으로는 밀지 않는다.
+      while (!at && current.overlays.some(item => item.type === 'meme' && item.x === box.x && item.y === box.y) && box.x + width + 20 <= canvasSize.width && box.y + height + 20 <= canvasSize.height) { box.x += 20; box.y += 20; }
+      let startMs = Math.floor(Math.min(preview.current?.state.timeMs ?? 0, length - 1)), note = '';
+      if (length - startMs < VIDEO_LIMITS.overlayMinMs) { startMs = length - VIDEO_LIMITS.overlayMinMs; note = '영상 끝이라 조금 앞에서 시작하게 했어요.'; }
+      const wanted = Math.max(DEFAULT_OVERLAY_MS, Math.ceil(item.durationMs / 1000) * 1000);
+      const durationMs = Math.min(wanted, length - startMs, VIDEO_LIMITS.overlayMaxMs);
+      if (durationMs < wanted && !note) note = '영상 끝까지만 보이도록 줄였어요.';
+      const result = run({ type: 'addMeme', memeId: item.id, memeKind: item.kind, x: box.x, y: box.y, width, height, startMs, durationMs, soundOn: true });
+      if (result.ok) { setSelectedOverlay(store.getProject().overlays.at(-1)!.id); if (note) setStatus(note); }
+    });
+  }
+  function dropOnStage(event: React.DragEvent) {
+    const id = event.dataTransfer.getData(MEME_DRAG_TYPE);
+    const item = builtins?.memes.find(meme => meme.id === id);
+    if (!item || !stage.current) return false;
+    addMeme(item, toLogical(event.clientX, event.clientY, stage.current.getBoundingClientRect(), stageScale));
+    return true;
+  }
+  const changeAudio = (patch: Partial<AudioSettings>) => run({ type: 'setAudio', ...patch });
+
   // 입력 중에는 초안에만 적용해 확정할 때 취소 한 번으로 묶는다. 입력 중이 아니면 바로 명령을 보낸다.
   const applyCaptionStyle = useCallback((patch: TextStylePatch & { backdrop?: 'none' | 'band' }) => {
     const current = editRef.current;
@@ -356,6 +436,7 @@ export function VideoEditor({ value, initialNote, initiallySaved, onHome, onNew,
   // 재생 막대가 선택한 조각 안에서 양 끝 0.1초보다 안쪽이면 자를 수 있다. 안 되면 단추를 끈다(아이에게 오류를 보이지 않는다).
   const at = locate(project.clips, Math.min(player.timeMs, Math.max(0, total - 1)));
   const splitAt = clip && at?.clip.id === clip.id && at.sourceMs >= clip.inMs + VIDEO_LIMITS.splitMarginMs && at.sourceMs <= clip.outMs - VIDEO_LIMITS.splitMarginMs ? at.sourceMs : null;
+  const memeHasSound = (meme: MemeOverlay) => { const item = builtins?.memes.find(entry => entry.id === meme.memeId); return !!item && (item.hasSound || !!item.soundId); };
   const overlayIndex = project.overlays.findIndex(item => item.id === selectedOverlay);
   const overlay = overlayIndex >= 0 ? project.overlays[overlayIndex] : null;
   const captionStyle = edit?.draft ?? (overlay?.type === 'caption' ? overlay : null);
@@ -403,9 +484,11 @@ export function VideoEditor({ value, initialNote, initiallySaved, onHome, onNew,
       </div>
       <p className="panel-note">재생 막대가 있는 곳부터 3초 동안 보여요. 아래 타임라인의 보라색 막대를 끌어 보이는 시간을 바꿀 수 있어요.</p>
     </div>
-    : <div className="panel-body"><p className="panel-note">{tool === 'meme' ? '밈' : '소리'} 기능은 준비 중이에요.</p></div>;
+    : tool === 'meme'
+    ? <MemePanel memes={builtins?.memes ?? null} disabled={readOnly} onAdd={item => addMeme(item)} />
+    : <SoundPanel audio={project.audio} music={builtins?.music ?? null} disabled={readOnly} onChange={changeAudio} />;
 
-  return <div className="app video-app" onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); void importFiles([...event.dataTransfer.files]); }}>
+  return <div className="app video-app" onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); if (event.dataTransfer.types.includes(MEME_DRAG_TYPE)) { dropOnStage(event); return; } void importFiles([...event.dataTransfer.files]); }}>
     <header className="topbar">
       <button className="on-gradient icon-only" aria-label="작품 목록" title="작품 목록" onClick={() => void afterSaved(onHome)}><Icon name="back" /></button>
       <button className="on-gradient" onClick={event => setFileMenu(anchorOf(event))}><Icon name="file" size={18} />파일<Icon name="chevron" size={14} /></button>
@@ -441,6 +524,7 @@ export function VideoEditor({ value, initialNote, initiallySaved, onHome, onNew,
                 <button className="icon-only" aria-label="보이는 시간 늘리기" disabled={overlay.durationMs >= VIDEO_LIMITS.overlayMaxMs || overlay.startMs + overlay.durationMs >= total} onClick={() => changeDuration(1000)}>+</button>
               </span>
               <button title="재생 막대 위치부터 보이게" onClick={startFromHere}>지금부터</button>
+              {overlay.type === 'meme' && memeHasSound(overlay) && <button aria-pressed={!overlay.soundOn} onClick={() => run({ type: 'setMemeSound', overlayId: overlay.id, soundOn: !overlay.soundOn })}><Icon name="sound" size={18} />{overlay.soundOn ? '밈 소리 끄기' : '밈 소리 켜기'}</button>}
               <span className="bar-divider" />
               <button aria-label="앞으로 가져오기" title="앞으로" disabled={overlayIndex === project.overlays.length - 1} onClick={() => run({ type: 'reorderOverlay', overlayId: overlay.id, toIndex: overlayIndex + 1 })}><Icon name="front" size={18} /></button>
               <button aria-label="뒤로 보내기" title="뒤로" disabled={overlayIndex === 0} onClick={() => run({ type: 'reorderOverlay', overlayId: overlay.id, toIndex: overlayIndex - 1 })}><Icon name="backward" size={18} /></button>
@@ -481,7 +565,7 @@ export function VideoEditor({ value, initialNote, initiallySaved, onHome, onNew,
           <div className="timeline-box" ref={timelineBox}>
             <VideoTimeline project={project} timeMs={player.timeMs} pxPerSecond={pxPerSecond} selectedClip={selectedClip} selectedOverlay={selectedOverlay} readOnly={readOnly}
               onSeek={ms => flushEdit(() => seek(ms))} onSelect={id => flushEdit(() => setSelectedClip(id))} onTrim={(clipId, inMs, outMs) => run({ type: 'trimClip', clipId, inMs, outMs })}
-              onSelectOverlay={id => flushEdit(() => setSelectedOverlay(id))} onOverlayTime={(overlayId, startMs, durationMs) => run({ type: 'setOverlayTime', overlayId, startMs, durationMs })} />
+              memeLabel={id => builtins?.memes.find(item => item.id === id)?.label ?? id} onSelectOverlay={id => flushEdit(() => setSelectedOverlay(id))} onOverlayTime={(overlayId, startMs, durationMs) => run({ type: 'setOverlayTime', overlayId, startMs, durationMs })} />
           </div>
           <div className="zoom" aria-label="타임라인 배율">
             <input type="range" aria-label="타임라인 배율" min={ZOOM_MIN} max={ZOOM_MAX} step={1} value={Math.round(pxPerSecond)} onChange={event => setZoom(Number(event.target.value))} />

@@ -46,14 +46,15 @@ export function clampTiming(startMs: number, durationMs: number, total: number) 
   const start = Math.max(0, Math.min(total - duration, step(startMs)));
   return { startMs: start, durationMs: Math.min(duration, total - start) };
 }
-const overlayLabel = (overlay: Overlay) => overlay.type === 'caption' ? overlay.text.replace(/\s+/g, ' ') : `밈 ${overlay.memeId}`;
+
 type Props = {
   project: VideoProject; timeMs: number; pxPerSecond: number; selectedClip: string | null; selectedOverlay: string | null; readOnly: boolean;
   onSeek: (ms: number) => void; onSelect: (clipId: string | null) => void; onTrim: (clipId: string, inMs: number, outMs: number) => void;
-  onSelectOverlay: (overlayId: string) => void; onOverlayTime: (overlayId: string, startMs: number, durationMs: number) => void;
+  memeLabel?: (memeId: string) => string; onSelectOverlay: (overlayId: string) => void; onOverlayTime: (overlayId: string, startMs: number, durationMs: number) => void;
 };
 
-export function VideoTimeline({ project, timeMs, pxPerSecond, selectedClip, selectedOverlay, readOnly, onSeek, onSelect, onTrim, onSelectOverlay, onOverlayTime }: Props) {
+export function VideoTimeline({ project, timeMs, pxPerSecond, selectedClip, selectedOverlay, readOnly, onSeek, onSelect, onTrim, memeLabel, onSelectOverlay, onOverlayTime }: Props) {
+  const overlayLabel = (overlay: Overlay) => overlay.type === 'caption' ? overlay.text.replace(/\s+/g, ' ') : (memeLabel?.(overlay.memeId) ?? overlay.memeId);
   const scroller = useRef<HTMLDivElement>(null);
   const [trim, setTrim] = useState<Trim | null>(null);
   const [timing, setTiming] = useState<Timing | null>(null);

@@ -8,7 +8,9 @@ import type { Clip, VideoProject } from '../domain/videoTypes';
 import { drawContain } from './compose';
 import { readMedia } from './mediaStore';
 
-export type Painter = (ctx: CanvasRenderingContext2D, timeMs: number) => void;
+export type Painter = (ctx: CanvasRenderingContext2D, timeMs: number, playing: boolean) => void;
+// 재생할 때 Web Audio로 같은 시계에 맞춰 낼 소리(계약 §8): 배경음악(0초부터 반복, 작품 끝에서 자름)과 효과음(밈이 보이기 시작할 때 1회).
+export type SoundPlan = { music: { buffer: AudioBuffer; volume: number } | null; effects: { atMs: number; buffer: AudioBuffer }[] };
 
 type Slot = { video: HTMLVideoElement; clipId: string | null; mediaId: string | null; ready: Promise<void> };
 export type FrameEvent = { at: number; clipIndex: number; mediaTime: number };
@@ -31,6 +33,8 @@ export class PreviewPlayer {
   private frame = 0;
   private destroyed = false;
   private painter: Painter | null = null;
+  private soundPlan: (() => SoundPlan) | null = null;
+  private sources: AudioScheduledSourceNode[] = [];
   private lastVideo: HTMLVideoElement | null = null;
   // 화면에 붙어 있어야 프레임 표시 알림(requestVideoFrameCallback)이 온다. 보이지 않게 둔다.
   private holder = document.createElement('div');
@@ -157,12 +161,38 @@ export class PreviewPlayer {
     // 비율을 유지한 채 캔버스 안에 들어가도록 맞춘다(contain, 계약 §3).
     const ready = video && video.readyState >= 2 && video.videoWidth;
     drawContain(ctx, ready ? video : null, ready ? video.videoWidth : 0, ready ? video.videoHeight : 0, width, height);
-    if (totalMs(this.project.clips) > 0) this.painter?.(ctx, Math.floor(Math.min(this.time, totalMs(this.project.clips) - 1)));
+    if (totalMs(this.project.clips) > 0) this.painter?.(ctx, Math.floor(Math.min(this.time, totalMs(this.project.clips) - 1)), this.playing);
   }
 
   // 자막·밈을 그리는 함수를 정한다. 멈춘 상태에서 겹침 요소가 바뀌면 redraw로 다시 그린다.
   setPainter(painter: Painter | null) { this.painter = painter; if (!this.playing) this.redraw(); }
   redraw() { if (!this.destroyed) this.draw(this.lastVideo); }
+
+  setSoundPlan(plan: (() => SoundPlan) | null) { this.soundPlan = plan; }
+  // 내장 소리를 이 재생기의 AudioContext로 푼다. 처음 부르면 정지 상태의 AudioContext를 만든다(재생을 누를 때 깨운다).
+  decodeAudio(bytes: ArrayBuffer) { this.audio ??= new AudioContext(); return this.audio.decodeAudioData(bytes.slice(0)); }
+
+  private startSounds() {
+    const plan = this.soundPlan?.(); const audio = this.audio;
+    if (!plan || !audio) return;
+    const now = audio.currentTime, t = this.time, end = now + (totalMs(this.project.clips) - t) / 1000;
+    const play = (buffer: AudioBuffer, when: number, offset: number, volume: number, loop: boolean) => {
+      const source = audio.createBufferSource(); source.buffer = buffer; source.loop = loop;
+      const gain = audio.createGain(); gain.gain.value = volume;
+      source.connect(gain).connect(audio.destination);
+      source.start(when, offset); source.stop(end);
+      this.sources.push(source);
+    };
+    if (plan.music && plan.music.volume > 0) play(plan.music.buffer, now, (t / 1000) % plan.music.buffer.duration, plan.music.volume, true);
+    for (const effect of plan.effects) {
+      if (effect.atMs >= t) play(effect.buffer, now + (effect.atMs - t) / 1000, 0, 1, false);
+      else if (t - effect.atMs < effect.buffer.duration * 1000) play(effect.buffer, now, (t - effect.atMs) / 1000, 1, false);
+    }
+  }
+  private stopSounds() {
+    for (const source of this.sources) { try { source.stop(); } catch { /* 이미 끝났다. */ } }
+    this.sources = [];
+  }
 
   get state(): PlayerState { return { playing: this.playing, timeMs: this.time }; }
 
@@ -170,7 +200,7 @@ export class PreviewPlayer {
   async seek(timeMs: number) {
     const total = totalMs(this.project.clips);
     this.time = Math.max(0, Math.min(timeMs, total));
-    if (this.playing) { this.workStart = this.time; this.clockStart = this.audio?.currentTime ?? 0; }
+    if (this.playing) { this.workStart = this.time; this.clockStart = this.audio?.currentTime ?? 0; this.stopSounds(); this.startSounds(); }
     this.onState(this.state);
     const at = locate(this.project.clips, Math.min(this.time, total - 1));
     if (!at) { this.slots.forEach(slot => slot.video.pause()); this.draw(null); return; }
@@ -197,6 +227,7 @@ export class PreviewPlayer {
     await slot.video.play().catch(() => undefined);
     this.playing = true;
     this.clockStart = this.audio.currentTime; this.workStart = this.time;
+    this.startSounds();
     this.prepareNext(at.index);
     this.onState(this.state);
     this.loop();
@@ -204,6 +235,7 @@ export class PreviewPlayer {
 
   pause() {
     this.playing = false;
+    this.stopSounds();
     cancelAnimationFrame(this.frame);
     for (const slot of this.slots) slot.video.pause();
     this.onState(this.state);

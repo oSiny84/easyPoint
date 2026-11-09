@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "sfx": [
+    {
+      "id": "sfx-boing",
+      "label": "띠용",
+      "file": "sfx-boing.wav",
+      "durationMs": 600,
+      "sha256": "1667d6448ac693675fb9039315d93f4d9e9e5de3ea3320de14c7711f740420e6",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-ding",
+      "label": "딩동",
+      "file": "sfx-ding.wav",
+      "durationMs": 1200,
+      "sha256": "383f6eca2d30d04b9e935a425c6e25a6c8ec39a31b315dbbb6657c18d1ac5390",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-pop",
+      "label": "뽁",
+      "file": "sfx-pop.wav",
+      "durationMs": 250,
+      "sha256": "325cd3bd4d5f957b359781f799751e0129b352709338d21c277342f551dc2dd3",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    }
+  ],
+  "music": [
+    {
+      "id": "music-happy",
+      "label": "신나는 노래",
+      "file": "music-happy.wav",
+      "durationMs": 8000,
+      "sha256": "b50acc99630a26bc8b053cd001ab4bd8a093a2dec94461fd63ac179609e46d74",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "music-calm",
+      "label": "잔잔한 노래",
+      "file": "music-calm.wav",
+      "durationMs": 8000,
+      "sha256": "7db1e08feae8fab1b10a9639d6b25fa3be03b4a1efe7ff11c69d296eef47a6bd",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    }
+  ]
+}

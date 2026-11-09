@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "packId": "placeholder",
+  "version": 1,
+  "assets": [
+    {
+      "id": "cat-hop",
+      "kind": "sticker",
+      "label": "깡충 고양이",
+      "category": "cat",
+      "tags": [
+        "고양이",
+        "점프",
+        "깡충"
+      ],
+      "file": "cat-hop.webp",
+      "durationMs": 2000,
+      "width": 256,
+      "height": 256,
+      "fps": 25,
+      "hasSound": true,
+      "soundId": "sfx-pop",
+      "sha256": "65002e5dd66ffe8cdade29004c26b05e23392c1a27660abdff5b0a263afd145c",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "dog-wag",
+      "kind": "sticker",
+      "label": "갸웃 강아지",
+      "category": "dog",
+      "tags": [
+        "강아지",
+        "갸웃"
+      ],
+      "file": "dog-wag.webp",
+      "durationMs": 2000,
+      "width": 256,
+      "height": 256,
+      "fps": 25,
+      "hasSound": false,
+      "soundId": null,
+      "sha256": "64f24339c71b4cf2d5bb7c57a4ba4de353f4a3623b7114c271c3ebffb4c283d2",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "heart-pop",
+      "kind": "sticker",
+      "label": "두근 하트",
+      "category": "reaction",
+      "tags": [
+        "하트",
+        "좋아",
+        "사랑"
+      ],
+      "file": "heart-pop.webp",
+      "durationMs": 2000,
+      "width": 256,
+      "height": 256,
+      "fps": 25,
+      "hasSound": true,
+      "soundId": "sfx-ding",
+      "sha256": "e7b9c92c1d10ca77a3d3b987788d881e2407ad6e7212dacfae58905da849f28b",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "star-spin",
+      "kind": "sticker",
+      "label": "반짝 별",
+      "category": "effect",
+      "tags": [
+        "별",
+        "반짝",
+        "효과"
+      ],
+      "file": "star-spin.webp",
+      "durationMs": 2000,
+      "width": 256,
+      "height": 256,
+      "fps": 25,
+      "hasSound": false,
+      "soundId": null,
+      "sha256": "6b008a0eb2949883632aec7ee8344cb1b5cfdfc58291ab9c7e93d8c08d3913b9",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "clip-boing",
+      "kind": "clip",
+      "label": "통통 공",
+      "category": "reaction",
+      "tags": [
+        "공",
+        "통통",
+        "띠용"
+      ],
+      "file": "clip-boing.webm",
+      "durationMs": 2000,
+      "width": 640,
+      "height": 360,
+      "fps": 30,
+      "hasSound": true,
+      "soundId": null,
+      "sha256": "ff889f1822bc44c960e850be53232b144929ab324ae6bc74bd8e167a9fbff4cd",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "clip-wow",
+      "kind": "clip",
+      "label": "와아",
+      "category": "reaction",
+      "tags": [
+        "와",
+        "놀람",
+        "박수"
+      ],
+      "file": "clip-wow.webm",
+      "durationMs": 2000,
+      "width": 640,
+      "height": 360,
+      "fps": 30,
+      "hasSound": true,
+      "soundId": null,
+      "sha256": "da050f352e6e7ae987bf8e3dae8d5a5db75de0bb60119fef9f4f18b561571a28",
+      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+    }
+  ]
+}

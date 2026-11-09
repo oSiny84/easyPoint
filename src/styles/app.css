@@ -274,3 +274,16 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .caption-presets { display: flex; flex-direction: column; gap: 8px; }
 .time-control { display: inline-flex; align-items: center; gap: 2px; padding: 0 4px; border: 1px solid var(--line); border-radius: 8px; font-size: 13px; }
 .time-control span { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* 밈·소리 패널(영상 V6) */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.meme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 8px 0 0; padding: 0; list-style: none; }
+.meme-card { flex-direction: column; gap: 4px; width: 100%; min-height: 0; padding: 6px; border: 1px solid var(--line); border-radius: 8px; background: repeating-conic-gradient(#f1f3f5 0% 25%, #fff 0% 50%) 50% / 16px 16px; font-size: 12px; white-space: normal; }
+.meme-card img, .meme-card video { width: 100%; aspect-ratio: 1; object-fit: contain; pointer-events: none; }
+.meme-card video { aspect-ratio: 16 / 9; }
+.meme-card:hover:not(:disabled) { border-color: var(--accent); }
+.level-group { display: flex; gap: 6px; margin-bottom: 6px; }
+.music-list { display: flex; flex-direction: column; gap: 6px; margin: 0 0 8px; padding: 0; list-style: none; }
+.music-list li { display: flex; align-items: center; gap: 4px; }
+.music-card { flex: 1; justify-content: flex-start; border: 1px solid var(--line); border-radius: 8px; }
+.music-card[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); }

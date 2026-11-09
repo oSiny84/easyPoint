@@ -226,6 +226,11 @@ static class Launcher
             case ".svg": return "image/svg+xml";
             case ".woff2": return "font/woff2";
             case ".txt": return "text/plain; charset=utf-8";
+            // 영상 편집기 내장 밈·소리(영상 계약 §8). nosniff를 보내므로 형식을 정확히 알려야 한다.
+            case ".webp": return "image/webp";
+            case ".webm": return "video/webm";
+            case ".mp4": return "video/mp4";
+            case ".wav": return "audio/wav";
             default: return "application/octet-stream";
         }
     }
