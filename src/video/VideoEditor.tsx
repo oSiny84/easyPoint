@@ -615,7 +615,7 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
         <progress aria-label="영상 파일 만드는 중" value={exporting.done} max={exporting.total} />
         <span>{Math.round((exporting.done / Math.max(1, exporting.total)) * 100)}%</span>
       </div>
-      <p>다 만들면 저절로 내려받아요. 그동안 다른 창을 써도 돼요.</p>
+      <p>다 만들면 저절로 내려받아요. 긴 영상은 몇 분 걸릴 수 있어요. 그동안 다른 창을 써도 되지만 이 탭은 닫지 마세요.</p>
       <div className="dialog-actions"><button className="outline" onClick={() => exporting.controller.abort()}>멈추기</button></div>
     </div></div>}
     {exported && <div className="dialog-backdrop"><div className="dialog" role="dialog" aria-modal="true" aria-label="내보내기 결과">

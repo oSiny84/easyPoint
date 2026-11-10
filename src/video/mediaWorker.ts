@@ -22,7 +22,7 @@ export type ImportReply =
 const scope = self as unknown as { postMessage(message: ImportReply | ExportProgress): void; onmessage: ((event: MessageEvent<ImportRequest>) => void) | null };
 class Stop extends Error { constructor(readonly code: ErrorCode, message: string) { super(message); } }
 let cancelled = false;
-const UNSUPPORTED = "이 영상은 이 컴퓨터에서 읽을 수 없어요. 휴대폰 설정에서 '호환성 높은 형식(MP4)'으로 다시 찍거나 변환해 주세요.";
+const UNSUPPORTED = "이 영상은 이 컴퓨터에서 읽을 수 없어요. 아이폰이라면 설정 → 카메라 → 포맷에서 '높은 호환성'을 고른 뒤 다시 찍어 주세요.";
 
 type SyncHandle = { write(data: Uint8Array, options: { at: number }): number; truncate(size: number): void; flush(): void; close(): void };
 

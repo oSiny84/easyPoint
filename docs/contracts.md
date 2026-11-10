@@ -180,7 +180,7 @@ PPTX 줄바꿈은 자동 줄바꿈이다. PowerPoint에서 고치기 쉽고 글�
 
 파일명은 작품 제목의 금지 문자·제어 문자·끝 공백/마침표·Windows 예약 이름을 처리하고, 빈 이름은 '내 작품'을 쓴다. 확장자는 앱이 붙인다. 제목 자체를 저장 데이터에서 바꾸지는 않는다.
 
-앱 스크립트·폰트·배경은 같은 origin에서 제공한다. 외부 이미지 URL, 분석 도구, 원격 에러 수집은 첫 버전에 넣지 않는다. 배포 CSP는 `scripts/prune-dist.mjs`가 `dist/index.html`의 meta로 넣는다(스크립트·글꼴은 같은 origin, 그림·연결은 같은 origin과 blob·data, 양식 전송 금지). React style 속성 때문에 style-src에 unsafe-inline을 둔다. worker는 쓰지 않는다. 대표 흐름의 타 origin 요청 0건을 Phase 10에서 확인했다(INTEGRATION_REPORT_2026-11-06.md). HTTPS origin으로 앱 파일을 받는 것과 사진을 서버로 올리는 것은 구분하며, 사진 업로드 API는 만들지 않는다.
+앱 스크립트·폰트·배경은 같은 origin에서 제공한다. 외부 이미지 URL, 분석 도구, 원격 에러 수집은 첫 버전에 넣지 않는다. 배포 CSP는 `scripts/prune-dist.mjs`가 `dist/index.html`의 meta로 넣는다(스크립트·글꼴은 같은 origin, 그림·연결은 같은 origin과 blob·data, 양식 전송 금지). React style 속성 때문에 style-src에 unsafe-inline을 둔다. worker는 쓰지 않는다. 영상 모드는 [video-contracts.md](video-contracts.md) §8을 따른다(같은 origin Worker, `media-src 'self' blob:`·`worker-src 'self'`). 대표 흐름의 타 origin 요청 0건을 Phase 10에서 확인했다(INTEGRATION_REPORT_2026-11-06.md). HTTPS origin으로 앱 파일을 받는 것과 사진을 서버로 올리는 것은 구분하며, 사진 업로드 API는 만들지 않는다.
 
 ## 9. Phase 반영과 완료 조건
 
