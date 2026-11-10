@@ -62,6 +62,18 @@ function isTyping(event: KeyboardEvent) {
   return event.isComposing || event.keyCode === 229 || target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable;
 }
 
+// 스페이스가 재생·일시정지로 쓰이는 자리인지 정한다. 마우스로 누른 단추·고르기 상자·배율 막대에 초점이 남아 있어도 재생을 바꾼다.
+// 글자를 넣는 칸, 창·메뉴 안, Tab으로 옮겨 간 단추(byKeyboard)에서는 그 자리의 원래 동작을 둔다.
+const SPACE_KEEPS_NATIVE = new Set(['BUTTON', 'SELECT', 'INPUT', 'A', 'SUMMARY']);
+const NOT_TEXT_INPUT = new Set(['range', 'checkbox', 'radio', 'button', 'color', 'file']);
+function spaceTogglesPlay(event: KeyboardEvent, byKeyboard: boolean) {
+  const target = event.target as HTMLElement;
+  if (event.isComposing || event.keyCode === 229 || target.tagName === 'TEXTAREA' || target.isContentEditable) return false;
+  if (target.tagName === 'INPUT' && !NOT_TEXT_INPUT.has((target as HTMLInputElement).type)) return false;
+  if (target.closest('[role="dialog"], [role="alertdialog"], [role="menu"]')) return false;
+  return !(byKeyboard && SPACE_KEEPS_NATIVE.has(target.tagName));
+}
+
 // 원본 파일로 만든다. 실패하면 안내 문구를 돌려준다.
 export async function downloadOriginal(project: VideoProject): Promise<string | null> {
   const result = await serializeVideoProject(project, readMedia);
@@ -247,6 +259,8 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
   const run = useCallback((command: VideoCommand) => { const current = store.getProject(); const result = store.dispatch(current.id, current.revision, command); report(result); return result; }, [store, report]);
   const undo = useCallback(() => report(store.undo(), true), [store, report]);
   const redo = useCallback(() => report(store.redo(), true), [store, report]);
+  // byKeyboard: 마지막으로 Tab으로 초점을 옮겼는지(마우스를 누르면 풀린다). spaceHandled: 스페이스를 재생에 썼으니 뗄 때의 기본 동작도 막는다.
+  const byKeyboard = useRef(false), spaceHandled = useRef(false);
   const togglePlay = useCallback(() => { const instance = preview.current; if (!instance) return; if (instance.state.playing) instance.pause(); else void instance.play(); }, []);
 
   // 자막 입력을 문서에 확정한다. 새 자막은 내용이 있을 때만 addCaption, 기존 자막은 updateCaption(비우면 삭제, 계약 §3).
@@ -367,6 +381,13 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') byKeyboard.current = true;
+      if (event.key === ' ' && !event.ctrlKey && !event.metaKey && !event.altKey && spaceTogglesPlay(event, byKeyboard.current)) {
+        // 기본 동작(초점이 있는 단추 누르기, 목록 열기, 화면 내리기)을 막는다. 단추는 키를 뗄 때 눌리는 브라우저가 있어 keyup도 막는다.
+        event.preventDefault(); spaceHandled.current = true;
+        if (!event.repeat) togglePlay();
+        return;
+      }
       if (isTyping(event)) return;
       const key = event.key.toLowerCase();
       if (event.ctrlKey || event.metaKey) {
@@ -374,7 +395,6 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
         if (key === 'y' || (key === 'z' && event.shiftKey)) { event.preventDefault(); redo(); }
         return;
       }
-      if (event.key === ' ' && (event.target as HTMLElement).tagName !== 'BUTTON') { event.preventDefault(); togglePlay(); return; }
       if ((event.key === 'Delete' || event.key === 'Backspace') && !readOnly) {
         if (selectedClip) { event.preventDefault(); run({ type: 'deleteClip', clipId: selectedClip }); }
         else if (selectedOverlay) { event.preventDefault(); run({ type: 'deleteOverlay', overlayId: selectedOverlay }); }
@@ -386,8 +406,10 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
       }
       if (event.key === 'Escape') { setSelectedClipState(null); setSelectedOverlayState(null); }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const onKeyUp = (event: KeyboardEvent) => { if (event.key === ' ' && spaceHandled.current) { spaceHandled.current = false; event.preventDefault(); } };
+    const onPointer = () => { byKeyboard.current = false; };
+    window.addEventListener('keydown', onKey); window.addEventListener('keyup', onKeyUp); window.addEventListener('pointerdown', onPointer, true);
+    return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('keyup', onKeyUp); window.removeEventListener('pointerdown', onPointer, true); };
   });
 
   // 자동 저장(슬라이드와 같은 시점 규칙, 영상 계약 §6). 첫 조각의 시작 프레임이 바뀌었을 때만 작품 목록의 미리보기를 다시 만든다.
