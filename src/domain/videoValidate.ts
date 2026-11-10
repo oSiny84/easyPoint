@@ -3,8 +3,8 @@ import { BOLD_FONT_IDS, FONT_IDS, LIMITS } from './limits';
 import { concurrencyProblem, totalMs } from './timeline';
 import { fail, type Failure } from './types';
 import { ASSET_ID, COLOR, ISO_DATE, UUID, codePoints, isBlankText, onlyKeys } from './validate';
-import { CANVAS, MEDIA_MIMES, VIDEO_FPS, VIDEO_LIMITS, VIDEO_SCHEMA_VERSION, VOLUMES } from './videoLimits';
-import type { AudioSettings, BuiltinCatalog, CaptionOverlay, Clip, Media, MemeOverlay, Overlay, VideoProject, VideoProjectContent } from './videoTypes';
+import { CANVAS, CLIP_SPEEDS, MEDIA_MIMES, VIDEO_FPS, VIDEO_LIMITS, VIDEO_SCHEMA_VERSION, VOLUMES } from './videoLimits';
+import type { AudioSettings, BuiltinCatalog, CaptionOverlay, Clip, ClipSpeed, Media, MemeOverlay, Overlay, VideoProject, VideoProjectContent } from './videoTypes';
 
 const invalid = (message: string) => fail('INVALID_VALUE', message);
 const isInt = (value: unknown): value is number => Number.isInteger(value);
@@ -34,13 +34,15 @@ export function checkMedia(media: Media): Failure | null {
 
 export function checkClip(clip: Clip, media: Media | undefined): Failure | null {
   if (!clip || typeof clip !== 'object') return invalid('영상 조각 형식이 올바르지 않아요.');
-  const keys = onlyKeys(clip, ['id', 'mediaId', 'inMs', 'outMs', 'muted'], '영상 조각');
+  const keys = onlyKeys(clip, ['id', 'mediaId', 'inMs', 'outMs', 'muted', 'speed'], '영상 조각');
   if (keys) return keys;
   if (typeof clip.id !== 'string' || !UUID.test(clip.id)) return invalid('영상 조각 ID가 올바르지 않아요.');
   if (!media) return fail('ASSET_MISSING', '영상 자료를 찾을 수 없어요.');
   if (!isInt(clip.inMs) || !isInt(clip.outMs) || clip.inMs < 0 || clip.outMs > media.durationMs || clip.inMs >= clip.outMs) return invalid('영상 조각 구간이 올바르지 않아요.');
   if (clip.outMs - clip.inMs < VIDEO_LIMITS.clipMinMs) return invalid('영상 조각은 0.1초보다 길어야 해요.');
   if (typeof clip.muted !== 'boolean') return invalid('조각 소리 값이 올바르지 않아요.');
+  // 1배는 저장하지 않는다(계약 §2). 다른 값은 정해진 단계만.
+  if ('speed' in clip && (clip.speed === 1 || !CLIP_SPEEDS.includes(clip.speed as ClipSpeed))) return invalid('조각 빠르기 값이 올바르지 않아요.');
   return null;
 }
 

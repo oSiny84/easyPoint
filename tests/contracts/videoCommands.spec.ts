@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import type { VideoCommand } from '../../src/commands/videoApply';
-import { normalizeFps } from '../../src/domain/timeline';
+import { clipLength, locate, normalizeFps, totalMs } from '../../src/domain/timeline';
 import { createVideoProject } from '../../src/domain/videoProject';
 import { validateVideoProject } from '../../src/domain/videoValidate';
 import type { VideoProject } from '../../src/domain/videoTypes';
@@ -8,7 +8,7 @@ import { estimateVideoBytes } from '../../src/state/videoStore';
 import { clock, nextId } from './helpers';
 import { caption, catalog, lastOverlay, mediaA, mediaB, meme, runVideo, startVideo, twoClips, videoContent } from './videoHelpers';
 
-// 영상 계약 §4·§5: 명령 18개의 실행 → 취소 → 다시 실행, 겹침 요소 따라가기, 동시 밈 수, 검사.
+// 영상 계약 §4·§5: 명령 19개의 실행 → 취소 → 다시 실행, 겹침 요소 따라가기, 동시 밈 수, 검사.
 
 type Make = (project: VideoProject) => VideoCommand;
 const clipId = (p: VideoProject, index = 0) => p.clips[index].id;
@@ -31,6 +31,7 @@ const everyCommand: Record<string, Make> = {
   deleteClip: p => ({ type: 'deleteClip', clipId: clipId(p, 1) }),
   reorderClip: p => ({ type: 'reorderClip', clipId: clipId(p), toIndex: 1 }),
   setClipMuted: p => ({ type: 'setClipMuted', clipId: clipId(p), muted: true }),
+  setClipSpeed: p => ({ type: 'setClipSpeed', clipId: clipId(p), speed: 2 }),
   addCaption: () => caption(8000, 3000, '새 자막'),
   updateCaption: p => ({ type: 'updateCaption', overlayId: overlayId(p), text: '바뀐 자막', color: '#ff0000' }),
   addMeme: () => meme('cat-hop', 10_000),
@@ -44,7 +45,7 @@ const everyCommand: Record<string, Make> = {
   setAudio: () => ({ type: 'setAudio', originalVolume: 0.5, musicId: 'happy', musicVolume: 1 }),
 };
 
-test('명령 목록이 계약의 18개와 같다', () => expect(Object.keys(everyCommand).length).toBe(18));
+test('명령 목록이 계약의 19개와 같다', () => expect(Object.keys(everyCommand).length).toBe(19));
 
 for (const [name, make] of Object.entries(everyCommand)) test(`${name}: 실행 → 취소 → 다시 실행`, () => {
   const store = prepared();
@@ -151,6 +152,50 @@ test('따라가기: 작품 끝을 넘게 되면 줄이고, 1초보다 짧아지�
   result = runVideo(store, { type: 'trimClip', clipId: b.id, inMs: 0, outMs: 1000 });
   expect(result).toMatchObject({ ok: true, adjustedOverlays: 2 });
   expect(store.getProject().overlays).toEqual([]);
+});
+
+test('빠르기: 조각 길이는 원본 구간 ÷ 빠르기(반올림)이고, 원본 시각은 작품 시각 × 빠르기다', () => {
+  const { store, a } = twoClips();
+  const length = (speed: 0.5 | 1 | 1.5 | 2 | 4) => { runVideo(store, { type: 'setClipSpeed', clipId: a.id, speed }); return clipLength(store.getProject().clips[0]); };
+  expect([length(2), length(4), length(1.5), length(0.5), length(1)]).toEqual([5000, 2500, 6667, 20_000, 10_000]);
+  // 1배로 돌아오면 speed를 저장하지 않는다(계약 §2).
+  expect(store.getProject().clips[0]).toEqual(a);
+  runVideo(store, { type: 'setClipSpeed', clipId: a.id, speed: 1.5 });
+  const clips = store.getProject().clips;
+  expect(totalMs(clips)).toBe(6667 + 6000);
+  expect(locate(clips, 1000)).toMatchObject({ index: 0, sourceMs: 1500 });
+  expect(locate(clips, 6666)).toMatchObject({ index: 0, sourceMs: 9999 });
+  expect(locate(clips, 6667)).toMatchObject({ index: 1, sourceMs: 0 });
+});
+
+test('빠르기: 자막은 같은 장면을 따라가고, 자르면 두 조각 모두 같은 빠르기다', () => {
+  const { store, a } = twoClips();
+  runVideo(store, caption(4000, 2000, 'A 4초'));
+  runVideo(store, caption(12_000, 2000, 'B 2초'));
+  const result = runVideo(store, { type: 'setClipSpeed', clipId: a.id, speed: 2 });
+  expect(result).toMatchObject({ ok: true, focus: { kind: 'clip', id: a.id } });
+  expect(store.getProject().overlays.map(item => item.startMs)).toEqual([2000, 7000]);
+  // 원본 6초에서 자른다: 앞 조각 0~6초(작품 3초), 뒤 조각 6~10초(작품 2초). 자막 시각은 그대로다.
+  runVideo(store, { type: 'splitClip', clipId: a.id, atMs: 6000 });
+  expect(store.getProject().clips.map(clip => [clip.inMs, clip.outMs, clip.speed, clipLength(clip)])).toEqual([[0, 6000, 2, 3000], [6000, 10_000, 2, 2000], [0, 6000, undefined, 6000]]);
+  expect(store.getProject().overlays.map(item => item.startMs)).toEqual([2000, 7000]);
+  // 앞 조각만 느리게 하면(작품 12초) 그 위 자막은 원본 4초 = 8초로, B는 12 + 2 = 14초에서 시작해 B 위 자막은 16초로 밀린다.
+  runVideo(store, { type: 'setClipSpeed', clipId: a.id, speed: 0.5 });
+  expect(store.getProject().overlays.map(item => item.startMs)).toEqual([8000, 16_000]);
+});
+
+test('빠르기: 정해진 단계만 받고, 10분을 넘게 되면 거부하며, 저장 형태에서 1배는 쓰지 않는다', () => {
+  const store = startVideo();
+  runVideo(store, { type: 'addClip', media: { ...mediaA, id: 'd'.repeat(64), durationMs: 400_000 } });
+  const id = store.getProject().clips[0].id;
+  expect(runVideo(store, { type: 'setClipSpeed', clipId: id, speed: 3 as never })).toMatchObject({ ok: false, code: 'INVALID_VALUE' });
+  expect(runVideo(store, { type: 'setClipSpeed', clipId: id, speed: 0.5 })).toMatchObject({ ok: false, code: 'LIMIT_EXCEEDED' });
+  expect(runVideo(store, { type: 'setClipSpeed', clipId: id, speed: 1 })).toMatchObject({ ok: true, changed: false });
+  expect(runVideo(store, { type: 'setClipSpeed', clipId: nextId(), speed: 2 })).toMatchObject({ ok: false, code: 'INVALID_VALUE' });
+  const p = store.getProject();
+  expect(validateVideoProject({ ...p, clips: [{ ...p.clips[0], speed: 2 }] }, catalog)).toMatchObject({ ok: true });
+  expect(validateVideoProject({ ...p, clips: [{ ...p.clips[0], speed: 1 }] }, catalog)).toMatchObject({ ok: false, code: 'INVALID_VALUE' });
+  expect(validateVideoProject({ ...p, clips: [{ ...p.clips[0], speed: 3 }] }, catalog)).toMatchObject({ ok: false, code: 'INVALID_VALUE' });
 });
 
 test('동시 밈 수: 밈 영상은 2개, 스티커는 4개까지이고 명령은 거부한다', () => {

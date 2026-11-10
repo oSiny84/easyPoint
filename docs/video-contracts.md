@@ -29,6 +29,7 @@
 | 움직이는 스티커 | MemeOverlay(memeKind='sticker') | addMeme, setOverlayTime, moveOverlay, resizeOverlay, reorderOverlay, duplicateOverlay, deleteOverlay | 밈 카드 끌어놓기, 크기, 보이는 시간 | §3 반복 프레임 식, §8 프레임 합성 |
 | 밈 영상 | MemeOverlay(memeKind='clip'), soundOn | 위와 같음 + setMemeSound | 소리 켜기/끄기 | §8 둘째 해독기, 소리 섞기 |
 | 효과음 | Meme.soundId(내장 목록), MemeOverlay.soundOn | setMemeSound | 소리 켜기/끄기(밈 영상 소리와 함께) | §8 startMs에 1회 |
+| 조각 빠르기(2026-11-10 추가) | Clip.speed | setClipSpeed | 조각 설정 줄의 빠르기 고르기(0.5·1·1.5·2·4배) | §3 작품 시각, §8 미리보기 재생 속도·출력 소리 다시 표본화 |
 | 원본 소리·배경음악 | Clip.muted, AudioSettings | setClipMuted, setAudio | 조각 소리 켜기/끄기, 원본 크기 3단계, 음악 카드·크기 | §8 소리 섞기 |
 | 미리보기 | (문서 아님) | — | 재생·일시정지·재생 막대 끌기 | §8 미리보기 허용 오차 |
 | 작품 저장·다시 열기 | VideoProject 전체, VideoProjectSummary | — | 자동 저장, 작품 목록 | §6 |
@@ -46,7 +47,7 @@
 | VideoProject | schemaVersion=1, kind='video', id, title, revision, createdAt, updatedAt, orientation, fps, clips, overlays, audio, mediaManifest |
 | orientation | 'landscape'(논리 1280×720, 출력 1920×1080) 또는 'portrait'(논리 720×1280, 출력 1080×1920). 새 작품은 'landscape'다. clips가 비어 있을 때 addClip이 그 영상의 표시 크기(회전 적용 후)로 정한다. 세로가 더 길면 'portrait'. 그 뒤 조각을 모두 지워도 바뀌지 않으며, 다시 비었을 때의 addClip이 다시 정한다 |
 | fps | 24·25·30 중 하나. 새 작품은 30. orientation과 같은 시점에 첫 영상에서 정한다. 영상 프레임률 f가 40보다 크면 40 이하가 될 때까지 절반으로 줄이고(60→30, 50→25, 120→30), 24·25·30 중 가장 가까운 값으로 반올림한다(23.976→24, 29.97→30). 그 뒤 추가하는 조각은 바꾸지 않는다 |
-| Clip | id, mediaId, inMs, outMs, muted. inMs·outMs는 원본 영상 안의 구간(정수 ms, 0 ≤ inMs < outMs ≤ Media.durationMs). muted 기본 false. clips 배열 순서가 재생 순서다. 조각의 작품 안 시작 시각은 앞 조각 길이의 합으로 계산하고 저장하지 않는다 |
+| Clip | id, mediaId, inMs, outMs, muted, speed(선택). speed는 0.5·1.5·2·4 중 하나이고 **1배는 저장하지 않는다**(필드가 없으면 1배, `speed: 1`은 검사에서 거부). 2026-11-10 사용자 요청으로 추가했으며 schemaVersion은 1을 유지한다: speed가 없는 문서는 이전과 같고, speed를 쓴 문서는 v0.0.3 이하가 알 수 없는 값으로 거부한다. inMs·outMs는 원본 영상 안의 구간(정수 ms, 0 ≤ inMs < outMs ≤ Media.durationMs). muted 기본 false. clips 배열 순서가 재생 순서다. 조각의 작품 안 시작 시각은 앞 조각 길이의 합으로 계산하고 저장하지 않는다 |
 | Overlay 공통 | id, type('caption' 또는 'meme'), startMs, durationMs, x, y, width. startMs·durationMs는 작품 시각의 정수 ms. overlays 배열 순서가 뒤→앞 그리기 순서다(자막과 밈을 한 배열에 둔다) |
 | CaptionOverlay | 공통 + text, fontId, fontSize, bold, color, align, lineHeight, backdrop('none' 또는 'band'). 높이는 저장하지 않고 layoutText로 계산한다(슬라이드 TextElement와 같다) |
 | MemeOverlay | 공통 + height, memeId, memeKind('sticker' 또는 'clip'), soundOn(기본 true). memeKind는 내장 목록의 kind를 복사한 값이며 검사에서 일치해야 한다. 반복 여부는 저장하지 않는다(항상 반복, §3) |
@@ -69,9 +70,9 @@
 
 ### 작품 시각과 출력 프레임
 
-- 작품 길이 total = Σ(outMs − inMs). 조각이 없으면 0이다.
+- 조각 길이 L_c = round((outMs − inMs) / speed)(speed 없으면 1배, 반올림은 0.5에서 올림). 작품 길이 total = Σ L_c. 조각이 없으면 0이다.
 - 출력 프레임 k(0부터)의 시각은 마이크로초 정수 t_k = ⌊k × 1,000,000 / fps⌋이고, 겹침 요소 비교에는 ms 단위 ⌊t_k / 1000⌋을 쓴다. 출력 프레임 수는 ⌈total × fps / 1000⌉이다.
-- 프레임 k가 보여 주는 조각은 start_c ≤ t_k/1000 < start_c + (outMs − inMs)인 조각 c이고, 원본 시각은 s = inMs + (t_k/1000 − start_c)다. 해독한 프레임 중 타임스탬프가 **s + 1ms 이하**인 가장 늦은 프레임을 쓴다(이전 프레임 유지). 조각의 프레임률이 작품 fps와 달라도 이 규칙 하나로 맞춘다. 1ms 허용은 V2에서 추가했다: 내림한 t_k는 원본의 정확한 시각 k/fps보다 최대 1µs 작고 WebM은 시각을 1ms 단위로 반올림해 적으므로, "s 이하"만 쓰면 출력 프레임의 일부가 한 장 앞 프레임이 된다(1분 출력 표본 24개 중 MP4 14개·WebM 5개, 고친 뒤 0개).
+- 프레임 k가 보여 주는 조각은 start_c ≤ t_k/1000 < start_c + L_c인 조각 c이고, 원본 시각은 s = inMs + (t_k/1000 − start_c) × speed다(소수 ms일 수 있다. (L_c − 1) × speed < outMs − inMs이므로 조각 밖으로 나가지 않는다). 해독한 프레임 중 타임스탬프가 **s + 1ms 이하**인 가장 늦은 프레임을 쓴다(이전 프레임 유지). 조각의 프레임률이 작품 fps와 달라도 이 규칙 하나로 맞춘다. 1ms 허용은 V2에서 추가했다: 내림한 t_k는 원본의 정확한 시각 k/fps보다 최대 1µs 작고 WebM은 시각을 1ms 단위로 반올림해 적으므로, "s 이하"만 쓰면 출력 프레임의 일부가 한 장 앞 프레임이 된다(1분 출력 표본 24개 중 MP4 14개·WebM 5개, 고친 뒤 0개).
 - 겹침 요소는 startMs ≤ t < startMs + durationMs인 프레임에 보인다(끝은 포함하지 않는다). §9의 "±1프레임"은 이 식으로 계산한 프레임과 실제 출력 파일의 프레임 차이를 뜻한다.
 - 밈 프레임: 보이는 동안 밈 길이 L(ms)로 반복한다. 프레임 시각 t에서의 밈 안 시각은 m = (t − startMs) mod L이고, 밈 영상은 타임스탬프가 m + 1ms 이하인 가장 늦은 프레임을, 스티커는 타임스탬프가 m 이하인 가장 늦은 프레임을 쓴다. 스티커(애니메이션 WebP)의 프레임 시각은 `ImageDecoder`가 주는 정수 ms 값(지속 시간의 누적, 24fps면 0·42·84ms…)이라 반올림 오차가 없으므로 1ms 허용을 두지 않는다. 밈fps로 계산하지 않는다(V2 측정). 반복 경계에서 프레임을 건너뛰지 않는다는 뜻은 m이 L 직전 값에서 0으로 돌아갈 때 마지막 프레임 다음에 첫 프레임이 온다는 것이다.
 - 겹침 요소의 startMs는 작품 시각으로 저장하지만, 조각을 바꾸는 명령은 그 시각이 가리키던 **원본 프레임**을 따라가도록 startMs를 다시 계산한다(§4 "겹침 요소 따라가기"). 아이가 앞부분을 잘라 내면 뒤의 자막이 같은 장면 위에 남아 있어야 하기 때문이다.
@@ -116,6 +117,7 @@ dispatch(projectId, expectedRevision, command)의 성공·실패 형태, revisio
 | deleteClip | clipId | 대상 없음 | 1조각 삭제. 마지막 조각도 지울 수 있다(빈 작품 허용) |
 | reorderClip | clipId, toIndex | 범위 밖 인덱스 | 이동 1회 |
 | setClipMuted | clipId, muted | 대상 없음 | 켜기/끄기 1회 |
+| setClipSpeed | clipId, speed(0.5·1·1.5·2·4) | 대상 없음, 단계 밖 값(INVALID_VALUE), 느리게 해 작품이 10분을 넘으면 LIMIT_EXCEEDED. 1배로 바꾸면 speed 필드를 지운다 | 고르기 1회. 겹침 요소 따라가기를 적용한다 |
 | addCaption | 자막 필드 전체(startMs·durationMs 포함) | 빈 글씨, 글자·시간·좌표·글꼴 위반, 겹침 요소 수 상한, total=0 | 첫 입력 확정 1회 |
 | updateCaption | overlayId, text / 서식 / width / backdrop | 자막 아님, 값 위반 | 편집 묶음 1회(슬라이드 updateText와 같은 묶음 규칙) |
 | addMeme | memeId, memeKind, x, y, width, height, startMs, durationMs, soundOn | 내장 목록에 없는 ID, kind 불일치, 비율 위반, 동시 밈 수 초과(LIMIT_EXCEEDED), 겹침 요소 수 상한, total=0 | 밈 1개 추가 |
@@ -130,7 +132,9 @@ dispatch(projectId, expectedRevision, command)의 성공·실패 형태, revisio
 
 새 영상의 등록은 addClip의 media로 같은 명령에서 처리하고, 되돌리면 mediaManifest 등록도 돌아간다. 바이트는 저장소에 남는다(§6). 같은 해시의 영상을 다시 넣으면 Media를 추가하지 않고 조각만 추가한다.
 
-### 겹침 요소 따라가기 (splitClip·trimClip·deleteClip·reorderClip 공통)
+### 겹침 요소 따라가기 (splitClip·trimClip·deleteClip·reorderClip·setClipSpeed 공통)
+
+빠르기가 있으면 원본 시각 ↔ 작품 시각 변환에 §3의 × speed, ÷ speed(정수 ms로 반올림, 조각 끝 − 1ms를 넘지 않게)를 쓴다. 자르기의 뒤쪽 조각은 앞 조각의 speed를 그대로 가진다.
 
 조각을 바꾸는 명령은 같은 원자적 작업 안에서 모든 겹침 요소를 다음 순서로 고친다. 결과는 명령 하나의 취소 기록에 들어가므로 되돌리면 자막·밈도 함께 돌아온다.
 
@@ -240,6 +244,8 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 
 ### 미리보기
 
+조각 빠르기는 `<video>`의 `playbackRate`(= `defaultPlaybackRate`)로 내고 `preservesPitch = false`로 소리 높이도 함께 바뀌게 한다(출력과 같은 소리). 2026-11-10 사용자 결정: 빨라진(느려진) 조각의 원래 소리는 높이를 보정하지 않는다(빠르면 높은 목소리, 0.5배면 낮은 목소리).
+
 재생 시계는 Web Audio `AudioContext.currentTime`이다. 영상 조각은 숨긴 `<video>`(저장소 Blob URL)를 시계에 맞춰 재생하고 프레임을 캔버스에 그린 뒤 composeFrame으로 자막·밈을 겹친다. 밈 영상은 보이는 것마다 숨긴 `<video>` 하나를 §3의 m 시각에 맞춘다. 스티커(애니메이션 WebP)는 `ImageDecoder`로 §3의 프레임만 그때그때 푼다(512² 프레임당 약 1.3ms). 모든 프레임을 미리 풀어 두지 않는다(512²×120프레임이면 126MB). 효과음·음악·밈 소리는 Web Audio로 같은 시계에 맞춘다. 재생 막대를 끌 때는 그 시각의 프레임을 seek해 그린다. 미리보기는 출력과 1프레임 차이를 허용하고 끊김도 허용하지만, 자막·밈이 **보이기 시작하는 시각과 끝나는 시각**은 §3의 식과 같아야 한다.
 
 ### 출력
@@ -253,6 +259,7 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 | 형식 선택 | **쌍으로 정한다.** H.264(High, 'avc1.640028')와 AAC-LC('mp4a.40.2')가 **둘 다** `isConfigSupported()`를 통과하면 MP4. 하나라도 안 되면 파일 전체를 WebM(VP9 'vp09.00.40.08' + Opus)으로 낸다. 둘 다 안 되면 ENCODER_UNAVAILABLE. V2: 개발 PC의 Chrome·Edge·번들 Chromium 모두 MP4 조합이 통과했다(8GB PC 미측정, 잠정) |
 | MP4 배치 | Mediabunny `fastStart: 'reserve'`에 트랙별 최대 패킷 수(영상 = 프레임 수 + 2, AAC = ⌈길이 × 48000 / 1024⌉ + 64)를 준다. moov가 앞에 오고(`ftyp, moov, free, mdat`) 흘려 쓰기가 유지된다. 편집 목록은 쓰지 않는다. YouTube 권장값(moov 앞쪽, 편집 목록 없음)을 따르기 위해서다(V2) |
 | 비트레이트 | 영상 8Mbps VBR(YouTube 1080p 24~30fps SDR 권장값, 2026-11-09 확인), 키 프레임 2초(YouTube 권장 GOP 0.5초와의 화질 비교는 V7). 소리 AAC 192kbps 또는 Opus 128kbps(YouTube 권장 384kbps는 미측정이라 유지). V2에서 10Mbps를 요청했을 때 소프트웨어 H.264는 약 26Mbps, VP9는 약 13Mbps를 냈다(합성 잡음 영상). V7에서 두 경로의 설정을 따로 정한다 |
+| 조각 빠르기 | 프레임은 §3의 s = inMs + (t − start) × speed로 고른다. 원래 소리는 원본을 speed배 빠르기로 선형 보간해 다시 표본화한다(높이도 speed배). 시험: 2배 조각의 출력 프레임 색이 원본 2t 시각 프레임과 맞고, 440Hz 원본 소리가 약 886Hz로 나온다(`tests/e2e/videoSpeed.spec.ts`) |
 | 소리 섞기 | 48kHz 스테레오로 섞는다. **Worker가 `AudioDecoder`의 Float32 출력을 직접 더해 섞는다**(V2 결정). Worker에는 `OfflineAudioContext`·`AudioContext`가 없다(만들면 ReferenceError, Chrome·Edge·Chromium). 영상 프레임보다 0.5초 앞서 조금씩 섞어 인코더에 넣으므로 소리 버퍼 전체를 메모리에 두지 않는다. 10분 작품의 섞기 계산은 2.0초였다. 섞는 규칙은 어느 위치든 같다: 조각 원본 소리(muted가 아닌 조각, × originalVolume) + 밈 영상 소리(soundOn인 밈, §3의 반복 포함, × 1) + 효과음(soundOn인 밈의 startMs에 1회, 반복마다 다시 내지 않음) + 배경음악(musicId가 있으면 0초부터, 음악 길이가 작품보다 짧으면 반복, 작품 끝에서 자름, 페이드 없음, × musicVolume). 합은 −1~1로 자르고 압축기는 쓰지 않는다. 자주 잘리면 V7에서 음량 단계를 조정하고 이 표를 갱신한다. 소리가 전혀 없는 작품도 무음 소리 트랙을 넣는다 |
 | 메모리 | 한 번에 쥐는 해독 프레임은 조각 1개분 + 밈 영상 2개분이며 그린 직후 close. 인코딩 결과는 OPFS 임시 파일(§6)로 흘려 쓰고 끝나면 File로 내려준다. 실패·취소 시 임시 파일을 지운다 |
 | 진행·취소 | 진행률 = 인코딩한 프레임 / 전체 프레임. 취소는 CANCELLED이며 부분 파일을 내려주지 않는다. 취소 뒤 다시 내보낼 수 있다 |
@@ -284,7 +291,7 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 | V5 자막 | §3 자막 | IME 시험 재사용, 자막 시작·끝 시각 일치, 영상 끝 넘김 처리. **2026-11-09 구현**: 자막 그림은 메인 스레드에서 layoutText로 그린 캔버스(`src/video/captionImage.ts`)이고, 미리보기는 `compose.ts drawOverlays`로 겹친다(V7 출력이 같은 함수를 1.5배로 쓴다). V3 미룸 ①: `geometry.ts`의 `moveWithin`·`resizeText`·`centeredAt`가 캔버스 크기를 받는다(기본값 슬라이드, `tests/contracts/geometry.spec.ts` 무수정 통과). 자막 조작 층은 슬라이드 `SelectionLayer`를 고치지 않고 `src/video/OverlayLayer.tsx`로 따로 두었다. `TextEditor`·`TextControls`는 그대로 함께 쓴다. 시험(`tests/e2e/videoCaption.spec.ts` 6개): 추가·빈 글씨·되돌리기, CDP 한글 조합 중 Enter·Esc·재생, 두 번 눌러 고치기·전부 지우면 삭제, 끌기·화면 밖 제한·모서리 비율, −/+·지금부터·끝 넘김 안내·타임라인 시작 손잡이 끌기(100ms 단위, 명령 1개), 미리보기가 startMs−1·startMs·끝−1·끝에서 그리는지, 세로 작품 기본값. 고친 화면 결함: 남은 글자 선택이 끌기를 취소시킴, 화면 가장자리 손잡이 잘림, 재생 막대가 고른 막대의 시작 손잡이를 덮음, 줄인 시간 안내가 확정 순간에 지워짐. 미확인: 실제 입력기(MS IME)·터치 기기 |
 | V6 밈·소리 | §2 내장 목록, §3 밈, §8 미리보기 소리 | 밈 프레임·효과음 시각 ±1프레임, 반복 경계, 소리 끄기, 자산 라이선스 기록. **2026-11-09 구현**: 내장 목록 로더(`src/video/builtins.ts`)는 manifest 항목을 §5 상한으로 검사하고 파일은 통째로 받아 SHA-256을 확인한다. 숨긴 항목도 문서 검사에는 쓴다. 영상 편집기는 목록을 먼저 읽고 그 목록으로 문서를 검사한다(읽지 못하면 빈 목록, 영상·자막은 쓸 수 있음). 스티커 프레임 선택(`timeline.ts frameAtOrBefore`, 스티커는 m, 밈 영상은 m + 1ms)과 반복(`memeTime`)을 미리보기·출력이 함께 쓴다. ImageDecoder의 프레임 시각은 마이크로초라 ms로 바꿔 쓴다. 미리보기 밈 영상 소리는 `<video>`가 직접 내고(soundOn), 효과음(soundOn인 밈의 startMs에 1회)·배경음악(0초부터 반복, 작품 끝에서 자름)은 Web Audio로 재생 시계에 맞춘다. 자산은 자리 표시용(스티커 4·밈 영상 2·효과음 3·음악 2, `docs/asset-licenses.md`)이며 **실제 자산 출처는 사용자 결정 대기**. 시험: `tests/contracts/videoBuiltins.spec.ts` 4개, `tests/e2e/videoMeme.spec.ts` 4개(넣기 기본값·움직임·비율 크기·동시 상한 안내·밈 소리·끌어놓기·소리 패널·재생 때 음악+효과음 예약 수). **미확인**: 반복 경계·효과음 시각의 ±1프레임은 출력(V7)에서 해독해 확인한다. 최근 사용 목록은 넣지 않았다 |
 | V7 내보내기 | §8 출력 | 출력 파일을 다시 해독해 §3의 식으로 계산한 프레임과 비교하는 자동 시험, 두 PC 측정, 플레이어 재생·YouTube 업로드(사람 확인). **2026-11-09 구현**: 가져오기 Worker를 `mediaWorker.ts`로 합쳐 내보내기도 한다(Mediabunny 청크 하나). 메인 쪽(`exportVideo.ts`)이 글꼴을 받고 자막을 1.5배 그림(ImageBitmap)으로 만들어 넘기고, 내장 밈·소리는 해시 확인한 Blob을 넘긴다. Worker 쪽(`exportJob.ts`)은 프레임 k마다 §3 식으로 조각 프레임(s + 1ms 이하)을 해독해 contain으로 그리고 `compose.ts drawOverlays`(미리보기와 같은 함수, scale 1.5)로 자막·밈을 겹친다. 스티커는 ImageDecoder 프레임 시각 ≤ m, 밈 영상은 m + 1ms 이하. 소리(`audioMix.ts`)는 판독기마다 48kHz 스테레오로 다시 표본화해 0.1초씩 더하고 −1~1로 자른다(원래 소리 × originalVolume·끈 조각 제외, 밈 영상 소리 반복, 효과음 startMs 1회, 음악 반복·작품 끝에서 자름 × musicVolume, 항상 소리 트랙). 형식은 H.264+AAC 둘 다 되면 MP4(`fastStart: 'reserve'`, moov 앞), 아니면 VP9+Opus WebM, 둘 다 안 되면 ENCODER_UNAVAILABLE. 8Mbps, 키 프레임 2초. OPFS 임시 파일로 흘려 쓰고 실패·취소 때 지운다. 시험 `tests/e2e/videoExport.spec.ts`(번들 Chromium, 소프트웨어 H.264): 3.5초 작품 → 105패킷(⌈3.5×30⌉)·3.52초·1920×1080·AAC·소리 RMS 0.26·moov가 mdat 앞, 자막 띠가 1000ms 프레임부터 2000ms 프레임 전까지·밈 영상이 2000~3000ms에만 보임(앞뒤 프레임 밝기 비교), 출력 중 이름 변경이 파일 이름에 섞이지 않음, 취소 뒤 임시 파일 없음·다시 내보내기. 1.5초·2.5초 프레임을 눈으로 확인(원본 프레임 번호 45·12, 자막 띠·하트·WOW 밈). 배포본 시험에서 자막·밈·음악 작품을 MP4로 만들 때 CSP 위반 0건. 묶음 크기: 첫 화면 761KB(변화 없음), 영상 편집기 84KB, 영상 작업 Worker 587KB. **미확인(사람·기기)**: Windows 미디어 플레이어 재생, YouTube 업로드 처리, 실제 휴대폰 영상, 10분 작품 출력 시간·메모리(V8 측정), 소리 시각 ±1프레임(효과음 위치를 표본 단위로 재지는 않았다), 하드웨어 H.264 경로(Chrome·Edge) |
-| V8 통합 | §8 네트워크·CSP·실행 파일 | test:release·test:exe 통과, 기획안 §9 시나리오 7개. **2026-11-10 진행(완료 아님)**: ① `npm run test:exe` 통과(실행 파일 47831에서 배포본 시험 15개, 그중 영상 3개: 편집기 열기·저장·새로고침, 영상 2개 가져오기·끝까지 재생, 자막·밈·음악 작품 MP4 내보내기 CSP 위반 0건)와 서버 점검 15개. 이 실행 파일을 프리릴리스 `v0.0.3`으로 올렸다(RELEASE.md). ② 10분 작품 제품 화면 측정(`tests/video-v8`, `playwright.video-v8.config.ts`, 개발 PC Chrome, 배포본이 아닌 개발 서버(vite)에서): 합성 1080p30 H.264+AAC 599초 원본(603MB) 1개에 자막 10개·움직이는 스티커 10개·밈 영상 20개(60초씩, 같은 시각 밈 영상 2개+스티커 1개+자막 1개가 전 구간)와 배경음악을 넣은 작품을 상단 `내보내기`로 만들었다. 가져오기 1.9초, **내보내기 85.7초(영상 길이의 0.14배)**, 브라우저 전체 메모리 최대 **1,238MB**(렌더러 495MB·GPU 437MB, 2초 표본 38개), MP4 611MB(`avc1.640032`+AAC, 599.02초, 패킷 17,970 = 599×30). 9분 35.5초 프레임을 눈으로 확인했다(10번째 자막·하트·WOW·띠용 밈, 원본 프레임 번호 17,265 = 575.5×30). V2 같은 조건 측정(101초·1.05GB)과 비슷하다. RTX 3060 개발 PC 하드웨어 H.264 수치이며 8GB PC 기준 통과로 보지 않는다. ③ 슬라이드 계약 §8에 영상 모드 예외 한 문장을 넣었다. ④ 안내 문구: 읽을 수 없는 영상 안내를 아이폰 설정 이름('높은 호환성')에 맞추고, 내보내기 중 창에 "긴 영상은 몇 분 걸릴 수 있어요… 이 탭은 닫지 마세요"를 넣었다. USER_GUIDE에 영상 만들기 절과 영상 오류 안내 5개를 넣었다. v0.0.3 실행 파일에는 ③④가 들어 있지 않다(릴리스 뒤에 고쳤다). ⑤ Mediabunny MPL-2.0 고지는 릴리스 안내와 RELEASE.md에 적었고 앱 화면 안 고지는 없다. ⑥ 기획안 §9 시나리오 대응: 1(가져오기·자르기)·2(자막)·3(밈·소리 끄기·반복)·4(음악·원본 50%)·7(손상·용량 부족·취소·상한·둘째 탭)은 `tests/e2e/video*.spec.ts`에서 합성 WebM으로, 5(복원·`.canvavideo` 다른 프로필)는 `video.spec.ts`, 6(내보내기)은 `videoExport.spec.ts`와 배포본·실행 파일 시험에서 자동으로 확인한다. 휴대폰 MP4·MOV, 파일 재생(Windows 미디어 플레이어), YouTube 비공개 업로드는 사람 확인으로 남는다. **남은 것**: 8GB PC 측정(가상 PC 메모리 초과 원인 조사 보류), 사람 확인 3건, 어린이 관찰(미실시), 실제 밈 그림 |
+| V8 통합 | §8 네트워크·CSP·실행 파일 | test:release·test:exe 통과, 기획안 §9 시나리오 7개. **2026-11-10 진행(완료 아님)**: ① `npm run test:exe` 통과(실행 파일 47831에서 배포본 시험 15개, 그중 영상 3개: 편집기 열기·저장·새로고침, 영상 2개 가져오기·끝까지 재생, 자막·밈·음악 작품 MP4 내보내기 CSP 위반 0건)와 서버 점검 15개. 이 실행 파일을 프리릴리스 `v0.0.3`으로 올렸다(RELEASE.md). ② 10분 작품 제품 화면 측정(`tests/video-v8`, `playwright.video-v8.config.ts`, 개발 PC Chrome, 배포본이 아닌 개발 서버(vite)에서): 합성 1080p30 H.264+AAC 599초 원본(603MB) 1개에 자막 10개·움직이는 스티커 10개·밈 영상 20개(60초씩, 같은 시각 밈 영상 2개+스티커 1개+자막 1개가 전 구간)와 배경음악을 넣은 작품을 상단 `내보내기`로 만들었다. 가져오기 1.9초, **내보내기 85.7초(영상 길이의 0.14배)**, 브라우저 전체 메모리 최대 **1,238MB**(렌더러 495MB·GPU 437MB, 2초 표본 38개), MP4 611MB(`avc1.640032`+AAC, 599.02초, 패킷 17,970 = 599×30). 9분 35.5초 프레임을 눈으로 확인했다(10번째 자막·하트·WOW·띠용 밈, 원본 프레임 번호 17,265 = 575.5×30). V2 같은 조건 측정(101초·1.05GB)과 비슷하다. RTX 3060 개발 PC 하드웨어 H.264 수치이며 8GB PC 기준 통과로 보지 않는다. ③ 슬라이드 계약 §8에 영상 모드 예외 한 문장을 넣었다. ④ 안내 문구: 읽을 수 없는 영상 안내를 아이폰 설정 이름('높은 호환성')에 맞추고, 내보내기 중 창에 "긴 영상은 몇 분 걸릴 수 있어요… 이 탭은 닫지 마세요"를 넣었다. USER_GUIDE에 영상 만들기 절과 영상 오류 안내 5개를 넣었다. v0.0.3 실행 파일에는 ③④가 들어 있지 않다(릴리스 뒤에 고쳤다). ⑤ Mediabunny MPL-2.0 고지는 릴리스 안내와 RELEASE.md에 적었고 앱 화면 안 고지는 없다. ⑥ 기획안 §9 시나리오 대응: 1(가져오기·자르기)·2(자막)·3(밈·소리 끄기·반복)·4(음악·원본 50%)·7(손상·용량 부족·취소·상한·둘째 탭)은 `tests/e2e/video*.spec.ts`에서 합성 WebM으로, 5(복원·`.canvavideo` 다른 프로필)는 `video.spec.ts`, 6(내보내기)은 `videoExport.spec.ts`와 배포본·실행 파일 시험에서 자동으로 확인한다. 휴대폰 MP4·MOV, 파일 재생(Windows 미디어 플레이어), YouTube 비공개 업로드는 사람 확인으로 남는다. ⑦ 사람 확인(2026-11-10): 사용자가 실제 PC에서 영상을 넣어 작품을 만들고 내보내기까지 되는 것을 봤다. **남은 것**: 8GB PC 측정(가상 PC 메모리 초과 원인 조사 보류), 사람 확인 3건(아이폰 MOV·HEVC는 영상이 없어 못 함, Windows 미디어 플레이어 재생, YouTube 비공개 업로드는 맨 마지막에), 어린이 관찰(미실시), 실제 밈 그림 |
 
 각 단계는 `npm test` 전체와 `tests/e2e/flow.spec.ts`가 계속 통과하는 것을 전제로 한다(AGENTS.md). 성능 목표(출력 시간 영상 길이의 2배 이내, 탭 메모리 1.5GB 이내, 밈 영상 2개 겹친 구간 20%인 작품의 출력 시간 1.5배 이내 등)는 기획안 §9에 있고 기준 기기는 RAM 8GB PC다. 개발 PC 수치만으로 통과 처리하지 않는다. 이 문서 작성만으로 V1 이후의 어떤 단계도 완료로 선언하지 않는다.
 
@@ -302,6 +309,7 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 | 사진 조각 | 첫 버전에 넣지 않음 | §1 |
 | WebM 안내 | 결과 창에 형식과 "YouTube에 올릴 수 있어요" 표시 | §8 결과 창 |
 | 최근 작품 수 | 6개 | §6 시작 화면 |
+| 조각 빠르기(2026-11-10 추가 요청) | 0.5·1·1.5·2·4배, 조각 단위(원하는 구간은 자르기로 떼어 낸다). 원래 소리는 높이도 함께 바뀐다 | §2 Clip.speed, §3, §4 setClipSpeed, §8 |
 
 ### V2 측정 후 결정 (2026-11-09, 근거는 VIDEO_PHASE2_RESULTS.md)
 

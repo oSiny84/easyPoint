@@ -2,7 +2,7 @@
 // 숫자 입력 없이 누르기와 끌기만 쓴다: 눈금·빈 곳을 누르거나 재생 막대를 끌면 그 시각으로 옮기고, 선택한 조각의 양 끝을 끌면 다듬는다.
 // 끄는 동안은 화면에만 보이고, 손을 떼면 trimClip 명령 하나를 보낸다(취소 한 번에 다듬기 한 번).
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
-import { clipLength, clipStarts, totalMs } from '../domain/timeline';
+import { clipLength, clipSpeed, clipStarts, totalMs } from '../domain/timeline';
 import { VIDEO_LIMITS } from '../domain/videoLimits';
 import type { Clip, Overlay, VideoProject } from '../domain/videoTypes';
 import { formatDuration } from './format';
@@ -93,7 +93,8 @@ export function VideoTimeline({ project, timeMs, pxPerSecond, selectedClip, sele
     const startX = event.clientX, duration = media(clip)?.durationMs ?? clip.outMs;
     let current: Trim = { clipId: clip.id, inMs: clip.inMs, outMs: clip.outMs };
     const move = (next: PointerEvent) => {
-      const delta = Math.round(((next.clientX - startX) / pxPerSecond) * 1000 / 10) * 10;
+      // 화면의 길이는 작품 시간이므로 빠르기를 곱해 원본 시간으로 바꾼다.
+      const delta = Math.round(((next.clientX - startX) / pxPerSecond) * 1000 * clipSpeed(clip) / 10) * 10;
       current = edge === 'in'
         ? { ...current, inMs: Math.max(0, Math.min(clip.outMs - VIDEO_LIMITS.clipMinMs, clip.inMs + delta)) }
         : { ...current, outMs: Math.min(duration, Math.max(clip.inMs + VIDEO_LIMITS.clipMinMs, clip.outMs + delta)) };
@@ -153,7 +154,7 @@ export function VideoTimeline({ project, timeMs, pxPerSecond, selectedClip, sele
           <button className={clip.id === selectedClip ? 'clip-block current' : 'clip-block'} aria-pressed={clip.id === selectedClip} aria-label={`영상 ${number(clip)} 조각 ${formatDuration(clipLength(clip))}`}
             onPointerDown={event => { if (event.button !== 0) return; onSelect(clip.id); onSeek(timeAt(event.clientX)); }}>
             <ClipThumb mediaId={clip.mediaId} ms={clip.inMs} />
-            <span className="clip-label">영상 {number(clip)}{clip.muted ? ' · 소리 끔' : ''}<small>{formatDuration(clipLength(clip))}</small></span>
+            <span className="clip-label">영상 {number(clip)}{clip.speed ? ` · ${clip.speed}배` : ''}{clip.muted ? ' · 소리 끔' : ''}<small>{formatDuration(clipLength(clip))}</small></span>
           </button>
           {clip.id === selectedClip && !readOnly && <>
             <span className="trim-handle in" role="slider" aria-label="조각 앞부분 다듬기" aria-valuenow={clip.inMs} data-testid="trim-in" onPointerDown={event => dragEdge(event, project.clips[index], 'in')} />

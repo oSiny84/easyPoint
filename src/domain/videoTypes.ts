@@ -5,8 +5,10 @@ export type Orientation = 'landscape' | 'portrait';
 export type VideoFps = 24 | 25 | 30;
 export type Volume = 0 | 0.5 | 1;
 
+// 조각 재생 속도. 1배는 저장하지 않는다(speed가 없으면 1배, 계약 §2).
+export type ClipSpeed = 0.5 | 1 | 1.5 | 2 | 4;
 // 원본 영상 안의 구간. 작품 안 시작 시각은 앞 조각 길이의 합으로 계산하고 저장하지 않는다.
-export type Clip = { id: string; mediaId: string; inMs: number; outMs: number; muted: boolean };
+export type Clip = { id: string; mediaId: string; inMs: number; outMs: number; muted: boolean; speed?: ClipSpeed };
 
 type OverlayBase = { id: string; startMs: number; durationMs: number; x: number; y: number; width: number };
 export type Backdrop = 'none' | 'band';

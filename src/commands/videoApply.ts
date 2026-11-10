@@ -1,11 +1,11 @@
-// 영상 계약 §4의 편집 명령 18개. 입력을 검사한 뒤 새 내용을 만들고, 바뀌지 않은 부분은 이전 객체를 그대로 공유한다.
+// 영상 계약 §4의 편집 명령 19개. 입력을 검사한 뒤 새 내용을 만들고, 바뀌지 않은 부분은 이전 객체를 그대로 공유한다.
 // 결과 내용은 checkVideoContent를 통과해야 하며 잘못된 요청은 부분 적용하지 않는다. DOM에 의존하지 않는다.
 import { codePoints, isBlankText, normalizeColor, normalizeText } from '../domain/validate';
 import { fail, type Failure, type TextAlign } from '../domain/types';
-import { clipLength, clipStarts, locate, memeLimit, normalizeFps, orientationOf, totalMs } from '../domain/timeline';
-import { CANVAS, VIDEO_LIMITS } from '../domain/videoLimits';
+import { clipLength, clipStarts, locate, memeLimit, normalizeFps, orientationOf, totalMs, workOffset } from '../domain/timeline';
+import { CANVAS, CLIP_SPEEDS, VIDEO_LIMITS } from '../domain/videoLimits';
 import { checkMedia, checkVideoContent, overlayBounds } from '../domain/videoValidate';
-import type { AudioSettings, Backdrop, BuiltinCatalog, CaptionOverlay, Clip, Media, MemeKind, MemeOverlay, Overlay, VideoFocus, VideoProjectContent } from '../domain/videoTypes';
+import type { AudioSettings, Backdrop, BuiltinCatalog, CaptionOverlay, Clip, ClipSpeed, Media, MemeKind, MemeOverlay, Overlay, VideoFocus, VideoProjectContent } from '../domain/videoTypes';
 
 type CaptionStyle = { fontId: string; fontSize: number; bold: boolean; color: string; align: TextAlign; lineHeight: number; backdrop: Backdrop };
 
@@ -18,6 +18,7 @@ export type VideoCommand =
   | { type: 'deleteClip'; clipId: string }
   | { type: 'reorderClip'; clipId: string; toIndex: number }
   | { type: 'setClipMuted'; clipId: string; muted: boolean }
+  | { type: 'setClipSpeed'; clipId: string; speed: ClipSpeed }
   | ({ type: 'addCaption'; text: string; x: number; y: number; width: number; startMs: number; durationMs: number } & CaptionStyle)
   | ({ type: 'updateCaption'; overlayId: string; text?: string; width?: number } & Partial<CaptionStyle>)
   | { type: 'addMeme'; memeId: string; memeKind: MemeKind; x: number; y: number; width: number; height: number; startMs: number; durationMs: number; soundOn: boolean }
@@ -68,7 +69,7 @@ function follow(before: readonly Clip[], after: readonly Clip[], overlays: reado
     let startMs: number | null = null;
     if (at) {
       const index = after.findIndex(clip => (origin.get(clip.id) ?? clip.id) === at.clip.id && clip.inMs <= at.sourceMs && at.sourceMs < clip.outMs);
-      if (index >= 0) startMs = starts[index] + (at.sourceMs - after[index].inMs);
+      if (index >= 0) startMs = Math.min(starts[index] + clipLength(after[index]) - 1, starts[index] + workOffset(after[index], at.sourceMs));
     }
     if (startMs === null) { adjusted++; continue; }
     let durationMs = overlay.durationMs;
@@ -147,7 +148,7 @@ export function applyVideoCommand(content: VideoProjectContent, command: VideoCo
       if (index < 0) return noClip();
       const clip = content.clips[index];
       if (clip.inMs === command.inMs && clip.outMs === command.outMs) return unchanged(content, clipFocus(clip.id));
-      if (totalMs(content.clips) - clipLength(clip) + (command.outMs - command.inMs) > VIDEO_LIMITS.totalMs) return fail('LIMIT_EXCEEDED', '작품이 너무 길어져요. 10분까지 만들 수 있어요.');
+      if (totalMs(content.clips) - clipLength(clip) + clipLength({ ...clip, inMs: command.inMs, outMs: command.outMs }) > VIDEO_LIMITS.totalMs) return fail('LIMIT_EXCEEDED', '작품이 너무 길어져요. 10분까지 만들 수 있어요.');
       const clips = content.clips.map(item => item === clip ? { ...clip, inMs: command.inMs, outMs: command.outMs } : item);
       return withClips(content, clips, clipFocus(clip.id), catalog);
     }
@@ -170,6 +171,18 @@ export function applyVideoCommand(content: VideoProjectContent, command: VideoCo
       if (typeof command.muted !== 'boolean') return invalid('조각 소리 값이 올바르지 않아요.');
       if (clip.muted === command.muted) return unchanged(content, clipFocus(clip.id));
       return finish({ ...content, clips: content.clips.map(item => item === clip ? { ...clip, muted: command.muted } : item) }, clipFocus(clip.id), catalog);
+    }
+    case 'setClipSpeed': {
+      const index = clipIndex(command.clipId);
+      if (index < 0) return noClip();
+      const clip = content.clips[index];
+      if (!CLIP_SPEEDS.includes(command.speed)) return invalid('조각 빠르기 값이 올바르지 않아요.');
+      if ((clip.speed ?? 1) === command.speed) return unchanged(content, clipFocus(clip.id));
+      // 1배는 speed를 저장하지 않는다(계약 §2).
+      const { speed: _old, ...rest } = clip;
+      const next: Clip = command.speed === 1 ? rest : { ...rest, speed: command.speed };
+      if (totalMs(content.clips) - clipLength(clip) + clipLength(next) > VIDEO_LIMITS.totalMs) return fail('LIMIT_EXCEEDED', '작품이 너무 길어져요. 10분까지 만들 수 있어요.');
+      return withClips(content, content.clips.map(item => item === clip ? next : item), clipFocus(clip.id), catalog);
     }
     case 'addCaption': {
       if (!content.clips.length) return invalid('영상을 먼저 넣어 주세요.');

@@ -2,7 +2,11 @@
 import type { Clip, Media, Orientation, Overlay, VideoFps } from './videoTypes';
 import { VIDEO_FPS, VIDEO_LIMITS } from './videoLimits';
 
-export const clipLength = (clip: Clip) => clip.outMs - clip.inMs;
+// 조각의 작품 안 길이 = round((outMs − inMs) / speed). speed가 없으면 1배(계약 §3).
+export const clipSpeed = (clip: Clip) => clip.speed ?? 1;
+export const clipLength = (clip: Clip) => Math.round((clip.outMs - clip.inMs) / clipSpeed(clip));
+// 조각 안 원본 시각 sourceMs가 조각 시작에서 작품 시간으로 얼마나 뒤인지(정수 ms).
+export const workOffset = (clip: Clip, sourceMs: number) => Math.round((sourceMs - clip.inMs) / clipSpeed(clip));
 export const totalMs = (clips: readonly Clip[]) => clips.reduce((sum, clip) => sum + clipLength(clip), 0);
 
 // 각 조각의 작품 안 시작 시각.
@@ -12,12 +16,12 @@ export function clipStarts(clips: readonly Clip[]) {
   return starts;
 }
 
-// 작품 시각 t를 보여 주는 조각과 그 조각의 원본 시각. start ≤ t < start + 길이. 범위 밖이면 null.
+// 작품 시각 t를 보여 주는 조각과 그 조각의 원본 시각 inMs + (t − start) × speed(소수일 수 있다). start ≤ t < start + 길이. 범위 밖이면 null.
 export function locate(clips: readonly Clip[], t: number): { index: number; clip: Clip; sourceMs: number } | null {
   let start = 0;
   for (let index = 0; index < clips.length; index++) {
     const clip = clips[index], length = clipLength(clip);
-    if (t >= start && t < start + length) return { index, clip, sourceMs: clip.inMs + (t - start) };
+    if (t >= start && t < start + length) return { index, clip, sourceMs: clip.inMs + (t - start) * clipSpeed(clip) };
     start += length;
   }
   return null;

@@ -2,7 +2,7 @@
 // <video>는 두 개를 번갈아 쓴다: 지금 조각을 재생하는 동안 다른 하나에 다음 조각을 그 시작 위치로 미리 맞춰 두어 경계에서 덜 끊기게 한다.
 // 조각 전환은 <video>의 ended가 아니라 시계로 정한다(그렇지 않으면 outMs를 지나 재생된다). 미리보기는 출력과 1프레임 차이와 끊김을 허용한다.
 // 자막·밈은 영상 프레임을 그린 뒤 painter(compose.ts drawOverlays를 쓰는 화면 쪽 함수)가 같은 캔버스에 겹친다.
-import { clipStarts, locate, totalMs } from '../domain/timeline';
+import { clipSpeed, clipStarts, locate, totalMs } from '../domain/timeline';
 import { CANVAS } from '../domain/videoLimits';
 import type { Clip, VideoProject } from '../domain/videoTypes';
 import { drawContain } from './compose';
@@ -55,6 +55,8 @@ export class PreviewPlayer {
     this.slots = [0, 1].map(() => {
       const video = document.createElement('video');
       video.preload = 'auto'; video.playsInline = true; video.width = 2; video.height = 2;
+      // 빠르기를 바꾼 조각은 소리 높이도 함께 바뀐다(출력의 다시 표본화와 같게, 계약 §8).
+      video.preservesPitch = false;
       this.holder.append(video);
       return { video, clipId: null, mediaId: null, ready: Promise.resolve() };
     });
@@ -148,10 +150,14 @@ export class PreviewPlayer {
     });
   }
 
+  // 조각의 소리 크기와 빠르기를 <video>에 맞춘다. 원본을 새로 실으면 playbackRate가 defaultPlaybackRate로 돌아가므로 둘 다 정한다.
   private applyVolume(video: HTMLVideoElement, clip: Clip) {
     const volume = this.project.audio.originalVolume;
     video.muted = clip.muted || volume === 0;
     video.volume = volume;
+    const speed = clipSpeed(clip);
+    if (video.defaultPlaybackRate !== speed) video.defaultPlaybackRate = speed;
+    if (video.playbackRate !== speed) video.playbackRate = speed;
   }
 
   private draw(video: HTMLVideoElement | null) {

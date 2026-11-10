@@ -127,6 +127,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); ou
 .selection-bar { min-width: 0; flex: 0 1 auto; overflow-x: auto; scrollbar-width: none; }
 .selection-bar > * { flex: none; }
 .font-select { height: 40px; max-width: 132px; padding: 0 6px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; font-size: 13px; }
+.speed-select { height: 40px; padding: 0 6px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; font-size: 13px; }
 .size-control { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; }
 .size-control button { width: 34px; min-height: 40px; font-size: 18px; }
 .size-control input { width: 44px; height: 38px; padding: 0; border: 0; border-inline: 1px solid var(--line); text-align: center; font-size: 13px; }

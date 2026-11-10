@@ -6,7 +6,7 @@ import {
   type StreamTargetChunk, type VideoSample,
 } from 'mediabunny';
 import type { ErrorCode } from '../domain/types';
-import { clipStarts, frameAtOrBefore, locate, memeTime, totalMs } from '../domain/timeline';
+import { clipLength, clipSpeed, clipStarts, frameAtOrBefore, locate, memeTime, totalMs } from '../domain/timeline';
 import { CANVAS } from '../domain/videoLimits';
 import type { MemeOverlay, VideoProject } from '../domain/videoTypes';
 import { drawOverlays, isVisible, type CaptionImage } from './compose';
@@ -151,7 +151,7 @@ export async function runExport(request: ExportRequest, isCancelled: () => boole
         // 조각 원래 소리 × originalVolume(끈 조각은 빼고).
         if (project.audio.originalVolume > 0) {
           for (let c = 0; c < project.clips.length; c++) {
-            const clip = project.clips[c], start = starts[c], end = start + clip.outMs - clip.inMs;
+            const clip = project.clips[c], start = starts[c], end = start + clipLength(clip), speed = clipSpeed(clip);
             if (clip.muted || end <= aMs || start >= bMs) continue;
             const media = project.mediaManifest.find(item => item.id === clip.mediaId);
             if (!media?.hasAudio) continue;
@@ -161,7 +161,8 @@ export async function runExport(request: ExportRequest, isCancelled: () => boole
             if (!reader) {
               const file = inputsFile.get(clip.mediaId) ?? await readMedia(clip.mediaId);
               if (!file) throw new ExportStop('ASSET_MISSING', '영상 자료를 찾을 수 없어요.');
-              reader = await AudioReader.open(file, (clip.inMs + ((from / MIX_RATE) * 1000 - start)) / 1000, clip.outMs / 1000);
+              // 빠르기를 바꾼 조각은 원본 소리를 speed배로 읽어 높이도 함께 바뀐다(미리보기 preservesPitch=false와 같다).
+              reader = await AudioReader.open(file, (clip.inMs + ((from / MIX_RATE) * 1000 - start) * speed) / 1000, clip.outMs / 1000, speed);
               clipReaders.set(clip.id, reader); readers.push(reader);
             }
             await reader.addTo(left, right, from - a, to - from, project.audio.originalVolume);
@@ -203,7 +204,7 @@ export async function runExport(request: ExportRequest, isCancelled: () => boole
       if (at.index !== clipIndex) {
         // 새 조각: 이 조각이 보여 줄 출력 프레임들의 원본 시각(s + 1ms 이하의 가장 늦은 프레임, 계약 §3)을 한꺼번에 넘긴다.
         clipIndex = at.index; void clipFrames?.return?.(); shown?.close(); shown = null;
-        const clip = at.clip, start = starts[at.index], end = start + clip.outMs - clip.inMs;
+        const clip = at.clip, start = starts[at.index], end = start + clipLength(clip), speed = clipSpeed(clip);
         let input = inputs.get(clip.mediaId);
         if (!input) {
           const file = await readMedia(clip.mediaId);
@@ -214,7 +215,7 @@ export async function runExport(request: ExportRequest, isCancelled: () => boole
         const track = await input.getPrimaryVideoTrack();
         if (!track) throw new ExportStop('ASSET_INVALID', '영상 자료를 읽지 못했어요.');
         const times: number[] = [];
-        for (let j = k; j < frames; j++) { const t = Math.floor((j * 1_000_000) / fps) / 1000; if (t >= end) break; times.push((clip.inMs + (t - start) + 1) / 1000); }
+        for (let j = k; j < frames; j++) { const t = Math.floor((j * 1_000_000) / fps) / 1000; if (t >= end) break; times.push((clip.inMs + (t - start) * speed + 1) / 1000); }
         clipFrames = new VideoSampleSink(track).samplesAtTimestamps(times)[Symbol.asyncIterator]();
       }
       const step = await clipFrames!.next();

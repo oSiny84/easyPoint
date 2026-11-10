@@ -15,10 +15,11 @@ export class AudioReader {
   private rate = MIX_RATE;
   private skip = 0;
   private ended = false;
-  private constructor(private source: Blob, private startS: number, private endS: number) {}
+  // speed: 원본 1초를 출력 1/speed초로 읽는다(빠르기를 바꾼 조각. 높이도 함께 바뀐다).
+  private constructor(private source: Blob, private startS: number, private endS: number, private speed: number) {}
 
-  static async open(source: Blob, startS = 0, endS = Infinity) {
-    const reader = new AudioReader(source, startS, endS);
+  static async open(source: Blob, startS = 0, endS = Infinity, speed = 1) {
+    const reader = new AudioReader(source, startS, endS, speed);
     reader.input = new Input({ formats: ALL_FORMATS, source: new BlobSource(source) });
     const track = await reader.input.getPrimaryAudioTrack();
     if (!track) { reader.ended = true; return reader; }
@@ -54,7 +55,7 @@ export class AudioReader {
 
   // 48kHz 표본 count개를 out(왼쪽·오른쪽)의 offset부터 gain을 곱해 더한다.
   async addTo(outLeft: Float32Array, outRight: Float32Array, offset: number, count: number, gain: number) {
-    const ratio = this.rate / MIX_RATE;
+    const ratio = (this.rate * this.speed) / MIX_RATE;
     for (let i = 0; i < count; i++) {
       const at = this.position;
       while (!this.ended && Math.floor(at) + 1 >= this.left.length) await this.pull();

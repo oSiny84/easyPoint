@@ -9,8 +9,8 @@ import { TextControls, type TextStylePatch } from '../editor/SelectionBar';
 import { TextEditor, type TextEditorHandle } from '../editor/TextEditor';
 import type { VideoCommand } from '../commands/videoApply';
 import { clipLength, clipStarts, locate, totalMs } from '../domain/timeline';
-import { CANVAS, VIDEO_LIMITS } from '../domain/videoLimits';
-import type { AudioSettings, CaptionOverlay, Media, MemeOverlay, Overlay, VideoProject } from '../domain/videoTypes';
+import { CANVAS, CLIP_SPEEDS, VIDEO_LIMITS } from '../domain/videoLimits';
+import type { AudioSettings, CaptionOverlay, ClipSpeed, Media, MemeOverlay, Overlay, VideoProject } from '../domain/videoTypes';
 import { centeredAt, toLogical, type Point } from '../editor/geometry';
 import { layoutText } from '../rendering/text/layoutText';
 import { createAutosave, type Autosave, type SaveState } from '../state/autosave';
@@ -84,6 +84,9 @@ type Importing = { done: number; total: number; index: number; count: number; co
 
 // 자막 기본값과 스타일 예시 3개(영상 계약 §3). 세로 작품은 폭·위치가 다르다.
 type CaptionPreset = { key: string; label: string; fontSize: number; backdrop: 'none' | 'band'; landscape: { width: number; x: number }; portrait: { width: number; x: number } };
+// 조각 빠르기 선택 문구. 빠르기를 바꾸면 그 조각의 소리 높이도 함께 바뀐다.
+const SPEED_LABEL: Record<ClipSpeed, string> = { 0.5: '느리게 0.5배', 1: '보통 빠르기', 1.5: '조금 빠르게 1.5배', 2: '빠르게 2배', 4: '아주 빠르게 4배' };
+
 const CAPTION_PRESETS: CaptionPreset[] = [
   { key: 'normal', label: '보통 자막', fontSize: 48, backdrop: 'band', landscape: { width: 960, x: 160 }, portrait: { width: 600, x: 60 } },
   { key: 'large', label: '크게', fontSize: 72, backdrop: 'band', landscape: { width: 1120, x: 80 }, portrait: { width: 660, x: 30 } },
@@ -461,7 +464,9 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
   const clip = clipIndex >= 0 ? project.clips[clipIndex] : null;
   // 재생 막대가 선택한 조각 안에서 양 끝 0.1초보다 안쪽이면 자를 수 있다. 안 되면 단추를 끈다(아이에게 오류를 보이지 않는다).
   const at = locate(project.clips, Math.min(player.timeMs, Math.max(0, total - 1)));
-  const splitAt = clip && at?.clip.id === clip.id && at.sourceMs >= clip.inMs + VIDEO_LIMITS.splitMarginMs && at.sourceMs <= clip.outMs - VIDEO_LIMITS.splitMarginMs ? at.sourceMs : null;
+  // 빠르기를 바꾼 조각의 원본 시각은 소수일 수 있어 정수 ms로 맞춘다.
+  const atSource = at ? Math.round(at.sourceMs) : 0;
+  const splitAt = clip && at?.clip.id === clip.id && atSource >= clip.inMs + VIDEO_LIMITS.splitMarginMs && atSource <= clip.outMs - VIDEO_LIMITS.splitMarginMs ? atSource : null;
   const memeHasSound = (meme: MemeOverlay) => { const item = builtins?.memes.find(entry => entry.id === meme.memeId); return !!item && (item.hasSound || !!item.soundId); };
   const overlayIndex = project.overlays.findIndex(item => item.id === selectedOverlay);
   const overlay = overlayIndex >= 0 ? project.overlays[overlayIndex] : null;
@@ -563,6 +568,9 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
             <button aria-label="앞으로 옮기기" title="앞으로 옮기기" disabled={clipIndex === 0} onClick={() => run({ type: 'reorderClip', clipId: clip.id, toIndex: clipIndex - 1 })}><Icon name="back" size={18} /></button>
             <button aria-label="뒤로 옮기기" title="뒤로 옮기기" disabled={clipIndex === project.clips.length - 1} onClick={() => run({ type: 'reorderClip', clipId: clip.id, toIndex: clipIndex + 1 })}><Icon name="forward" size={18} /></button>
             <button aria-pressed={clip.muted} onClick={() => run({ type: 'setClipMuted', clipId: clip.id, muted: !clip.muted })}><Icon name="sound" size={18} />{clip.muted ? '소리 켜기' : '소리 끄기'}</button>
+            <select className="speed-select" aria-label="조각 빠르기" title="이 조각을 빠르게·느리게 재생해요" value={clip.speed ?? 1} onChange={event => run({ type: 'setClipSpeed', clipId: clip.id, speed: Number(event.target.value) as ClipSpeed })}>
+              {CLIP_SPEEDS.map(speed => <option key={speed} value={speed}>{SPEED_LABEL[speed]}</option>)}
+            </select>
             <span className="bar-divider" />
             <button aria-label="조각 지우기" title="조각 지우기" onClick={() => run({ type: 'deleteClip', clipId: clip.id })}><Icon name="trash" size={18} /></button>
           </div> : <span />}
