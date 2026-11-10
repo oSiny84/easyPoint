@@ -13,6 +13,7 @@ import { openVideoProject } from './videoDatabase';
 import { downloadOriginal, VideoEditor, type VideoSession } from './VideoEditor';
 import { deserializeVideoProject } from './videoFile';
 import { VideoHome } from './VideoHome';
+import { readLengthLimit } from './lengthSetting';
 
 const newId = () => crypto.randomUUID();
 const now = () => new Date().toISOString();
@@ -33,7 +34,7 @@ export function VideoApp({ resumeId, onStart }: { resumeId: string | null; onSta
   const show = useCallback(async (project: VideoProject, note: string | undefined, saved: boolean) => {
     closeCurrent();
     const lock = await acquireSession(project.id, VIDEO_LOCKS);
-    const session = { store: createVideoStore(project, { newId, now, readOnly: lock.readOnly, catalog }), lock };
+    const session = { store: createVideoStore(project, { newId, now, readOnly: lock.readOnly, catalog, lengthLimit: readLengthLimit }), lock };
     current.current = session;
     remember({ kind: 'video', id: project.id });
     setScreen({ kind: 'editor', session, note, saved, key: ++key.current });

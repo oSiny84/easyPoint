@@ -34,6 +34,7 @@ import { SoundPanel } from './SoundPanel';
 import { drawOverlays, isVisible, type ComposeAssets } from './compose';
 import { OverlayLayer } from './OverlayLayer';
 import { VideoTimeline } from './VideoTimeline';
+import { readLengthLimit } from './lengthSetting';
 
 export type VideoSession = { store: VideoStore; lock: SessionLock };
 type VideoToolId = 'video' | 'caption' | 'meme' | 'sound';
@@ -353,7 +354,7 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
     for (const [index, file] of files.entries()) {
       if (controller.signal.aborted) break;
       setImporting({ done: 0, total: file.size, index, count: files.length, controller });
-      const result = await importMedia(file, { signal: controller.signal, onProgress: (done, total) => setImporting({ done, total, index, count: files.length, controller }) });
+      const result = await importMedia(file, { signal: controller.signal, lengthLimit: readLengthLimit(), onProgress: (done, total) => setImporting({ done, total, index, count: files.length, controller }) });
       if (!result.ok) { setStatus(files.length > 1 ? `${index + 1}번째 파일: ${result.message}` : result.message); continue; }
       setThumbs(current => new Map(current).set(result.media.id, result.thumbnail));
       const outcome = run({ type: 'addClip', media: result.media });

@@ -288,3 +288,7 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .music-list li { display: flex; align-items: center; gap: 4px; }
 .music-card { flex: 1; justify-content: flex-start; border: 1px solid var(--line); border-radius: 8px; }
 .music-card[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); }
+.length-dialog .length-choice { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-weight: 600; }
+.length-dialog input[type="number"] { width: 80px; height: 36px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+.length-dialog select { height: 36px; padding: 0 6px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; }
+.length-dialog .length-error { color: #c92a2a; margin: 4px 0; }

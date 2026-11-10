@@ -117,7 +117,7 @@ dispatch(projectId, expectedRevision, command)의 성공·실패 형태, revisio
 | deleteClip | clipId | 대상 없음 | 1조각 삭제. 마지막 조각도 지울 수 있다(빈 작품 허용) |
 | reorderClip | clipId, toIndex | 범위 밖 인덱스 | 이동 1회 |
 | setClipMuted | clipId, muted | 대상 없음 | 켜기/끄기 1회 |
-| setClipSpeed | clipId, speed(0.5·1·1.5·2·4) | 대상 없음, 단계 밖 값(INVALID_VALUE), 느리게 해 작품이 10분을 넘으면 LIMIT_EXCEEDED. 1배로 바꾸면 speed 필드를 지운다 | 고르기 1회. 겹침 요소 따라가기를 적용한다 |
+| setClipSpeed | clipId, speed(0.5·1·1.5·2·4) | 대상 없음, 단계 밖 값(INVALID_VALUE), 느리게 해 작품이 길이 한도(§5)를 넘어 길어지면 LIMIT_EXCEEDED. 1배로 바꾸면 speed 필드를 지운다 | 고르기 1회. 겹침 요소 따라가기를 적용한다 |
 | addCaption | 자막 필드 전체(startMs·durationMs 포함) | 빈 글씨, 글자·시간·좌표·글꼴 위반, 겹침 요소 수 상한, total=0 | 첫 입력 확정 1회 |
 | updateCaption | overlayId, text / 서식 / width / backdrop | 자막 아님, 값 위반 | 편집 묶음 1회(슬라이드 updateText와 같은 묶음 규칙) |
 | addMeme | memeId, memeKind, x, y, width, height, startMs, durationMs, soundOn | 내장 목록에 없는 ID, kind 불일치, 비율 위반, 동시 밈 수 초과(LIMIT_EXCEEDED), 겹침 요소 수 상한, total=0 | 밈 1개 추가 |
@@ -162,8 +162,8 @@ undo/redo의 revision 발급, redo 비우기, 기록 상한(500개·추정 32MiB
 | 대상 | 초기 상한·허용 규칙 |
 |---|---|
 | 제목·자막 | 제목 100 code point(슬라이드와 같다), 자막 200 code point |
-| 영상 파일 | 파일당 2GiB, 길이 10분(600,000ms), 표시 크기 각 변 최대 3840. mime은 §2의 3종. 길이·크기 초과는 LIMIT_EXCEEDED |
-| 작품 | 조각 50개, total 600,000ms, 겹침 요소(자막+밈) 300개, Media 20개·합계 4GiB |
+| 영상 파일 | 길이·파일 크기는 아래 **길이 한도 설정**을 따른다(기본 10분·2GiB). 표시 크기 각 변 최대 3840. mime은 §2의 3종. 길이·크기 초과는 LIMIT_EXCEEDED |
+| 작품 | 조각 50개, 겹침 요소(자막+밈) 300개, Media 20개. total과 Media 합계 바이트는 길이 한도 설정을 따른다(기본 10분·4GiB) |
 | 조각 | 0 ≤ inMs < outMs ≤ durationMs, outMs − inMs ≥ 100ms |
 | 겹침 요소 시간 | 0 ≤ startMs < total, 1,000 ≤ durationMs ≤ 60,000, startMs + durationMs ≤ total. 조각이 없으면 겹침 요소도 없어야 한다 |
 | 좌표·크기 | 캔버스 W×H에 대해 x: −W~2W, y: −H~2H. 자막 width 16~W. 밈 width 32~W, height 32~H, 내장 목록 비율과 0.1% 이내. 계산한 요소 영역이 캔버스와 교차해야 한다 |
@@ -173,6 +173,20 @@ undo/redo의 revision 발급, redo 비우기, 기록 상한(500개·추정 32MiB
 | 소리 | originalVolume·musicVolume ∈ {0, 0.5, 1}, musicId는 null 또는 내장 목록 ID |
 | ID | 작품·조각·요소 UUID(슬라이드 validate.ts의 UUID와 같다), Media 64자리 hex, 작품 안 중복 거부 |
 | 원본 ZIP | §6 |
+
+### 길이 한도 설정 (2026-11-10 사용자 요청)
+
+작품 길이·영상 하나 길이·파일 크기 한도는 **문서 필드가 아니라 이 브라우저의 보호자 설정**이다(`localStorage` `canvacraft.video.lengthLimit` = `{ms}`, `src/video/lengthSetting.ts`). 영상 작품 목록 상단 `길이 한도` 단추에서 분·시간(정수, 1분 ~ 99시간) 또는 무제한을 고른다. 기본과 읽기 실패는 10분이다.
+
+| 규칙 | 내용 |
+|---|---|
+| 적용 위치 | 작품을 늘리는 곳만: 가져오기(파일 크기 → importMedia, 길이 → Worker probe), addClip, trimClip, setClipSpeed. 명령은 store가 명령마다 설정을 읽어 `VideoApplyContext.lengthLimit`로 받는다(`src/domain/videoLength.ts`) |
+| 열기·검사 | `validateVideoProject`는 길이·크기 한도를 보지 않는다. 한도를 줄이기 전에 만든 작품이나 다른 컴퓨터의 `.canvavideo`도 열린다 |
+| 한도를 넘은 작품 | 결과 total이 한도보다 크고 **이전보다 길어질 때만** 거부한다. 줄이는 다듬기·빠르게·지우기는 된다 |
+| 파일 크기 | 10분마다 파일 2GiB·합계 4GiB(⌈한도 / 10분⌉배, 10분보다 짧아도 2GiB·4GiB). 무제한이면 크기 한도가 없고 가져오기의 남은 공간 1.1배 확인만 남는다 |
+| 안내 | "작품이 너무 길어져요. {한도}까지 만들 수 있어요." / "영상이 너무 길어요. {한도}까지 넣을 수 있어요." / "영상 파일이 너무 커요. {n}GB까지 넣을 수 있어요." 한도는 "10분", "1시간 30분" 꼴 |
+| 바뀌지 않는 것 | `.canvavideo` 원본 저장 1GiB 임시 상한, 조각 50·Media 20·겹침 요소 300, 겹침 요소 1~60초 |
+| 확인하지 않은 것 | 1시간 넘는 작품의 내보내기 시간·메모리(시간은 길이에 비례할 것으로 본다. 8GB 가상 PC 10분이 약 17.5분), 4GiB 넘는 MP4(Mediabunny는 co64 상자를 쓰지만 시험하지 않음), 시간 단위 영상의 타임라인 조작감 |
 
 Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 byteLength를 비교하고, 해시 재계산은 하지 않는다(2GiB 해시는 가져올 때 한 번만 계산한다). mediaManifest에 있지만 바이트가 없는 영상은 조각이 쓰지 않으면 목록에서 빼고, 조각이 쓰면 ASSET_MISSING으로 열기 실패다(슬라이드 계약 §6의 사진 규칙과 같다).
 
@@ -309,6 +323,7 @@ Media 필드는 저장소의 실제 바이트와 일치해야 한다. 열 때 by
 | 사진 조각 | 첫 버전에 넣지 않음 | §1 |
 | WebM 안내 | 결과 창에 형식과 "YouTube에 올릴 수 있어요" 표시 | §8 결과 창 |
 | 최근 작품 수 | 6개 | §6 시작 화면 |
+| 영상 길이 한도(2026-11-10 추가 요청) | 보호자가 분·시간·무제한으로 정하는 브라우저 설정. 기본 10분. 열기에는 쓰지 않고 늘리는 편집만 막는다 | §5 길이 한도 설정 |
 | 조각 빠르기(2026-11-10 추가 요청) | 0.5·1·1.5·2·4배, 조각 단위(원하는 구간은 자르기로 떼어 낸다). 원래 소리는 높이도 함께 바뀐다 | §2 Clip.speed, §3, §4 setClipSpeed, §8 |
 
 ### V2 측정 후 결정 (2026-11-09, 근거는 VIDEO_PHASE2_RESULTS.md)

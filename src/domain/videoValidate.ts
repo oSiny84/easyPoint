@@ -19,9 +19,7 @@ export function checkMedia(media: Media): Failure | null {
   if (typeof media.id !== 'string' || !ASSET_ID.test(media.id)) return fail('ASSET_INVALID', '영상 자료 ID가 올바르지 않아요.');
   if (!MEDIA_MIMES.includes(media.mime)) return fail('ASSET_INVALID', 'MP4·MOV·WebM 영상만 넣을 수 있어요.');
   if (!isInt(media.byteLength) || media.byteLength < 1) return fail('ASSET_INVALID', '영상 파일 크기가 올바르지 않아요.');
-  if (media.byteLength > VIDEO_LIMITS.mediaBytesMax) return fail('LIMIT_EXCEEDED', '영상 파일이 너무 커요. 2GB까지 넣을 수 있어요.');
   if (!isInt(media.durationMs) || media.durationMs < VIDEO_LIMITS.clipMinMs) return fail('ASSET_INVALID', '영상 길이가 올바르지 않아요.');
-  if (media.durationMs > VIDEO_LIMITS.mediaDurationMaxMs) return fail('LIMIT_EXCEEDED', '영상이 너무 길어요. 10분까지 넣을 수 있어요.');
   if (!isInt(media.width) || !isInt(media.height) || media.width < 1 || media.height < 1) return fail('ASSET_INVALID', '영상 크기가 올바르지 않아요.');
   if (media.width > VIDEO_LIMITS.mediaSideMax || media.height > VIDEO_LIMITS.mediaSideMax) return fail('LIMIT_EXCEEDED', '영상 화면이 너무 커요.');
   if (![0, 90, 180, 270].includes(media.rotation)) return fail('ASSET_INVALID', '영상 회전 값이 올바르지 않아요.');
@@ -124,14 +122,14 @@ export function checkVideoContent(content: VideoProjectContent, catalog: Builtin
   if (!Array.isArray(content.mediaManifest) || !Array.isArray(content.clips) || !Array.isArray(content.overlays)) return invalid('영상 작품 형식이 올바르지 않아요.');
 
   if (content.mediaManifest.length > VIDEO_LIMITS.media) return fail('LIMIT_EXCEEDED', '영상 자료가 너무 많아요.');
-  const media = new Map<string, Media>(); let mediaBytes = 0;
+  // 길이·크기 한도는 작품을 늘릴 때만 본다(videoLength.ts). 한도를 줄이기 전에 만든 작품도 열린다.
+  const media = new Map<string, Media>();
   for (const item of content.mediaManifest) {
     const problem = checkMedia(item);
     if (problem) return problem;
     if (media.has(item.id)) return fail('ASSET_INVALID', '영상 자료가 중복되어 있어요.');
-    media.set(item.id, item); mediaBytes += item.byteLength;
+    media.set(item.id, item);
   }
-  if (mediaBytes > VIDEO_LIMITS.mediaTotalBytes) return fail('LIMIT_EXCEEDED', '영상 자료 용량이 너무 커요.');
 
   if (content.clips.length > VIDEO_LIMITS.clips) return fail('LIMIT_EXCEEDED', '영상 조각을 더 넣을 수 없어요.');
   const ids = new Set<string>();
@@ -142,7 +140,7 @@ export function checkVideoContent(content: VideoProjectContent, catalog: Builtin
     ids.add(clip.id);
   }
   const total = totalMs(content.clips);
-  if (total > VIDEO_LIMITS.totalMs) return fail('LIMIT_EXCEEDED', '작품이 너무 길어요. 10분까지 만들 수 있어요.');
+  if (!Number.isSafeInteger(total)) return invalid('영상 길이가 올바르지 않아요.');
 
   if (content.overlays.length > VIDEO_LIMITS.overlays) return fail('LIMIT_EXCEEDED', '자막·밈을 더 넣을 수 없어요.');
   if (!content.clips.length && content.overlays.length) return invalid('영상이 없으면 자막·밈도 없어야 해요.');

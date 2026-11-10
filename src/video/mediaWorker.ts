@@ -6,13 +6,15 @@
 import { ALL_FORMATS, BlobSource, Input, VideoSampleSink } from 'mediabunny';
 import type { ErrorCode } from '../domain/types';
 import { VIDEO_LIMITS } from '../domain/videoLimits';
+import { limitsFor, tooLongMedia, type LengthLimit } from '../domain/videoLength';
 import type { Media } from '../domain/videoTypes';
 import { createMediaHasher, HASH_CHUNK_BYTES } from '../storage/mediaHash';
 import { ExportStop, runExport, type ExportDone, type ExportProgress, type ExportRequest } from './exportJob';
 import { directory } from './mediaStore';
 import { documentMime, sniffContainer } from './sniff';
 
-export type ImportRequest = { type: 'import'; file: Blob } | ExportRequest | { type: 'cancel' };
+// lengthLimit: 영상 길이 한도 설정(Worker에는 localStorage가 없어 화면이 넘긴다, 계약 §5).
+export type ImportRequest = { type: 'import'; file: Blob; lengthLimit: LengthLimit } | ExportRequest | { type: 'cancel' };
 export type ImportReply =
   | { type: 'progress'; done: number; total: number }
   | { type: 'done'; media: Media; thumbnail: Blob | null }
@@ -26,7 +28,7 @@ const UNSUPPORTED = "이 영상은 이 컴퓨터에서 읽을 수 없어요. 아
 
 type SyncHandle = { write(data: Uint8Array, options: { at: number }): number; truncate(size: number): void; flush(): void; close(): void };
 
-async function probe(file: Blob) {
+async function probe(file: Blob, lengthLimit: LengthLimit) {
   const head = new Uint8Array(await file.slice(0, 16).arrayBuffer());
   if (!sniffContainer(head)) throw new Stop('ASSET_INVALID', '영상 파일이 아니에요.');
   const input = new Input({ formats: ALL_FORMATS, source: new BlobSource(file) });
@@ -45,7 +47,7 @@ async function probe(file: Blob) {
       videoCodec = await track.getCodecParameterString();
       if (audio) audioCodec = await audio.getCodecParameterString();
     } catch { throw new Stop('ASSET_INVALID', '영상 파일을 읽지 못했어요. 파일이 손상됐을 수 있어요.'); }
-    if (durationMs > VIDEO_LIMITS.mediaDurationMaxMs) throw new Stop('LIMIT_EXCEEDED', '영상이 너무 길어요. 10분까지 넣을 수 있어요.');
+    if (durationMs > limitsFor(lengthLimit).mediaDurationMaxMs) throw new Stop('LIMIT_EXCEEDED', tooLongMedia(lengthLimit));
     if (durationMs < VIDEO_LIMITS.clipMinMs) throw new Stop('ASSET_INVALID', '영상이 너무 짧아요.');
     if (width > VIDEO_LIMITS.mediaSideMax || height > VIDEO_LIMITS.mediaSideMax) throw new Stop('LIMIT_EXCEEDED', '영상 화면이 너무 커요. 4K까지 넣을 수 있어요.');
     if (!videoCodec || !(await track.canDecode())) throw new Stop('MEDIA_UNSUPPORTED', UNSUPPORTED);
@@ -124,7 +126,7 @@ scope.onmessage = event => {
   }
   void (async () => {
     try {
-      const facts = await probe(request.file);
+      const facts = await probe(request.file, request.lengthLimit);
       const id = await copy(request.file);
       const media: Media = { id, byteLength: request.file.size, ...facts };
       scope.postMessage({ type: 'done', media, thumbnail: await firstFrame(request.file, facts.width >= facts.height) } as ImportReply);

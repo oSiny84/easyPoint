@@ -5,6 +5,7 @@ import { fail, type Failure, type TextAlign } from '../domain/types';
 import { clipLength, clipStarts, locate, memeLimit, normalizeFps, orientationOf, totalMs, workOffset } from '../domain/timeline';
 import { CANVAS, CLIP_SPEEDS, VIDEO_LIMITS } from '../domain/videoLimits';
 import { checkMedia, checkVideoContent, overlayBounds } from '../domain/videoValidate';
+import { DEFAULT_LENGTH_LIMIT_MS, growsPast, limitsFor, tooBigMedia, tooBigTotal, tooLongMedia, tooLongWork, type LengthLimit } from '../domain/videoLength';
 import type { AudioSettings, Backdrop, BuiltinCatalog, CaptionOverlay, Clip, ClipSpeed, Media, MemeKind, MemeOverlay, Overlay, VideoFocus, VideoProjectContent } from '../domain/videoTypes';
 
 type CaptionStyle = { fontId: string; fontSize: number; bold: boolean; color: string; align: TextAlign; lineHeight: number; backdrop: Backdrop };
@@ -32,7 +33,8 @@ export type VideoCommand =
   | { type: 'setAudio'; originalVolume?: AudioSettings['originalVolume']; musicId?: string | null; musicVolume?: AudioSettings['musicVolume'] };
 
 export type VideoApplied = { ok: true; content: VideoProjectContent; focus: VideoFocus; changed: boolean; adjustedOverlays?: number };
-export type VideoApplyContext = { newId: () => string; catalog: BuiltinCatalog };
+// lengthLimit: 이 브라우저의 영상 길이 한도 설정(ms, null은 무제한, 없으면 기본 10분). 작품을 늘리는 명령만 쓴다(계약 §5).
+export type VideoApplyContext = { newId: () => string; catalog: BuiltinCatalog; lengthLimit?: LengthLimit };
 
 const invalid = (message: string) => fail('INVALID_VALUE', message);
 const unchanged = (content: VideoProjectContent, focus: VideoFocus): VideoApplied => ({ ok: true, content, focus, changed: false });
@@ -106,6 +108,9 @@ function keepInside(overlay: Overlay, canvas: { width: number; height: number })
 
 export function applyVideoCommand(content: VideoProjectContent, command: VideoCommand, context: VideoApplyContext): VideoApplied | Failure {
   const { catalog } = context;
+  const lengthLimit = context.lengthLimit === undefined ? DEFAULT_LENGTH_LIMIT_MS : context.lengthLimit;
+  const growth = limitsFor(lengthLimit);
+  const longer = (before: number, after: number) => growsPast(growth.totalMs, before, after);
   const clipIndex = (id: string) => content.clips.findIndex(clip => clip.id === id);
   const findOverlay = (id: string) => content.overlays.find(overlay => overlay.id === id);
 
@@ -126,7 +131,12 @@ export function applyVideoCommand(content: VideoProjectContent, command: VideoCo
       const mediaManifest = known ? content.mediaManifest : [...content.mediaManifest, media];
       if (mediaManifest.length > VIDEO_LIMITS.media) return fail('LIMIT_EXCEEDED', '영상 자료를 더 넣을 수 없어요.');
       if (content.clips.length + 1 > VIDEO_LIMITS.clips) return fail('LIMIT_EXCEEDED', '영상 조각을 더 넣을 수 없어요.');
-      if (totalMs(content.clips) + registered.durationMs > VIDEO_LIMITS.totalMs) return fail('LIMIT_EXCEEDED', '작품이 너무 길어져요. 10분까지 만들 수 있어요.');
+      // 길이·크기 한도(설정). 새 영상의 크기와 자료 합계는 새로 등록할 때만 늘어난다.
+      if (registered.durationMs > growth.mediaDurationMaxMs) return fail('LIMIT_EXCEEDED', tooLongMedia(lengthLimit));
+      if (!known && media.byteLength > growth.mediaBytesMax) return fail('LIMIT_EXCEEDED', tooBigMedia(lengthLimit));
+      if (!known && mediaManifest.reduce((sum, item) => sum + item.byteLength, 0) > growth.mediaTotalBytes) return fail('LIMIT_EXCEEDED', tooBigTotal);
+      const before = totalMs(content.clips);
+      if (longer(before, before + registered.durationMs)) return fail('LIMIT_EXCEEDED', tooLongWork(lengthLimit));
       const clip: Clip = { id: context.newId(), mediaId: registered.id, inMs: 0, outMs: registered.durationMs, muted: false };
       // 첫 영상이 작품의 방향과 프레임률을 정한다. 그 뒤로는 바꾸지 않는다.
       const first = content.clips.length === 0;
@@ -148,7 +158,8 @@ export function applyVideoCommand(content: VideoProjectContent, command: VideoCo
       if (index < 0) return noClip();
       const clip = content.clips[index];
       if (clip.inMs === command.inMs && clip.outMs === command.outMs) return unchanged(content, clipFocus(clip.id));
-      if (totalMs(content.clips) - clipLength(clip) + clipLength({ ...clip, inMs: command.inMs, outMs: command.outMs }) > VIDEO_LIMITS.totalMs) return fail('LIMIT_EXCEEDED', '작품이 너무 길어져요. 10분까지 만들 수 있어요.');
+      const before = totalMs(content.clips);
+      if (longer(before, before - clipLength(clip) + clipLength({ ...clip, inMs: command.inMs, outMs: command.outMs }))) return fail('LIMIT_EXCEEDED', tooLongWork(lengthLimit));
       const clips = content.clips.map(item => item === clip ? { ...clip, inMs: command.inMs, outMs: command.outMs } : item);
       return withClips(content, clips, clipFocus(clip.id), catalog);
     }
@@ -181,7 +192,8 @@ export function applyVideoCommand(content: VideoProjectContent, command: VideoCo
       // 1배는 speed를 저장하지 않는다(계약 §2).
       const { speed: _old, ...rest } = clip;
       const next: Clip = command.speed === 1 ? rest : { ...rest, speed: command.speed };
-      if (totalMs(content.clips) - clipLength(clip) + clipLength(next) > VIDEO_LIMITS.totalMs) return fail('LIMIT_EXCEEDED', '작품이 너무 길어져요. 10분까지 만들 수 있어요.');
+      const before = totalMs(content.clips);
+      if (longer(before, before - clipLength(clip) + clipLength(next))) return fail('LIMIT_EXCEEDED', tooLongWork(lengthLimit));
       return withClips(content, content.clips.map(item => item === clip ? next : item), clipFocus(clip.id), catalog);
     }
     case 'addCaption': {

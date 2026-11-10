@@ -4,8 +4,9 @@ import type { ClipSpeed, MediaMime, Orientation, VideoFps, Volume } from './vide
 const MiB = 1024 * 1024, GiB = 1024 * MiB;
 export const VIDEO_LIMITS = {
   titleCodePoints: 100, captionCodePoints: 200,
-  mediaBytesMax: 2 * GiB, mediaDurationMaxMs: 600_000, mediaSideMax: 3840,
-  clips: 50, totalMs: 600_000, overlays: 300, media: 20, mediaTotalBytes: 4 * GiB,
+  // 작품 길이·영상 길이·파일 크기 한도는 설정이다(videoLength.ts limitsFor, 기본 10분·2GiB·4GiB).
+  mediaSideMax: 3840,
+  clips: 50, overlays: 300, media: 20,
   clipMinMs: 100, splitMarginMs: 100,
   overlayMinMs: 1000, overlayMaxMs: 60_000,
   captionWidthMin: 16, memeWidthMin: 32, memeHeightMin: 32, memeAspectTolerance: 0.001,

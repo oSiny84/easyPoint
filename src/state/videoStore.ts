@@ -2,6 +2,7 @@
 import { applyVideoCommand, type VideoCommand } from '../commands/videoApply';
 import type { Failure } from '../domain/types';
 import { VIDEO_LIMITS } from '../domain/videoLimits';
+import type { LengthLimit } from '../domain/videoLength';
 import type { BuiltinCatalog, VideoFocus, VideoProject, VideoProjectContent } from '../domain/videoTypes';
 import { createHistoryStore, type HistoryResult } from './history';
 
@@ -30,13 +31,14 @@ function exists(focus: VideoFocus, content: VideoProjectContent) {
   return focus.kind === 'clip' ? content.clips.some(clip => clip.id === focus.id) : content.overlays.some(overlay => overlay.id === focus.id);
 }
 
-export type VideoStoreOptions = { newId?: () => string; now?: () => string; readOnly?: boolean; catalog: BuiltinCatalog; maxEntries?: number; maxBytes?: number };
+// lengthLimit: 명령마다 읽는 영상 길이 한도 설정(계약 §5). 없으면 기본 10분.
+export type VideoStoreOptions = { newId?: () => string; now?: () => string; readOnly?: boolean; catalog: BuiltinCatalog; maxEntries?: number; maxBytes?: number; lengthLimit?: () => LengthLimit };
 
 export function createVideoStore(initial: VideoProject, options: VideoStoreOptions) {
   const store = createHistoryStore<VideoProject, VideoProjectContent, VideoCommand, VideoFocus, number>(initial, {
     contentOf: videoContentOf,
     apply(content, command, newId) {
-      const result = applyVideoCommand(content, command, { newId, catalog: options.catalog });
+      const result = applyVideoCommand(content, command, { newId, catalog: options.catalog, lengthLimit: options.lengthLimit?.() });
       if (!result.ok) return result;
       return { ok: true, content: result.content, focus: result.focus, changed: result.changed, ...(result.adjustedOverlays ? { extra: result.adjustedOverlays } : {}) };
     },
