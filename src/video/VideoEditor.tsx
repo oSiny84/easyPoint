@@ -35,6 +35,7 @@ import { drawOverlays, isVisible, type ComposeAssets } from './compose';
 import { OverlayLayer } from './OverlayLayer';
 import { VideoTimeline } from './VideoTimeline';
 import { readLengthLimit } from './lengthSetting';
+import { clampZoom, stepOfZoom, zoomAtStep, zoomRange, ZOOM_STEPS } from './timelineScale';
 
 export type VideoSession = { store: VideoStore; lock: SessionLock };
 type VideoToolId = 'video' | 'caption' | 'meme' | 'sound';
@@ -45,7 +46,6 @@ const VIDEO_TOOLS: readonly Tool<VideoToolId>[] = [
   { id: 'sound', label: '소리', icon: 'sound' },
 ];
 const PANEL_MIN_WINDOW = 1200;
-const ZOOM_MIN = 5, ZOOM_MAX = 200;
 const ACCEPT = 'video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm';
 const SAVE_LABEL: Record<SaveState, string> = { saved: '저장됨', dirty: '변경 있음', saving: '저장 중…', failed: '저장 실패' };
 export const isUntouchedVideo = (project: VideoProject) => project.revision === 0 && !project.clips.length && !project.overlays.length;
@@ -138,7 +138,7 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
   // 작품을 떠나면 만들던 파일도 멈춘다.
   useEffect(() => () => exportingRef.current?.controller.abort(), []);
   const [player, setPlayer] = useState<PlayerState>({ playing: false, timeMs: 0 });
-  // 타임라인 배율(초당 픽셀). null이면 작품 전체가 띠에 들어가게 맞춘다.
+  // 타임라인 배율(초당 픽셀). null이면 작품 전체가 띠에 들어가게 맞춘다(범위·눈금은 timelineScale.ts).
   const [zoom, setZoom] = useState<number | null>(null);
   const [timelineWidth, setTimelineWidth] = useState(800);
   const timelineBox = useRef<HTMLDivElement>(null);
@@ -459,8 +459,9 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
 
   const size = CANVAS[project.orientation];
   const total = totalMs(project.clips);
-  const fitZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, (timelineWidth - 48) / Math.max(1, total / 1000)));
-  const pxPerSecond = zoom ?? fitZoom;
+  // 긴 작품은 맞춤 배율이 아주 작아진다(1시간이면 초당 0.3px쯤). 직접 고른 배율은 지금 작품의 범위 안으로 맞춘다.
+  const zoomLimits = zoomRange(timelineWidth, total);
+  const pxPerSecond = zoom === null ? zoomLimits.fit : clampZoom(zoom, zoomLimits);
   const clipIndex = project.clips.findIndex(clip => clip.id === selectedClip);
   const clip = clipIndex >= 0 ? project.clips[clipIndex] : null;
   // 재생 막대가 선택한 조각 안에서 양 끝 0.1초보다 안쪽이면 자를 수 있다. 안 되면 단추를 끈다(아이에게 오류를 보이지 않는다).
@@ -603,7 +604,7 @@ export function VideoEditor({ value, builtins, initialNote, initiallySaved, onHo
               memeLabel={id => builtins?.memes.find(item => item.id === id)?.label ?? id} onSelectOverlay={id => flushEdit(() => setSelectedOverlay(id))} onOverlayTime={(overlayId, startMs, durationMs) => run({ type: 'setOverlayTime', overlayId, startMs, durationMs })} />
           </div>
           <div className="zoom" aria-label="타임라인 배율">
-            <input type="range" aria-label="타임라인 배율" min={ZOOM_MIN} max={ZOOM_MAX} step={1} value={Math.round(pxPerSecond)} onChange={event => setZoom(Number(event.target.value))} />
+            <input type="range" aria-label="타임라인 배율" min={0} max={ZOOM_STEPS} step={1} value={stepOfZoom(pxPerSecond, zoomLimits)} onChange={event => setZoom(zoomAtStep(Number(event.target.value), zoomLimits))} />
             <button className="icon-only" aria-label="타임라인 맞춤" title="전체가 보이게 맞춤" aria-pressed={zoom === null} onClick={() => setZoom(null)}><Icon name="fit" size={18} /></button>
             <span className="timeline-total" data-testid="timeline-total">{formatDuration(total)}</span>
           </div>

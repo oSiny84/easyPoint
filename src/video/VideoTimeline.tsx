@@ -7,6 +7,7 @@ import { VIDEO_LIMITS } from '../domain/videoLimits';
 import type { Clip, Overlay, VideoProject } from '../domain/videoTypes';
 import { formatDuration } from './format';
 import { frameAt } from './frameAt';
+import { visibleTicks } from './timelineScale';
 
 // 남아 있던 글자 선택이 끌기로 바뀌면 브라우저가 포인터를 취소한다(pointercancel). 끌기를 시작할 때 막는다.
 function startDrag(event: ReactPointerEvent) {
@@ -65,11 +66,18 @@ export function VideoTimeline({ project, timeMs, pxPerSecond, selectedClip, sele
   const media = (clip: Clip) => project.mediaManifest.find(item => item.id === clip.mediaId);
   const number = (clip: Clip) => project.mediaManifest.findIndex(item => item.id === clip.mediaId) + 1;
 
+  // 화면에 보이는 구간(스크롤 위치·너비). 눈금은 이 구간에 걸치는 것만 그린다(긴 작품을 키워도 수만 개가 되지 않게).
+  const [view, setView] = useState({ left: 0, width: 0 });
+  const syncView = () => {
+    const box = scroller.current; if (!box) return;
+    setView(old => old.left === box.scrollLeft && old.width === box.clientWidth ? old : { left: box.scrollLeft, width: box.clientWidth });
+  };
   // 재생 중 재생 막대가 보이도록 따라간다.
   useEffect(() => {
     const box = scroller.current; if (!box) return;
     const x = px(timeMs);
     if (x < box.scrollLeft || x > box.scrollLeft + box.clientWidth - 24) box.scrollLeft = Math.max(0, x - box.clientWidth / 3);
+    syncView();
   });
 
   const timeAt = (clientX: number) => {
@@ -142,12 +150,12 @@ export function VideoTimeline({ project, timeMs, pxPerSecond, selectedClip, sele
   const { lane, count: laneCount } = lanesOf(overlays);
 
   const width = Math.max(px(total) + 24, 200);
-  const ticks = Math.floor(total / 1000);
-  const tickEvery = pxPerSecond >= 40 ? 1 : pxPerSecond >= 15 ? 5 : 10;
-  return <div className="timeline-scroll" ref={scroller} data-testid="timeline" data-px-per-second={pxPerSecond}>
+  // 처음 그릴 때는 화면 너비를 아직 몰라 넉넉히 잡는다.
+  const ticks = visibleTicks(pxPerSecond, total, view.left, view.width || 2000, 12);
+  return <div className="timeline-scroll" ref={scroller} data-testid="timeline" data-px-per-second={pxPerSecond} onScroll={syncView}>
     <div className="timeline-track" style={{ width }}>
       <div className="timeline-ruler" data-testid="timeline-ruler" onPointerDown={scrub}>
-        {Array.from({ length: Math.floor(ticks / tickEvery) + 1 }, (_, i) => i * tickEvery).map(second => <span key={second} className="tick" style={{ left: 12 + px(second * 1000) }}>{formatDuration(second * 1000)}</span>)}
+        {ticks.map(second => <span key={second} className="tick" style={{ left: 12 + px(second * 1000) }}>{formatDuration(second * 1000)}</span>)}
       </div>
       <ol className="clip-strip" aria-label="영상 조각" onPointerDown={event => { if (event.target === event.currentTarget) { onSelect(null); scrub(event); } }}>
         {clips.map((clip, index) => <li key={clip.id} style={{ left: 12 + px(starts[index]), width: Math.max(12, px(clipLength(clip))) }} className={clip.id === selectedClip ? 'clip-slot selected' : 'clip-slot'}>
