@@ -7,7 +7,7 @@
       "file": "sfx-boing.wav",
       "durationMs": 600,
       "sha256": "1667d6448ac693675fb9039315d93f4d9e9e5de3ea3320de14c7711f740420e6",
-      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
     },
     {
       "id": "sfx-ding",
@@ -15,7 +15,7 @@
       "file": "sfx-ding.wav",
       "durationMs": 1200,
       "sha256": "383f6eca2d30d04b9e935a425c6e25a6c8ec39a31b315dbbb6657c18d1ac5390",
-      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
     },
     {
       "id": "sfx-pop",
@@ -23,7 +23,79 @@
       "file": "sfx-pop.wav",
       "durationMs": 250,
       "sha256": "325cd3bd4d5f957b359781f799751e0129b352709338d21c277342f551dc2dd3",
-      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-whoosh",
+      "label": "휘익",
+      "file": "sfx-whoosh.wav",
+      "durationMs": 700,
+      "sha256": "1da5c5926012e66dfa6858a1c5930a8323ab0a56fa48c8f061b9664119cb330d",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-clap",
+      "label": "짝짝",
+      "file": "sfx-clap.wav",
+      "durationMs": 600,
+      "sha256": "edf48cc21ca9891c38fd498468d6a2ada906b30e1c20fa29b609bf048d2136e6",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-zap",
+      "label": "뿅",
+      "file": "sfx-zap.wav",
+      "durationMs": 350,
+      "sha256": "ad98fd966f5b33bca1c4ed7fce4d50e1f014c06a8e4c44cfde0448e2097f7e8f",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-thud",
+      "label": "쿵",
+      "file": "sfx-thud.wav",
+      "durationMs": 600,
+      "sha256": "c1e064904f8a11c7e2e3093a7845e90fd75f526c90952295ace3441bcef9cc3d",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-fanfare",
+      "label": "빰빠밤",
+      "file": "sfx-fanfare.wav",
+      "durationMs": 1300,
+      "sha256": "5f1e0ecee0cb0f60d7e5effa752e7679d3a978bf882122bd60297f348c401022",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-buzzer",
+      "label": "땡",
+      "file": "sfx-buzzer.wav",
+      "durationMs": 600,
+      "sha256": "6946af8ec8c37e191d11eef9010e7167eaf52eb57b9a5b05bd261948f142dff3",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-sparkle",
+      "label": "반짝",
+      "file": "sfx-sparkle.wav",
+      "durationMs": 1000,
+      "sha256": "ca4bc616215367f3e20fe363db7c1862f84157c48d9572abed9c45cfd4d115af",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-magic",
+      "label": "뾰로롱",
+      "file": "sfx-magic.wav",
+      "durationMs": 1100,
+      "sha256": "7e2be84422a70e3c15e7dba0dfe0513394b58dae8617ffc10b9066025dc5ebe4",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "sfx-sad",
+      "label": "아쉬워(뿌우)",
+      "file": "sfx-sad.wav",
+      "durationMs": 2400,
+      "sha256": "65843581682052818b30d439c2bdf203ec65d9481c1efa90a8430eed8f719c69",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
     }
   ],
   "music": [
@@ -31,17 +103,33 @@
       "id": "music-happy",
       "label": "신나는 노래",
       "file": "music-happy.wav",
-      "durationMs": 8000,
-      "sha256": "b50acc99630a26bc8b053cd001ab4bd8a093a2dec94461fd63ac179609e46d74",
-      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+      "durationMs": 16000,
+      "sha256": "45180124c1de56b9f7d17fc1e19223c1f2fd3d3ac1edbd674de3dffb1ce433ec",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
     },
     {
       "id": "music-calm",
       "label": "잔잔한 노래",
       "file": "music-calm.wav",
-      "durationMs": 8000,
-      "sha256": "7db1e08feae8fab1b10a9639d6b25fa3be03b4a1efe7ff11c69d296eef47a6bd",
-      "license": "CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음"
+      "durationMs": 24000,
+      "sha256": "83eb2a8052fae6aa85348ec080fb27aa0989292a558abe473b0a80dec3e74aee",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "music-funny",
+      "label": "장난스러운 노래",
+      "file": "music-funny.wav",
+      "durationMs": 17143,
+      "sha256": "95ad855ca1c5d2fd34931b883bdaa7ebd40fa8e22b593dcf4242bc460f6e3361",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
+    },
+    {
+      "id": "music-adventure",
+      "label": "모험 노래",
+      "file": "music-adventure.wav",
+      "durationMs": 19200,
+      "sha256": "fd32963ccb27bd38e80e9d8aa52c617dc3d736a2fa2967f368b360f6f9b83c7f",
+      "license": "CanvaCraft 자체 제작 합성음(scripts/make-sounds.mjs). 외부 권리 없음"
     }
   ]
 }

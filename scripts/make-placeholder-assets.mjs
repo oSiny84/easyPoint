@@ -1,52 +1,16 @@
-// 영상 편집기의 자리 표시 밈·효과음·음악을 만든다(영상 계약 §2 내장 목록, §10: 실제 자산 출처는 V6 전까지 다시 묻는다).
-// 모두 이 스크립트가 도형·합성음으로 직접 그리고 만든 것이라 외부 권리가 없다. 실제 자산이 정해지면 hidden으로 숨기거나 바꾼다
-// (한 번 배포한 ID는 지우지 않는다). 개발 서버(npm run dev, 5173)가 떠 있어야 한다(스티커·밈 영상을 브라우저에서 만든다).
+// 영상 편집기의 자리 표시 밈(스티커 4·밈 영상 2)을 만든다(영상 계약 §2 내장 목록). 도형으로 직접 그려 외부 권리가 없다.
+// 실제 밈은 사용자 가족이 그린 그림을 scripts/make-drawing-memes.mjs로 바꿔 넣는다(2026-11-10 결정). 그때 이 항목은 hidden으로 숨긴다
+// (한 번 배포한 ID는 지우지 않는다). 효과음·음악은 scripts/make-sounds.mjs가 만든다. 이 스크립트를 다시 돌리면 manifest를 통째로 다시 쓰므로
+// 그림 밈을 넣은 뒤에는 make-drawing-memes.mjs도 다시 돌린다. 개발 서버(npm run dev, 5173)가 떠 있어야 한다.
 //   node scripts/make-placeholder-assets.mjs
 import { chromium } from '@playwright/test';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const MEMES = 'public/memes', SOUNDS = 'public/sounds';
+const MEMES = 'public/memes';
 const LICENSE = 'CanvaCraft 자체 제작 자리 표시 자산(scripts/make-placeholder-assets.mjs). 외부 권리 없음';
 const sha256 = data => createHash('sha256').update(data).digest('hex');
-
-// ---- 소리: 48kHz 16비트 모노 WAV ----
-const RATE = 48000;
-function wav(samples) {
-  const data = Buffer.alloc(samples.length * 2);
-  samples.forEach((value, i) => data.writeInt16LE(Math.max(-32768, Math.min(32767, Math.round(value * 32767))), i * 2));
-  const head = Buffer.alloc(44);
-  head.write('RIFF', 0); head.writeUInt32LE(36 + data.length, 4); head.write('WAVE', 8); head.write('fmt ', 12);
-  head.writeUInt32LE(16, 16); head.writeUInt16LE(1, 20); head.writeUInt16LE(1, 22); head.writeUInt32LE(RATE, 24); head.writeUInt32LE(RATE * 2, 28); head.writeUInt16LE(2, 32); head.writeUInt16LE(16, 34);
-  head.write('data', 36); head.writeUInt32LE(data.length, 40);
-  return Buffer.concat([head, data]);
-}
-const tone = (seconds, fn) => Array.from({ length: Math.round(seconds * RATE) }, (_, i) => fn(i / RATE));
-const envelope = (t, length, attack = 0.01) => Math.min(1, t / attack) * Math.max(0, 1 - t / length);
-const SFX = {
-  'sfx-boing': { label: '띠용', seconds: 0.6, fn: t => 0.5 * envelope(t, 0.6) * Math.sin(2 * Math.PI * (180 + 420 * Math.exp(-t * 6)) * t) },
-  'sfx-ding': { label: '딩동', seconds: 1.2, fn: t => 0.4 * envelope(t, 1.2) * (Math.sin(2 * Math.PI * 880 * t) + (t > 0.35 ? Math.sin(2 * Math.PI * 660 * t) : 0)) },
-  'sfx-pop': { label: '뽁', seconds: 0.25, fn: t => 0.6 * envelope(t, 0.25, 0.002) * Math.sin(2 * Math.PI * (900 - 2400 * t) * t) },
-};
-// 배경음악: 8초 반복 멜로디(도레미 계열). 반복해도 이음매가 튀지 않게 마디 끝에서 0으로 끝난다.
-const melody = (notes, bpm) => { const beat = 60 / bpm; return t => { const index = Math.floor(t / beat) % notes.length; const local = t % beat; const f = 261.63 * 2 ** (notes[index] / 12); return 0.22 * envelope(local, beat, 0.02) * (Math.sin(2 * Math.PI * f * t) + 0.3 * Math.sin(4 * Math.PI * f * t)); }; };
-const MUSIC = {
-  'music-happy': { label: '신나는 노래', seconds: 8, fn: melody([0, 4, 7, 12, 7, 4, 0, 7, 5, 9, 12, 9, 7, 4, 2, 0], 120) },
-  'music-calm': { label: '잔잔한 노래', seconds: 8, fn: melody([0, 7, 4, 9, 5, 12, 7, 4], 60) },
-};
-
-await fs.mkdir(SOUNDS, { recursive: true });
-const sounds = { schemaVersion: 1, sfx: [], music: [] };
-for (const [group, table] of [['sfx', SFX], ['music', MUSIC]]) {
-  for (const [id, item] of Object.entries(table)) {
-    const data = wav(tone(item.seconds, item.fn));
-    const file = `${id}.wav`;
-    await fs.writeFile(path.join(SOUNDS, file), data);
-    sounds[group].push({ id, label: item.label, file, durationMs: Math.round(item.seconds * 1000), sha256: sha256(data), license: LICENSE });
-  }
-}
-await fs.writeFile(path.join(SOUNDS, 'manifest.json'), JSON.stringify(sounds, null, 2) + '\n');
 
 // ---- 밈: 투명 애니메이션 WebP 스티커와 소리 든 짧은 WebM ----
 const browser = await chromium.launch();
@@ -129,4 +93,4 @@ for (const [id, item] of Object.entries(made.videos)) {
   memes.assets.push({ id, kind: 'clip', label: item.label, category: item.category, tags: item.tags, file, durationMs: item.seconds * 1000, width: 640, height: 360, fps: 30, hasSound: true, soundId: null, sha256: sha256(data), license: LICENSE });
 }
 await fs.writeFile(path.join(MEMES, 'manifest.json'), JSON.stringify(memes, null, 2) + '\n');
-console.log(`밈 ${memes.assets.length}개, 효과음 ${sounds.sfx.length}개, 음악 ${sounds.music.length}곡`);
+console.log(`밈 ${memes.assets.length}개`);
