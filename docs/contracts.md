@@ -166,7 +166,7 @@ Web Locks를 사용할 수 있으면 작품별 배타 잠금을 세션 동안 �
 
 예상 오류 code는 INVALID_VALUE, LIMIT_EXCEEDED, ASSET_MISSING, ASSET_INVALID, FONT_UNAVAILABLE, REVISION_CONFLICT, READ_ONLY, UNSUPPORTED_VERSION, STORAGE_UNAVAILABLE, STORAGE_FULL, EXPORT_FAILED, CANCELLED다. 예상 실패는 UI가 처리할 구조화된 결과로 반환하며 실패를 빈 문서나 성공 Blob으로 위장하지 않는다. 오류 메시지·로그에 사진 내용이나 원본 파일명을 기록하지 않는다.
 
-현재 장과 출력 중인 한 장의 고해상도 이미지만 유지한다. 미리보기는 작은 비트맵을 캐시하고 비활성 장마다 살아 있는 캔버스를 두지 않는다. Bitmap·object URL은 사용 종료 시 해제한다. 화면용 1280px 캐시는 Phase 5 측정 후 결정한다.
+현재 장과 출력 중인 한 장의 고해상도 이미지만 유지한다. 미리보기는 작은 비트맵을 캐시하고 비활성 장마다 살아 있는 캔버스를 두지 않는다. Bitmap·object URL은 사용 종료 시 해제한다. 화면용 1280px 캐시는 Phase 5 측정 후 결정한다. 애니메이션 편집기의 양파 껍질(앞 장 그림 1개)과 재생 캐시는 [animation-contracts.md](animation-contracts.md) §8의 예외를 따른다.
 
 ## 8. 출력과 네트워크 계약
 
@@ -180,7 +180,7 @@ PPTX 줄바꿈은 자동 줄바꿈이다. PowerPoint에서 고치기 쉽고 글�
 
 파일명은 작품 제목의 금지 문자·제어 문자·끝 공백/마침표·Windows 예약 이름을 처리하고, 빈 이름은 '내 작품'을 쓴다. 확장자는 앱이 붙인다. 제목 자체를 저장 데이터에서 바꾸지는 않는다.
 
-앱 스크립트·폰트·배경은 같은 origin에서 제공한다. 외부 이미지 URL, 분석 도구, 원격 에러 수집은 첫 버전에 넣지 않는다. 배포 CSP는 `scripts/prune-dist.mjs`가 `dist/index.html`의 meta로 넣는다(스크립트·글꼴은 같은 origin, 그림·연결은 같은 origin과 blob·data, 양식 전송 금지). React style 속성 때문에 style-src에 unsafe-inline을 둔다. worker는 쓰지 않는다. 영상 모드는 [video-contracts.md](video-contracts.md) §8을 따른다(같은 origin Worker, `media-src 'self' blob:`·`worker-src 'self'`). 대표 흐름의 타 origin 요청 0건을 Phase 10에서 확인했다(INTEGRATION_REPORT_2026-11-06.md). HTTPS origin으로 앱 파일을 받는 것과 사진을 서버로 올리는 것은 구분하며, 사진 업로드 API는 만들지 않는다.
+앱 스크립트·폰트·배경은 같은 origin에서 제공한다. 외부 이미지 URL, 분석 도구, 원격 에러 수집은 첫 버전에 넣지 않는다. 배포 CSP는 `scripts/prune-dist.mjs`가 `dist/index.html`의 meta로 넣는다(스크립트·글꼴은 같은 origin, 그림·연결은 같은 origin과 blob·data, 양식 전송 금지). React style 속성 때문에 style-src에 unsafe-inline을 둔다. worker는 쓰지 않는다. 영상 모드는 [video-contracts.md](video-contracts.md) §8을 따른다(같은 origin Worker, `media-src 'self' blob:`·`worker-src 'self'`). 애니메이션의 MP4 내보내기도 같은 Worker를 쓴다([animation-contracts.md](animation-contracts.md) §8). 대표 흐름의 타 origin 요청 0건을 Phase 10에서 확인했다(INTEGRATION_REPORT_2026-11-06.md). HTTPS origin으로 앱 파일을 받는 것과 사진을 서버로 올리는 것은 구분하며, 사진 업로드 API는 만들지 않는다.
 
 ## 9. Phase 반영과 완료 조건
 

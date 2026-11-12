@@ -4,6 +4,8 @@
 export type LockNames = { catalog: string; project: (id: string) => string };
 export const SLIDE_LOCKS: LockNames = { catalog: 'canvacraft-catalog', project: id => `canvacraft-project-${id}` };
 export const VIDEO_LOCKS: LockNames = { catalog: 'canvacraft-video-catalog', project: id => `canvacraft-video-project-${id}` };
+// 애니메이션 편집기도 이름이 다른 잠금을 쓴다(애니메이션 계약 §6).
+export const ANIMATION_LOCKS: LockNames = { catalog: 'canvacraft-animation-catalog', project: id => `canvacraft-animation-project-${id}` };
 
 export type SessionLock = { readOnly: boolean; reason?: 'other-tab' | 'unsupported'; release: () => void };
 

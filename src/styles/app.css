@@ -292,3 +292,17 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .length-dialog input[type="number"] { width: 80px; height: 36px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
 .length-dialog select { height: 36px; padding: 0 6px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; }
 .length-dialog .length-error { color: #c92a2a; margin: 4px 0; }
+
+/* 애니메이션 편집기(애니메이션 계약 §6·§8·§9) */
+.start-tile.tile-animation { background: linear-gradient(135deg, #22c55e, #15803d); }
+.start-tile.tile-animation:hover:not(:disabled) { background: linear-gradient(135deg, #16a34a, #166534); }
+.kind-badge.kind-animation { background: #dcfce7; color: #15803d; }
+.animation-home .guide-card svg { color: #15803d; }
+.slide-badge { position: absolute; right: 6px; top: 5px; min-width: 22px; padding: 0 4px; border-radius: 4px; font-size: 11px; font-weight: 700; line-height: 16px; text-align: center; color: #fff; background: #15803d; }
+.animation-length { margin: 8px 0 14px; font-size: 14px; font-weight: 700; color: var(--ink); }
+.animation-panel .level-group { flex-wrap: wrap; }
+.animation-panel h3 { margin-top: 14px; }
+.player-backdrop { position: fixed; inset: 0; z-index: 900; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: rgba(20, 20, 24, .82); }
+.player-screen { width: min(960px, 92vw, calc(72vh * 16 / 9)); height: auto; aspect-ratio: 16 / 9; border-radius: 8px; background: #fff; box-shadow: 0 8px 30px #0008; }
+.player-bar { display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-radius: 12px; background: rgba(20, 20, 24, .88); color: #fff; }
+.player-position { min-width: 72px; text-align: center; font-size: 16px; font-variant-numeric: tabular-nums; }

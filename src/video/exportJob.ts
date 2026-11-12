@@ -30,7 +30,7 @@ type SyncHandle = { write(data: Uint8Array, options: { at: number }): number; tr
 const AUDIO_CHUNK = 4800; // 0.1초
 
 // 형식은 쌍으로 정한다: H.264(High)와 AAC가 둘 다 되면 MP4, 아니면 VP9+Opus WebM, 둘 다 안 되면 ENCODER_UNAVAILABLE.
-async function choosePair(width: number, height: number, fps: number) {
+export async function choosePair(width: number, height: number, fps: number) {
   const video = async (codec: string) => (await VideoEncoder.isConfigSupported({ codec, width, height, bitrate: VIDEO_BITRATE, framerate: fps, ...(codec.startsWith('avc') ? { avc: { format: 'avc' as const } } : {}) }).catch(() => ({ supported: false }))).supported;
   const audio = async (codec: string, bitrate: number) => (await AudioEncoder.isConfigSupported({ codec, sampleRate: MIX_RATE, numberOfChannels: 2, bitrate }).catch(() => ({ supported: false }))).supported;
   if (await video('avc1.640028') && await audio('mp4a.40.2', 192_000)) return 'mp4' as const;

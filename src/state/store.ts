@@ -31,7 +31,7 @@ export function estimateBytes(contents: readonly ProjectContent[]) {
 }
 
 // 기록을 적용한 뒤 보여 줄 장. 그 장이 없어졌으면 이전 순서에서 가장 가까운 남은 장을 고른다.
-function nearestSlide(wanted: string | null, from: readonly Slide[], to: readonly Slide[]): string | null {
+export function nearestSlide(wanted: string | null, from: readonly Slide[], to: readonly Slide[]): string | null {
   if (wanted === null) return null;
   if (to.some(slide => slide.id === wanted)) return wanted;
   const index = from.findIndex(slide => slide.id === wanted);

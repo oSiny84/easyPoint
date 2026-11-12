@@ -1,5 +1,5 @@
 // 영상 작업 Worker. 컨테이너 읽기·쓰기 라이브러리(Mediabunny)는 이 Worker에만 들어간다(메인 화면 첫 로딩 크기를 늘리지 않는다).
-// 일: 가져오기(영상 계약 §6 가져오기 2~6단계)와 내보내기(§8 출력, exportJob.ts).
+// 일: 가져오기(영상 계약 §6 가져오기 2~6단계)와 내보내기(§8 출력, exportJob.ts), 애니메이션 내보내기(애니메이션 계약 §8, animationJob.ts).
 // 가져오기
 // 순서: 앞부분 형식 확인 → 컨테이너 읽기(트랙·길이·크기·회전·코덱) → 이 PC의 해독 가능 여부 → OPFS 임시 파일로 복사하며 조각 해시
 // → media/<id>로 옮김 → 첫 프레임 해독(미리보기 그림). 어느 단계가 실패해도 임시 파일을 지우고, 작품은 부르는 쪽에서 바뀌지 않는다.
@@ -9,6 +9,7 @@ import { VIDEO_LIMITS } from '../domain/videoLimits';
 import { limitsFor, tooLongMedia, type LengthLimit } from '../domain/videoLength';
 import type { Media } from '../domain/videoTypes';
 import { createMediaHasher, HASH_CHUNK_BYTES } from '../storage/mediaHash';
+import { runAnimationExport, type AnimationExportRequest, type AnimationFrameMessage, type AnimationNeedFrame } from './animationJob';
 import { ExportStop, runExport, type ExportDone, type ExportProgress, type ExportRequest } from './exportJob';
 import { directory } from './mediaStore';
 import { documentMime, sniffContainer } from './sniff';
@@ -21,7 +22,9 @@ export type ImportReply =
   | ExportDone
   | { type: 'fail'; code: ErrorCode; message: string };
 
-const scope = self as unknown as { postMessage(message: ImportReply | ExportProgress): void; onmessage: ((event: MessageEvent<ImportRequest>) => void) | null };
+const scope = self as unknown as { postMessage(message: ImportReply | ExportProgress | AnimationNeedFrame): void; onmessage: ((event: MessageEvent<ImportRequest | AnimationExportRequest | AnimationFrameMessage>) => void) | null };
+// 애니메이션 내보내기: 메인 화면에 요청한 장의 그림을 기다리는 자리. 한 번에 하나만 기다린다.
+let frameWaiter: { resolve: (bitmap: ImageBitmap) => void; reject: (error: Error) => void } | null = null;
 class Stop extends Error { constructor(readonly code: ErrorCode, message: string) { super(message); } }
 let cancelled = false;
 const UNSUPPORTED = "이 영상은 이 컴퓨터에서 읽을 수 없어요. 아이폰이라면 설정 → 카메라 → 포맷에서 '높은 호환성'을 고른 뒤 다시 찍어 주세요.";
@@ -115,7 +118,26 @@ async function firstFrame(file: Blob, landscape: boolean): Promise<Blob | null> 
 
 scope.onmessage = event => {
   const request = event.data;
-  if (request.type === 'cancel') { cancelled = true; return; }
+  if (request.type === 'cancel') {
+    cancelled = true;
+    // 그림을 기다리던 애니메이션 내보내기는 바로 멈춘다.
+    const waiter = frameWaiter; frameWaiter = null; waiter?.reject(new ExportStop('CANCELLED', '내보내기를 멈췄어요.'));
+    return;
+  }
+  if (request.type === 'animationFrame') {
+    const waiter = frameWaiter; frameWaiter = null;
+    if (waiter) waiter.resolve(request.bitmap); else request.bitmap.close();
+    return;
+  }
+  if (request.type === 'exportAnimation') {
+    const takeFrame = (index: number) => new Promise<ImageBitmap>((resolve, reject) => { frameWaiter = { resolve, reject }; scope.postMessage({ type: 'needFrame', index }); });
+    void runAnimationExport(request, takeFrame, () => cancelled, message => scope.postMessage(message)).then(done => scope.postMessage(done), error => {
+      if (error instanceof ExportStop) scope.postMessage({ type: 'fail', code: error.code, message: error.message });
+      else if (error instanceof DOMException && error.name === 'QuotaExceededError') scope.postMessage({ type: 'fail', code: 'STORAGE_FULL', message: '영상 파일을 만들 자리가 부족해요. 쓰지 않는 작품을 지워 주세요.' });
+      else scope.postMessage({ type: 'fail', code: 'EXPORT_FAILED', message: '영상 파일을 만들지 못했어요. 다시 시도해 주세요.' });
+    });
+    return;
+  }
   if (request.type === 'export') {
     void runExport(request, () => cancelled, message => scope.postMessage(message)).then(done => scope.postMessage(done), error => {
       if (error instanceof ExportStop) scope.postMessage({ type: 'fail', code: error.code, message: error.message });

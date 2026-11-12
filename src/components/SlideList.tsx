@@ -32,7 +32,9 @@ function Thumbnail({ slide, resolve, cache, queue }: { slide: Slide; resolve: Bl
 
 export type SlideActions = { add: () => void; duplicate: (id: string) => void; remove: (id: string) => void; clear: (id: string) => void; move: (id: string, toIndex: number) => void };
 
-export function SlideList({ slides, currentId, resolve, onSelect, actions, readOnly }: { slides: readonly Slide[]; currentId: string; resolve: BlobResolver; onSelect: (id: string) => void; actions: SlideActions; readOnly?: boolean }) {
+// addLabel·badge·extraItems는 애니메이션 편집기가 쓴다(+ 타일 이름, 길게 보이기 배지, 장 메뉴에 더하는 항목). 주지 않으면 슬라이드 동작이다.
+export function SlideList({ slides, currentId, resolve, onSelect, actions, readOnly, addLabel, badge, extraItems }: { slides: readonly Slide[]; currentId: string; resolve: BlobResolver; onSelect: (id: string) => void; actions: SlideActions; readOnly?: boolean;
+  addLabel?: string; badge?: (slide: Slide) => string | undefined; extraItems?: (slide: Slide) => MenuItem[] }) {
   const cache = useRef(new WeakMap<Slide, string>());
   const queue = useRef<Promise<unknown>>(Promise.resolve());
   const list = useRef<HTMLOListElement>(null);
@@ -81,6 +83,7 @@ export function SlideList({ slides, currentId, resolve, onSelect, actions, readO
     { label: '내용 비우기', onSelect: () => actions.clear(id) },
     { label: '왼쪽으로', disabled: index === 0, onSelect: () => actions.move(id, index - 1) },
     { label: '오른쪽으로', disabled: index === slides.length - 1, onSelect: () => actions.move(id, index + 1) },
+    ...(extraItems?.(slides[index]) ?? []),
   ];
   const others = dropIndex === null ? slides : slides.filter(slide => slide.id !== drag.current?.id);
   const markerBefore = dropIndex !== null ? others[dropIndex]?.id ?? 'end' : null;
@@ -93,11 +96,12 @@ export function SlideList({ slides, currentId, resolve, onSelect, actions, readO
         onClick={() => { if (!dragged.current) onSelect(slide.id); }}>
         <Thumbnail slide={slide} resolve={resolve} cache={cache.current} queue={queue} />
         <span className="slide-number">{index + 1}</span>
+        {badge?.(slide) && <span className="slide-badge">{badge(slide)}</span>}
       </button>
       {!readOnly && <button className="slide-menu-button" aria-label={`${index + 1}번째 장 메뉴`} onClick={event => { const rect = event.currentTarget.getBoundingClientRect(); setMenu({ id: slide.id, anchor: { x: rect.right, y: rect.top - 4, above: true, alignRight: true } }); }}><Icon name="more" size={16} /></button>}
     </li>)}
     <li className={markerBefore === 'end' ? 'drop-before' : undefined}>
-      {!readOnly && <button className="slide add" aria-label="페이지 추가" onClick={actions.add}><Icon name="plus" size={22} /></button>}
+      {!readOnly && <button className="slide add" aria-label={addLabel ?? '페이지 추가'} title={addLabel} onClick={actions.add}><Icon name="plus" size={22} /></button>}
     </li>
     {menu && menuIndex >= 0 && <Menu anchor={menu.anchor} label="장 메뉴" onClose={() => setMenu(null)} items={items(menu.id, menuIndex)} />}
   </ol>;

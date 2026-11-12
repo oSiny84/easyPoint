@@ -451,6 +451,67 @@ test('영상 내보내기: 배포본에서 자막·밈·음악을 넣은 작품�
   expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
 });
 
+// 애니메이션: 배포본(CSP·하위 경로·나눠 받는 편집기와 Worker 파일·내장 음악)에서 그리고, 다음 장을 만들고, 재생하고, MP4로 내보낸다.
+test('애니메이션 만들기: 배포본에서 장을 만들어 재생하고 음악을 넣어 MP4로 내려받으며, 새로고침해도 돌아온다', async ({ page }) => {
+  const seen = watch(page);
+  await page.goto('./');
+  for (const name of ['슬라이드 만들기', '영상 만들기', '애니메이션 만들기']) await expect(page.getByRole('button', { name })).toBeInViewport({ ratio: 1 });
+  await page.getByRole('button', { name: '애니메이션 만들기' }).click();
+  await expect(page.getByRole('list', { name: '내 애니메이션' })).toBeAttached();
+  await page.getByRole('button', { name: '새 작품' }).click();
+  await expect(page.getByTestId('paper')).toBeVisible();
+  for (const name of ['배경', '요소', '텍스트', '업로드', '그리기', '애니메이션']) await expect(rail(page, name)).toBeInViewport({ ratio: 1 });
+  // 한 획을 그리고 장을 두 번 복사한다.
+  await rail(page, '그리기').click();
+  await dragOn(page, [300, 300], [800, 420]);
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: '다음 장 만들기' }).click();
+  await page.getByRole('button', { name: '다음 장 만들기' }).click();
+  await expect(page.getByRole('button', { name: '3번째 장', exact: true })).toHaveAttribute('aria-current', 'true');
+  await rail(page, '애니메이션').click();
+  await expect(page.getByTestId('animation-length')).toHaveText('3장 · 0:01');
+  await page.getByRole('list', { name: '배경음악' }).getByRole('button', { name: '신나는 노래', exact: true }).click();
+  await page.getByRole('button', { name: '1초에 2장' }).click();
+  await expect(page.getByTestId('animation-length')).toHaveText('3장 · 0:02');
+  await saved(page);
+  // 재생: 장이 넘어가고, 멈추면 편집 화면으로 돌아온다.
+  await page.getByRole('button', { name: '재생', exact: true }).click();
+  await expect(page.getByTestId('animation-player')).toBeVisible();
+  await expect(page.getByTestId('player-position')).toHaveText('1 / 3', { timeout: 4000 });
+  await page.screenshot({ path: path.join(OUT, 'animation-player.png') });
+  await page.getByRole('button', { name: '멈추기' }).click();
+  await expect(page.getByTestId('animation-player')).toHaveCount(0);
+  // MP4 내려받기: 영상이 형식 목록의 맨 위다.
+  await page.getByRole('button', { name: '공유' }).click();
+  await page.getByRole('menuitem', { name: '다운로드' }).click();
+  await expect(page.getByRole('radio', { name: '영상 (MP4)' })).toBeChecked();
+  const waiting = page.waitForEvent('download', { timeout: 60000 });
+  await page.getByRole('button', { name: '내려받기', exact: true }).click();
+  const download = await waiting;
+  expect(download.suggestedFilename()).toBe('내 애니메이션.mp4');
+  const file = path.join(OUT, 'animation-export.mp4'); await download.saveAs(file);
+  const bytes = await fs.readFile(file);
+  expect(bytes.subarray(4, 8).toString('latin1')).toBe('ftyp');
+  expect(bytes.length).toBeGreaterThan(20_000);
+  await expect(page.getByTestId('export-note')).toContainText('영상을 내려받았어요. MP4 · 0:02');
+  await page.keyboard.press('Escape');
+  // 새로고침하면 같은 작품으로 돌아오고, 시작 화면 최근 작품에 애니메이션으로 보인다.
+  await page.reload();
+  await expect(page.getByRole('button', { name: '재생', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '3번째 장', exact: true })).toBeVisible();
+  await page.screenshot({ path: path.join(OUT, 'animation-editor.png') });
+  await page.getByRole('button', { name: '작품 목록' }).click();
+  await expect(page.getByRole('list', { name: '내 애니메이션' }).getByRole('listitem')).toHaveCount(1);
+  await page.getByRole('button', { name: '시작 화면' }).click();
+  await expect(page.getByRole('list', { name: '최근 작품' }).getByRole('listitem')).toHaveCount(1);
+  await expect(page.getByRole('list', { name: '최근 작품' })).toContainText('애니메이션');
+  await page.screenshot({ path: path.join(OUT, 'start-three-tiles.png') });
+  // 슬라이드 작품 목록에는 나오지 않는다.
+  await page.getByRole('button', { name: '슬라이드 만들기' }).click();
+  await expect(works(page)).toHaveCount(0);
+  expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
+});
+
 test('화면 오류가 나면 빈 화면 대신 안내하고 새로고침으로 돌아온다', async ({ page }) => {
   await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();

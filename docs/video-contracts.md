@@ -62,7 +62,7 @@
 |---|---|
 | 밈 | `public/memes/manifest.json`: schemaVersion, packId, version, assets[]. 각 항목은 id(`^[a-z0-9-]{1,64}$`), kind('sticker'·'clip'), label, category('cat'·'dog'·'reaction'·'effect'), tags[], file, durationMs, width, height, fps(스티커의 프레임률), hasSound, soundId(효과음 ID 또는 null), sha256, license, hidden(선택). `src/assets/library.ts`처럼 파일을 받은 뒤 형식·크기·해시를 확인하고 틀리면 그 밈을 쓸 수 없는 것으로 처리한다 |
 | 효과음·음악 | `public/sounds/manifest.json`: sfx[]와 music[]. 항목은 id, label, file, durationMs, sha256, license. 모두 48kHz로 미리 변환한 파일만 넣는다 |
-| 삭제 금지 | 한 번 배포한 밈·소리 ID는 목록에서 지우지 않는다. 패널에서 빼려면 hidden=true로 숨긴다. 저장된 작품이 ID로 참조하기 때문이다 |
+| 삭제 금지 | 한 번 배포한 밈·소리 ID는 목록에서 지우지 않는다. 패널에서 빼려면 hidden=true로 숨긴다. 저장된 작품이 ID로 참조하기 때문이다. 음악 목록은 애니메이션 편집기도 함께 쓰며([animation-contracts.md](animation-contracts.md) §2) 이 규칙이 애니메이션 작품에도 적용된다 |
 
 되돌리기가 복원하는 내용(VideoProjectContent)은 title, orientation, fps, clips, overlays, audio, mediaManifest다. revision·updatedAt은 내용과 분리한다(슬라이드 계약 §4).
 

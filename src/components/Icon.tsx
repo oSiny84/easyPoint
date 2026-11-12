@@ -34,6 +34,8 @@ const PATHS: Record<string, string> = {
   home: 'M4 11l8-7 8 7M6 10v10h12V10',
   pause: 'M8 5v14M16 5v14',
   cut: 'M6 7a3 3 0 1 0 .01 0M6 17a3 3 0 1 0 .01 0M8.5 8.5L20 19M8.5 15.5L20 5',
+  animation: 'M4 4h16v16H4zM8 4v16M16 4v16M4 9h4M4 15h4M16 9h4M16 15h4',
+  onion: 'M12 4l9 5-9 5-9-5zM3 14l9 5 9-5',
 };
 
 export function Icon({ name, size = 20 }: { name: keyof typeof PATHS | string; size?: number }) {

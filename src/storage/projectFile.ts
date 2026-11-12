@@ -7,8 +7,8 @@ import { validateProject } from '../domain/validate';
 
 export type AssetResolver = (assetId: string) => Promise<Blob | undefined>;
 const FORMAT = 'canvacraft';
-const extensionOf = (mime: Asset['mime']) => mime === 'image/png' ? 'png' : 'jpg';
-const ENTRY = /^assets\/([0-9a-f]{64})\.(png|jpg)$/;
+export const extensionOf = (mime: Asset['mime']) => mime === 'image/png' ? 'png' : 'jpg';
+export const ENTRY = /^assets\/([0-9a-f]{64})\.(png|jpg)$/;
 const invalid = (message: string) => fail('INVALID_VALUE', message);
 
 // 문서가 실제로 참조하는 사진만 파일에 넣는다.
@@ -36,7 +36,7 @@ export async function serializeProject(project: Project, resolve: AssetResolver)
 }
 
 // ZIP 끝 레코드의 항목 수. JSZip은 같은 이름을 하나로 합치므로 중복 항목을 이 값과 비교해 찾는다.
-function declaredEntryCount(bytes: Uint8Array) {
+export function declaredEntryCount(bytes: Uint8Array) {
   for (let offset = bytes.length - 22; offset >= Math.max(0, bytes.length - 65557); offset--) {
     if (bytes[offset] === 0x50 && bytes[offset + 1] === 0x4b && bytes[offset + 2] === 0x05 && bytes[offset + 3] === 0x06) return bytes[offset + 10] | (bytes[offset + 11] << 8);
   }
@@ -44,7 +44,7 @@ function declaredEntryCount(bytes: Uint8Array) {
 }
 
 // 헤더의 크기 표시를 믿지 않고 실제로 풀린 바이트를 세다가 한도를 넘으면 멈춘다.
-function unpack(file: JSZip.JSZipObject, budget: { left: number }): Promise<Uint8Array | null> {
+export function unpack(file: JSZip.JSZipObject, budget: { left: number }): Promise<Uint8Array | null> {
   return new Promise((resolve, reject) => {
     const chunks: Uint8Array[] = []; let total = 0; let stopped = false;
     // internalStream은 JSZip 타입 정의에 없지만 조각 단위로 풀어 주는 공개 동작이다(3.10.2 고정).
