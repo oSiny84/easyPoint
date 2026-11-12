@@ -78,9 +78,9 @@ Vercel은 GitHub 저장소를 연결하면 푸시할 때마다 직접 빌드해�
 
 **처음 한 번(사용자)**
 
-1. `vercel.json`이 들어간 커밋을 GitHub에 푸시한다.
+1. `vercel.json`이 main에 있는지 본다(2026-11-12에 합쳤다).
 2. vercel.com에 GitHub 계정으로 들어가 `Add New` → `Project`에서 `easyPoint` 저장소를 가져온다. Framework는 Vite로 잡히고 빌드 설정은 `vercel.json`을 따르므로 바꾸지 않는다.
-3. Vercel은 기본 브랜치(main)를 정식 주소로 올린다. **지금 main에는 애니메이션·만화·영상이 없다.** 브랜치를 main에 합치거나, 프로젝트 설정의 Git 또는 Environments 항목에서 Production 브랜치를 `claude/kids-program-features-205ebd`로 바꾼다.
+3. Vercel은 기본 브랜치(main)를 정식 주소로 올린다. 2026-11-12 영상·애니메이션·만화와 `vercel.json`을 main에 합쳤으므로 Production 브랜치는 바꾸지 않는다.
 4. 정식 주소에서 아래 "올린 뒤 확인"을 한다.
 
 **알아 둘 점**
