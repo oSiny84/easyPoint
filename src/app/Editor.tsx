@@ -1,5 +1,5 @@
 // 편집 화면. 배치 기준은 docs/UI_REFERENCE.md다. 자동 저장·작품 목록은 Phase 8, 발표는 Phase 9에서 연결한다.
-// 화면 이동(시작 화면·작품 목록·영상·애니메이션)은 App.tsx가 맡는다. 애니메이션 편집기도 이 화면을 쓴다(애니메이션 계약 §9).
+// 화면 이동(시작 화면·작품 목록·영상·애니메이션·만화)은 App.tsx가 맡는다. 애니메이션·만화 편집기도 이 화면을 쓴다(애니메이션 계약 §9, 만화 계약 §9).
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ComponentType, type ReactNode } from 'react';
 import { createAssetStore, type AssetStore } from '../assets/assetStore';
 import { readPngText } from '../assets/imageHeader';
@@ -66,7 +66,8 @@ const DRAFT_ID = 'draft';
 
 // ---- 다른 편집기가 이 화면을 쓸 때 바꿔 끼우는 지점(애니메이션 계약 §9). 주지 않으면 슬라이드 동작 그대로다. ----
 // 문서를 바꾸는 일은 perform을 거친다: 입력 중인 글씨를 먼저 확정하고, 결과를 화면(지금 장·안내)에 반영한다.
-export type EditorApi = { perform: (action: () => DispatchResult) => void; readOnly: boolean; slide: Slide; setStatus: (message: string) => void };
+// editText는 지금 장의 글씨 요소를 골라 입력 상태로 연다. selectAll이면 내용 전체를 고른다(만화의 말풍선: 바로 치면 처음 글씨가 바뀐다).
+export type EditorApi = { perform: (action: () => DispatchResult) => void; readOnly: boolean; slide: Slide; setStatus: (message: string) => void; editText: (elementId: string, selectAll?: boolean) => void };
 export type VariantExportResult = { ok: true; blob: Blob; warnings: string[]; extension: string; done?: string } | Failure;
 export type EditorVariant = {
   // 저장과 원본 파일. 넘어오는 스냅숏은 이 편집기의 저장소가 만든 문서다.
@@ -84,8 +85,12 @@ export type EditorVariant = {
   zoomExtra?: ReactNode;
   // 상단의 발표 단추 자리.
   present?: { label: string; render: (props: { project: Project; slideId: string; onClose: (slideId: string) => void }) => ReactNode };
-  // 내려받기 창의 형식 목록 맨 위에 더하는 형식.
-  exports?: { id: string; label: string; note: string; run: (snapshot: Project, resolve: BlobResolver, options: ExportOptions, signal: AbortSignal) => Promise<VariantExportResult> }[];
+  // 내려받기 창의 형식 목록 맨 위에 더하는 형식. context.slideId는 내려받기를 누른 때의 장이다.
+  exports?: { id: string; label: string; note: string; run: (snapshot: Project, resolve: BlobResolver, options: ExportOptions, signal: AbortSignal, context: { slideId: string }) => Promise<VariantExportResult> }[];
+  // 참이면 내려받기 창에 exports의 형식만 보인다(만화: PowerPoint·장별 PDF를 감춘다).
+  ownExportsOnly?: boolean;
+  // 끌거나 크기를 바꾸는 요소(preview)와 함께 임시 자리에 그릴 요소들(만화의 말풍선 짝 글씨). 문서는 바꾸지 않는다.
+  companions?: (preview: SlideElement, slide: Slide) => SlideElement[];
 };
 
 export function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySaved, variant }: { value: Session; onOpen: (project: Project, assets: Map<string, Blob>, note: string) => void; onHome: () => void; onNew: () => void; initialNote?: string; initiallySaved?: boolean; variant?: EditorVariant }) {
@@ -213,6 +218,23 @@ export function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySav
     setSelectedId(element.id);
     setEdit({ slideId: slide.id, elementId: element.id, draft: element, initialText: element.text, caret: point ? caretOffsetAt(element, point.x, point.y) : null, placeholder: '', session: ++editSession.current });
   }
+  // 다른 편집기의 패널이 지금 장의 글씨를 입력 상태로 연다(EditorApi.editText).
+  const selectAllSession = useRef(0);
+  function editTextById(elementId: string, selectAll = false) {
+    if (readOnly) return;
+    const target = store.getProject().slides.find(item => item.id === slide.id)?.elements.find(item => item.id === elementId);
+    if (target?.type !== 'text') return;
+    setSelectedId(target.id);
+    const session = ++editSession.current;
+    if (selectAll) selectAllSession.current = session;
+    setEdit({ slideId: slide.id, elementId: target.id, draft: target, initialText: target.text, caret: null, placeholder: '', session });
+  }
+  // 입력 칸이 초점과 커서를 잡은 뒤(자식의 효과가 먼저 돈다)에 내용 전체를 고른다.
+  useEffect(() => {
+    if (!edit || selectAllSession.current !== edit.session) return;
+    selectAllSession.current = 0;
+    work.current?.querySelector<HTMLTextAreaElement>('textarea.text-editor')?.select();
+  }, [edit]);
   // 새 글씨는 슬라이드 가운데에서 입력을 시작한다. 내용이 생기기 전에는 문서를 바꾸지 않는다.
   function addTextBox(preset: TextPreset) {
     flushEdit(() => {
@@ -433,7 +455,7 @@ export function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySav
     const extra = variant?.exports?.find(item => item.id === kind);
     let result: ExportResult | VariantExportResult;
     try {
-      result = extra ? await extra.run(snapshot, assets.resolve, { onProgress }, controller.signal) : kind === 'pdf'
+      result = extra ? await extra.run(snapshot, assets.resolve, { onProgress }, controller.signal, { slideId: slide.id }) : kind === 'pdf'
         ? await (await import('../export/exportPdf')).exportPdf(snapshot, assets.resolve, { onProgress }, controller.signal)
         : await (await import('../export/exportPptx')).exportPptx(snapshot, assets.resolve, kind === 'pptx' ? 'editable' : 'image', { onProgress }, controller.signal);
     } catch {
@@ -475,7 +497,7 @@ export function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySav
 
   const onCanvasError = useCallback((message: string) => setStatus(message), []);
 
-  const api: EditorApi = { perform: action => flushEdit(() => { report(action()); }), readOnly, slide, setStatus };
+  const api: EditorApi = { perform: action => flushEdit(() => { report(action()); }), readOnly, slide, setStatus, editText: editTextById };
   const variantTool = variant?.tool;
   const tools = variantTool ? TOOLS.map(item => item.id === 'template' ? { ...item, label: variantTool.label, icon: variantTool.icon } : item) : undefined;
   const slideExtras = variant?.slideList?.extraItems;
@@ -491,7 +513,7 @@ export function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySav
     <TopBar title={title} onTitle={setTitle} onTitleCommit={() => run({ type: 'renameProject', title })} saveState={readOnly ? '읽기 전용' : isUntouched(project) ? '새 작품' : SAVE_LABEL[saveState]}
       canUndo={store.canUndo() || !!edit} canRedo={store.canRedo()} onUndo={() => flushEdit(() => report(store.undo()))} onRedo={() => flushEdit(() => report(store.redo()))}
       onOpenFile={() => openInput.current?.click()} onSaveFile={saveFile} onSave={save} readOnly={readOnly} saveDisabled={readOnly || saveState === 'saved' || saveState === 'saving'} onHome={() => afterSaved(onHome)} onNew={() => afterSaved(onNew)}
-      exporting={!!exporting} exportProgress={exportProgress} exportNote={exportNote} onOpenDownload={() => setExportNote('')} onExport={exportFile} onCancelExport={() => exporting?.abort()} onPresent={present} presentLabel={variant?.present?.label} extraFormats={variant?.exports} />
+      exporting={!!exporting} exportProgress={exportProgress} exportNote={exportNote} onOpenDownload={() => setExportNote('')} onExport={exportFile} onCancelExport={() => exporting?.abort()} onPresent={present} presentLabel={variant?.present?.label} extraFormats={variant?.exports} hideBuiltinFormats={variant?.ownExportsOnly} />
     <input ref={openInput} data-testid="open-file" type="file" accept={`.${files.extension}`} hidden onChange={event => { void openFile(event.target.files?.[0]); event.target.value = ''; }} />
     <input ref={uploadInput} data-testid="upload-file" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden onChange={event => { void importFiles([...(event.target.files ?? [])], uploadTarget.current); event.target.value = ''; }} />
     <div className="workspace">
@@ -503,7 +525,7 @@ export function Editor({ value, onOpen, onHome, onNew, initialNote, initiallySav
         </div>
         <div ref={work} className="work" data-testid="work" onPointerDownCapture={event => { if ((event.target as HTMLElement).tagName !== 'TEXTAREA') flushEdit(); }} onPointerDown={event => { if (event.target === event.currentTarget) setSelectedId(null); }}>
           <div className="paper-wrap" style={{ width: LIMITS.slideWidth * scale, height: LIMITS.slideHeight * scale }}>
-            <SlideCanvas slide={slide} preview={preview} hiddenId={edit?.elementId} scale={scale} assets={assets} onError={onCanvasError} underlay={Underlay && <Underlay slide={slide} slides={project.slides} resolve={assets.resolve} />} />
+            <SlideCanvas slide={slide} preview={preview} hiddenId={edit?.elementId} scale={scale} assets={assets} onError={onCanvasError} companions={preview && variant?.companions ? variant.companions(preview, slide) : undefined} underlay={Underlay && <Underlay slide={slide} slides={project.slides} resolve={assets.resolve} />} />
             {tool === 'draw'
               ? <DrawLayer slide={slide} scale={scale} mode={drawMode} color={pen.color} strokeWidth={pen.width} onStroke={addStroke} onErase={eraseStroke} />
               : <SelectionLayer slide={slide} manifest={project.assetManifest} selected={edit ? edit.draft : selected} preview={preview} scale={scale} onSelect={setSelectedId} onPreview={setPreview} onCommit={run} editing={!!edit}

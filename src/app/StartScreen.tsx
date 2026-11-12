@@ -1,9 +1,9 @@
-// 시작 화면(영상 기획안 §2, 영상 계약 §6, 애니메이션 계약 §6). 슬라이드·영상·애니메이션 중 하나를 고르고, 세 종류의 최근 작품을 섞어 보여 준다.
+// 시작 화면(영상 기획안 §2, 영상 계약 §6, 애니메이션 계약 §6, 만화 계약 §6). 슬라이드·영상·애니메이션·만화 중 하나를 고르고, 네 종류의 최근 작품을 섞어 보여 준다.
 // 잠금을 쥐지 않는다. 각 저장소의 요약만 읽는다.
 import { useEffect, useState } from 'react';
 import { Icon } from '../components/Icon';
 
-export type EditorKind = 'slide' | 'video' | 'animation';
+export type EditorKind = 'slide' | 'video' | 'animation' | 'comic';
 export type RecentWork = { kind: EditorKind; projectId: string; title: string; updatedAt: string; thumbnail: Blob | null };
 export const RECENT_COUNT = 6;
 
@@ -19,8 +19,8 @@ function Thumb({ blob, kind }: { blob: Blob | null; kind: EditorKind }) {
   return kind === 'video' ? <span className="thumb-empty video-thumb-empty"><Icon name="video" size={32} /></span> : <span className="thumb-empty" />;
 }
 
-const KIND_LABEL: Record<EditorKind, string> = { slide: '슬라이드', video: '영상', animation: '애니메이션' };
-const KIND_ICON: Record<EditorKind, string> = { slide: 'template', video: 'video', animation: 'animation' };
+const KIND_LABEL: Record<EditorKind, string> = { slide: '슬라이드', video: '영상', animation: '애니메이션', comic: '만화' };
+const KIND_ICON: Record<EditorKind, string> = { slide: 'template', video: 'video', animation: 'animation', comic: 'comic' };
 
 type Props = { note?: string; loadRecent: () => Promise<RecentWork[]>; onChoose: (kind: EditorKind) => void; onOpen: (work: RecentWork) => void };
 
@@ -42,6 +42,7 @@ export function StartScreen({ note, loadRecent, onChoose, onOpen }: Props) {
         <button className="start-tile tile-slide" onClick={() => onChoose('slide')}><Icon name="template" size={56} /><span>슬라이드 만들기</span></button>
         <button className="start-tile tile-video" onClick={() => onChoose('video')}><Icon name="video" size={56} /><span>영상 만들기</span></button>
         <button className="start-tile tile-animation" onClick={() => onChoose('animation')}><Icon name="animation" size={56} /><span>애니메이션 만들기</span></button>
+        <button className="start-tile tile-comic" onClick={() => onChoose('comic')}><Icon name="comic" size={56} /><span>만화 만들기</span></button>
       </div>
       {recent && recent.length > 0 && <>
         <h2>최근 작품</h2>

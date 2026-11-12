@@ -306,3 +306,22 @@ body.dragging-element, body.dragging-element * { cursor: grabbing !important; us
 .player-screen { width: min(960px, 92vw, calc(72vh * 16 / 9)); height: auto; aspect-ratio: 16 / 9; border-radius: 8px; background: #fff; box-shadow: 0 8px 30px #0008; }
 .player-bar { display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-radius: 12px; background: rgba(20, 20, 24, .88); color: #fff; }
 .player-position { min-width: 72px; text-align: center; font-size: 16px; font-variant-numeric: tabular-nums; }
+
+/* 만화 편집기(만화 계약 §6·§8·§9) */
+.start-tile.tile-comic { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.start-tile.tile-comic:hover:not(:disabled) { background: linear-gradient(135deg, #2563eb, #1e40af); }
+.kind-badge.kind-comic { background: #dbeafe; color: #1d4ed8; }
+.comic-home .guide-card svg { color: #1d4ed8; }
+.comic-editor { display: contents; }
+/* 쪽 번호는 칸 그림의 왼쪽 위에 둔다. 오른쪽 위는 지금 칸의 메뉴 단추 자리다. */
+.comic-editor .slide-badge { right: auto; left: 6px; background: #1d4ed8; }
+.comic-panel h3 { margin-top: 14px; }
+.comic-card { cursor: pointer; background: #dfe5ec; }
+.comic-words { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.comic-word { min-height: 44px; border: 1px solid var(--line); border-radius: 8px; font-size: 20px; font-weight: 700; }
+.comic-size { margin: 4px 0 0; font-size: 14px; font-weight: 700; color: var(--ink); }
+.reader-page { max-width: 92vw; max-height: 76vh; width: auto; height: auto; border-radius: 4px; background: #fff; box-shadow: 0 8px 30px #0008; cursor: pointer; }
+.reader-problem { margin: 0; color: #fff; }
+.comic-reader .on-dark { min-height: 36px; padding: 0 12px; border-radius: 8px; color: #fff; }
+.comic-reader .on-dark:hover:not(:disabled) { background: #fff2; }
+.comic-reader .on-dark:disabled { opacity: .4; }

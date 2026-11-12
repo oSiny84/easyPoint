@@ -512,6 +512,80 @@ test('애니메이션 만들기: 배포본에서 장을 만들어 재생하고 �
   expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
 });
 
+// 만화: 배포본(CSP·하위 경로·나눠 받는 편집기와 내보내기 파일·만화 그림 묶음)에서 말풍선을 넣고, 칸을 만들고, 만화 보기로 보고, PDF·PNG로 내려받는다.
+test('만화 만들기: 배포본에서 말풍선을 넣고 칸을 만들어 만화 보기로 보고 PDF·PNG로 내려받으며, 새로고침해도 돌아온다', async ({ page }) => {
+  const seen = watch(page);
+  await page.goto('./');
+  for (const name of ['슬라이드 만들기', '영상 만들기', '애니메이션 만들기', '만화 만들기']) await expect(page.getByRole('button', { name })).toBeInViewport({ ratio: 1 });
+  await page.screenshot({ path: path.join(OUT, 'start-four-tiles.png') });
+  await page.getByRole('button', { name: '만화 만들기' }).click();
+  await expect(page.getByRole('list', { name: '내 만화' })).toBeAttached();
+  await page.getByRole('button', { name: '새 작품' }).click();
+  await expect(page.getByTestId('paper')).toBeVisible();
+  for (const name of ['배경', '요소', '텍스트', '업로드', '그리기', '만화']) await expect(rail(page, name)).toBeInViewport({ ratio: 1 });
+  // 말풍선을 넣고 대사를 쓴다. 그림 묶음(manifest와 PNG)은 같은 출처에서 받는다.
+  if (!await panel(page, '만화').isVisible()) await rail(page, '만화').click();
+  await expect(panel(page, '만화').getByRole('button', { name: /풍선|해설/ })).toHaveCount(9);
+  await panel(page, '만화').getByRole('button', { name: '말풍선 (왼쪽 꼬리)', exact: true }).click();
+  await expect(page.getByLabel('슬라이드 글씨')).toBeFocused();
+  await page.keyboard.type('안녕! 나는 탐정이야');
+  await page.keyboard.press('Escape');
+  await panel(page, '만화').getByRole('button', { name: '쾅!', exact: true }).click();
+  // 칸을 넷 더 만들어 5칸(4칸 배치로 2쪽)으로 한다.
+  for (let count = 2; count <= 5; count++) { await page.getByRole('button', { name: '다음 칸 만들기' }).click(); await expect(page.getByRole('button', { name: `${count}번째 장`, exact: true })).toBeVisible(); }
+  await expect(page.getByTestId('comic-size')).toHaveText('5칸 · 2쪽');
+  await saved(page);
+  await page.screenshot({ path: path.join(OUT, 'comic-editor.png') });
+  // 만화 보기: 다섯째 칸이 들어 있는 둘째 쪽부터 열리고, 앞 쪽으로 넘어간다.
+  await page.getByRole('button', { name: '만화 보기', exact: true }).click();
+  await expect(page.getByTestId('comic-reader')).toBeVisible();
+  await expect(page.getByTestId('reader-position')).toHaveText('2 / 2');
+  await page.getByRole('button', { name: '이전 쪽' }).click();
+  await expect(page.getByTestId('reader-page')).toHaveAttribute('data-page', '1');
+  await page.screenshot({ path: path.join(OUT, 'comic-reader.png') });
+  await page.getByTestId('comic-reader').getByRole('button', { name: '닫기' }).click();
+  await expect(page.getByTestId('comic-reader')).toHaveCount(0);
+  // 내려받기: 만화책 PDF가 형식 목록의 맨 위이고 PowerPoint는 없다.
+  await page.getByRole('button', { name: '공유' }).click();
+  await page.getByRole('menuitem', { name: '다운로드' }).click();
+  await expect(page.getByRole('radio', { name: '만화책 (PDF)' })).toBeChecked();
+  await expect(page.locator('.download-panel .format')).toHaveCount(2);
+  let waiting = page.waitForEvent('download', { timeout: 60000 });
+  await page.getByRole('button', { name: '내려받기', exact: true }).click();
+  let download = await waiting;
+  expect(download.suggestedFilename()).toBe('내 만화.pdf');
+  const pdfFile = path.join(OUT, 'comic-export.pdf'); await download.saveAs(pdfFile);
+  const pdf = await PDFDocument.load(await fs.readFile(pdfFile));
+  expect(pdf.getPageCount()).toBe(2);
+  expect(pdf.getPage(0).getSize()).toEqual({ width: 842, height: 595 });
+  await expect(page.getByTestId('export-note')).toContainText('만화책을 내려받았어요. PDF · 2쪽');
+  await page.getByRole('radio', { name: '그림 (PNG)' }).check();
+  waiting = page.waitForEvent('download', { timeout: 60000 });
+  await page.getByRole('button', { name: '내려받기', exact: true }).click();
+  download = await waiting;
+  expect(download.suggestedFilename()).toBe('내 만화.png');
+  const pngFile = path.join(OUT, 'comic-export.png'); await download.saveAs(pngFile);
+  const png = await fs.readFile(pngFile);
+  expect(png.subarray(1, 4).toString('latin1')).toBe('PNG');
+  // 가로 A4, 포인트당 3픽셀: 2526×1785.
+  expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([2526, 1785]);
+  await page.keyboard.press('Escape');
+  // 새로고침하면 같은 작품으로 돌아오고, 시작 화면 최근 작품에 만화로 보인다.
+  await page.reload();
+  await expect(page.getByRole('button', { name: '만화 보기', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '5번째 장', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '작품 목록' }).click();
+  await expect(page.getByRole('list', { name: '내 만화' }).getByRole('listitem')).toHaveCount(1);
+  await expect(page.getByRole('list', { name: '내 만화' })).toContainText('5칸 · 2쪽');
+  await page.getByRole('button', { name: '시작 화면' }).click();
+  await expect(page.getByRole('list', { name: '최근 작품' }).getByRole('listitem')).toHaveCount(1);
+  await expect(page.getByRole('list', { name: '최근 작품' })).toContainText('만화');
+  // 슬라이드 작품 목록에는 나오지 않는다.
+  await page.getByRole('button', { name: '슬라이드 만들기' }).click();
+  await expect(works(page)).toHaveCount(0);
+  expect(seen.errors).toEqual([]); expect(seen.csp).toEqual([]); expect(seen.external).toEqual([]); expect(seen.failed).toEqual([]);
+});
+
 test('화면 오류가 나면 빈 화면 대신 안내하고 새로고침으로 돌아온다', async ({ page }) => {
   await newSlideProject(page);
   await page.getByRole('button', { name: '페이지 추가' }).click();

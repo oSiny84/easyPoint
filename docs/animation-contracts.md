@@ -135,7 +135,7 @@ undo/redo의 revision 발급, redo 비우기, 기록 상한(500개·추정 32MiB
 | 항목 | 결정 |
 |---|---|
 | 데이터베이스 | 새 IndexedDB `canvacraft-animation` 버전 1: projects(keyPath id), summaries(keyPath projectId), assets(keyPath id, `{ id, blob }`). 슬라이드 `canvacraft`와 영상 `canvacraft-video`의 구조·버전은 바꾸지 않는다 |
-| 코드 | `src/animation/animationDatabase.ts`. 슬라이드 `storage/database.ts`와 **같은 순서와 규칙**을 쓰되 파일을 따로 둔다(사용자 결정 3). `database.ts`의 저장·열기·정리 규칙에 결함 수정이 들어가면 이 파일도 같은 날 확인한다. 반대도 같다 |
+| 코드 | `src/animation/animationDatabase.ts`. 슬라이드 `storage/database.ts`와 **같은 순서와 규칙**을 쓰되 파일을 따로 둔다(사용자 결정 3). `database.ts`의 저장·열기·정리 규칙에 결함 수정이 들어가면 이 파일도 같은 날 확인한다. 반대도 같다. **2026-11-12 변경:** 만화 편집기를 더하면서 저장·원본 파일·작품 목록·세션 코드의 본문을 `src/deck/`의 공통 틀(`deckDatabase.ts`·`deckFile.ts`·`DeckHome.tsx`·`DeckApp.tsx`)로 옮겼고 애니메이션과 만화가 함께 쓴다(만화 계약 §6, 사용자 결정). `animationDatabase.ts`·`animationFile.ts`·`AnimationHome.tsx`·`AnimationApp.tsx`는 이름·데이터베이스·글귀만 정해 그 틀을 부른다. 내보내는 함수 이름과 동작은 그대로이고 애니메이션 시험 124개를 고치지 않고 통과했다. 슬라이드 저장 코드와는 지금도 따로다. 그래서 위 문장의 "이 파일"은 이제 `src/deck/deckDatabase.ts`를 가리킨다 |
 | 저장 순서 | 슬라이드 계약 §6과 같다: Blob·미리보기는 트랜잭션 밖에서 준비 → 자료 목록의 사진을 먼저 확정(문서가 쓰는 사진이 없으면 ASSET_MISSING) → projects와 summaries를 한 트랜잭션으로 갱신. 더 새로운 revision이 저장돼 있으면 REVISION_CONFLICT |
 | 사진 | 애니메이션 저장소의 assets에 따로 둔다. 슬라이드 저장소와 사진을 나누어 쓰지 않는다(같은 사진을 양쪽에 쓰면 두 번 저장된다). 자료 목록의 사진은 작품을 지울 때까지 모두 보관한다 |
 | 자동 저장 | 변경 1초 뒤, 연속 편집 중 최대 5초(`autosave.ts`). 손대지 않은 새 작품은 저장하지 않는다(슬라이드의 판단식과 같다: revision 0, 한 장, 요소 없음, 흰 배경) |

@@ -31,7 +31,8 @@ const ElementView = memo(function ElementView({ element, image }: { element: Sli
 });
 
 // underlay: 배경 위·요소 아래에 까는 react-konva 요소(애니메이션의 양파 껍질). 주지 않으면 아무것도 깔지 않는다.
-export function SlideCanvas({ slide, preview, hiddenId, scale, assets, onError, underlay }: { slide: Slide; preview: SlideElement | null; hiddenId?: string | null; scale: number; assets: AssetStore; onError: (message: string) => void; underlay?: ReactNode }) {
+// companions: 조작 중인 요소와 함께 임시 자리에 그릴 요소(만화의 말풍선 짝 글씨). 원래 자리의 그 요소는 그리지 않는다.
+export function SlideCanvas({ slide, preview, hiddenId, scale, assets, onError, underlay, companions }: { slide: Slide; preview: SlideElement | null; hiddenId?: string | null; scale: number; assets: AssetStore; onError: (message: string) => void; underlay?: ReactNode; companions?: readonly SlideElement[] }) {
   // 현재 장의 사진만 디코딩한 채로 둔다(계약 §7).
   const images = useRef(new Map<string, HTMLImageElement>());
   const fonts = useRef(new Set<string>());
@@ -74,8 +75,12 @@ export function SlideCanvas({ slide, preview, hiddenId, scale, assets, onError, 
   const current = shown.current;
   const index = current && preview ? current.elements.findIndex(element => element.id === preview.id) : -1;
   // 입력 중인 글씨는 textarea가 보여 주므로 캔버스에서 뺀다.
-  const below = current ? (index >= 0 ? current.elements.slice(0, index) : current.elements).filter(element => element.id !== hiddenId) : [];
-  const above = current && index >= 0 ? current.elements.slice(index + 1) : [];
+  const moving = index >= 0 && companions?.length ? companions : [];
+  const isMoving = (element: SlideElement) => moving.some(item => item.id === element.id);
+  // 함께 움직이는 요소는 원래의 앞뒤 순서대로 조작 중인 요소의 뒤나 앞에 그린다.
+  const orderOf = (element: SlideElement) => current ? current.elements.findIndex(item => item.id === element.id) : -1;
+  const below = current ? (index >= 0 ? current.elements.slice(0, index) : current.elements).filter(element => element.id !== hiddenId && !isMoving(element)) : [];
+  const above = current && index >= 0 ? current.elements.slice(index + 1).filter(element => !isMoving(element)) : [];
   const imageFor = (element: SlideElement) => element.type === 'image' ? images.current.get(element.assetId) : undefined;
   const background = current?.background;
   const backgroundImage = background?.kind === 'image' ? images.current.get(background.assetId) : undefined;
@@ -88,7 +93,11 @@ export function SlideCanvas({ slide, preview, hiddenId, scale, assets, onError, 
         {underlay}
         {below.map(element => <ElementView key={element.id} element={element} image={imageFor(element)} />)}
       </Layer>
-      <Layer>{index >= 0 && preview && <ElementView element={preview} image={imageFor(preview)} />}</Layer>
+      <Layer>
+        {moving.filter(element => orderOf(element) < index).map(element => <ElementView key={element.id} element={element} image={imageFor(element)} />)}
+        {index >= 0 && preview && <ElementView element={preview} image={imageFor(preview)} />}
+        {moving.filter(element => orderOf(element) >= index).map(element => <ElementView key={element.id} element={element} image={imageFor(element)} />)}
+      </Layer>
       <Layer>{above.map(element => <ElementView key={element.id} element={element} image={imageFor(element)} />)}</Layer>
     </Stage>}
   </div>;

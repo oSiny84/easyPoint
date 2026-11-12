@@ -17,13 +17,15 @@ type Props = {
   onOpenFile: () => void; onSaveFile: () => void; onSave: () => void; saveDisabled: boolean; readOnly?: boolean; onHome: () => void; onNew: () => void; exporting: boolean; exportProgress: ExportProgress | null; exportNote: string; onOpenDownload: () => void; onExport: (kind: string) => void; onCancelExport: () => void; onPresent: () => void;
   // 애니메이션 편집기: 발표 단추의 이름(재생)과 형식 목록 맨 위에 더하는 형식(영상). 주지 않으면 슬라이드 동작이다.
   presentLabel?: string; extraFormats?: { id: string; label: string; note: string }[];
+  // 만화 편집기: 더한 형식만 보이고 PowerPoint·PDF는 감춘다. 더한 형식이 없으면 감추지 않는다.
+  hideBuiltinFormats?: boolean;
 };
 
 export function TopBar(props: Props) {
   const [fileMenu, setFileMenu] = useState<MenuAnchor | null>(null);
   const [shareMenu, setShareMenu] = useState<MenuAnchor | null>(null);
   const [download, setDownload] = useState<MenuAnchor | null>(null);
-  const formats = [...(props.extraFormats ?? []), ...FORMATS];
+  const formats = [...(props.extraFormats ?? []), ...(props.hideBuiltinFormats && props.extraFormats?.length ? [] : FORMATS)];
   const [format, setFormat] = useState<string>(formats[0].id);
   const presentLabel = props.presentLabel ?? '발표';
 
