@@ -55,7 +55,7 @@ test('형식 구분: 슬라이드 원본은 애니메이션에서, 애니메이�
   expect(await deserializeAnimation(slideFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: '애니메이션 작품 파일이 아니에요.' });
   const animationFile = await serializeAnimation(loadAnimationSample(), resolver());
   expect(animationFile.ok).toBe(true); if (!animationFile.ok) return;
-  expect(await deserializeProject(animationFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: 'CanvaCraft 작품 파일이 아니에요.' });
+  expect(await deserializeProject(animationFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: '슬라이드 작품 파일이 아니에요.' });
 });
 
 const damaged: [string, () => Promise<Uint8Array>, string][] = [

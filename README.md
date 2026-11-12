@@ -1,4 +1,6 @@
-# CanvaCraft
+# easyCraft
+
+앱 이름은 2026-11-12에 CanvaCraft에서 easyCraft로 바꿨습니다. 원본 파일 확장자(`.canvacraft` 등)와 브라우저 저장소 이름은 예전 작품이 그대로 열리도록 바꾸지 않았습니다.
 
 어린이용 슬라이드 편집기를 만드는 프로젝트입니다. 시작 템플릿을 열거나 사진·배경·요소 그림을 넣어 옮기고 크기를 바꾸고, 저장하고, PPT·PDF로 내려받을 수 있습니다. 글씨 입력과 그리기 도구는 아직 없습니다.
 
@@ -24,7 +26,7 @@ npm test
 
 ## 집에서 쓰기
 
-[Releases](https://github.com/oSiny84/easyPoint/releases)에서 `CanvaCraft.exe`를 받거나, `npm run exe`로 `artifacts/release/CanvaCraft.exe`를 만들어 옮긴 뒤 더블클릭합니다. Node.js나 인터넷이 필요 없습니다.
+[Releases](https://github.com/oSiny84/easyCraft/releases)에서 `easyCraft.exe`를 받거나, `npm run exe`로 `artifacts/release/easyCraft.exe`를 만들어 옮긴 뒤 더블클릭합니다. Node.js나 인터넷이 필요 없습니다.
 
 ## 문서
 

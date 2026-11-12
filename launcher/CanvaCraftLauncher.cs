@@ -1,4 +1,5 @@
-// 더블클릭하면 CanvaCraft를 브라우저로 여는 단일 실행 파일.
+// 더블클릭하면 easyCraft를 브라우저로 여는 단일 실행 파일.
+// 앱 이름은 2026-11-12에 CanvaCraft에서 easyCraft로 바꿨다. 포트 확인 응답("canvacraft ")은 예전 실행 파일과 서로 알아보도록 그대로 둔다.
 // 앱 파일(dist)을 안에 품고 이 컴퓨터 안에서만 내준다. 인터넷이나 Node.js가 필요 없고 사진이 밖으로 나가지 않는다.
 // Windows 10·11에 기본으로 있는 .NET Framework 4로 돌아간다. 빌드는 scripts/build-exe.mjs가 한다(C# 5).
 using System;
@@ -15,8 +16,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-[assembly: AssemblyTitle("CanvaCraft")]
-[assembly: AssemblyProduct("CanvaCraft")]
+[assembly: AssemblyTitle("easyCraft")]
+[assembly: AssemblyProduct("easyCraft")]
 
 static class Launcher
 {
@@ -72,7 +73,7 @@ static class Launcher
         }
     }
 
-    // 포트가 이미 쓰이면 먼저 켜 둔 CanvaCraft인지 확인한다. 맞으면 그쪽을 연다.
+    // 포트가 이미 쓰이면 먼저 켜 둔 easyCraft(예전 이름 CanvaCraft 포함)인지 확인한다. 맞으면 그쪽을 연다.
     static int AlreadyRunning(bool quiet)
     {
         string running = Probe();
@@ -82,9 +83,9 @@ static class Launcher
             return 0;
         }
         string message = running != null
-            ? "이전 버전의 CanvaCraft가 켜져 있어요.\n오른쪽 아래 알림 영역의 CanvaCraft 아이콘에서 끝내기를 누른 뒤 다시 실행해 주세요."
-            : "다른 프로그램이 CanvaCraft의 연결 번호(" + Port + ")를 쓰고 있어요.\n컴퓨터를 다시 켠 뒤 실행해 주세요.";
-        if (!quiet) MessageBox.Show(message, "CanvaCraft", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            ? "이전 버전이 켜져 있어요.\n오른쪽 아래 알림 영역의 easyCraft(예전 이름 CanvaCraft) 아이콘에서 끝내기를 누른 뒤 다시 실행해 주세요."
+            : "다른 프로그램이 easyCraft의 연결 번호(" + Port + ")를 쓰고 있어요.\n컴퓨터를 다시 켠 뒤 실행해 주세요.";
+        if (!quiet) MessageBox.Show(message, "easyCraft", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         return 2;
     }
 
@@ -112,7 +113,7 @@ static class Launcher
         try { Process.Start(Url); }
         catch (Exception)
         {
-            MessageBox.Show("브라우저를 열지 못했어요. 브라우저 주소 창에 아래 주소를 넣어 주세요.\n\n" + Url, "CanvaCraft", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show("브라우저를 열지 못했어요. 브라우저 주소 창에 아래 주소를 넣어 주세요.\n\n" + Url, "easyCraft", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 
@@ -122,10 +123,10 @@ static class Launcher
         using (NotifyIcon tray = new NotifyIcon())
         using (ContextMenuStrip menu = new ContextMenuStrip())
         {
-            menu.Items.Add("CanvaCraft 열기", null, (s, e) => OpenBrowser());
+            menu.Items.Add("easyCraft 열기", null, (s, e) => OpenBrowser());
             menu.Items.Add("끝내기", null, (s, e) => Application.Exit());
             tray.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
-            tray.Text = "CanvaCraft";
+            tray.Text = "easyCraft";
             tray.ContextMenuStrip = menu;
             tray.DoubleClick += (s, e) => OpenBrowser();
             tray.Visible = true;

@@ -21,7 +21,7 @@ export async function exportComicPdf(snapshot: ComicProject, resolve: BlobResolv
   try {
     const layout = pageLayout(snapshot.layout); const perPage = panelsPerPage(snapshot.layout);
     const pages = pageCount(snapshot.slides.length, snapshot.layout);
-    const pdf = await PDFDocument.create(); pdf.setTitle(snapshot.title); pdf.setProducer('CanvaCraft'); pdf.setCreator('CanvaCraft');
+    const pdf = await PDFDocument.create(); pdf.setTitle(snapshot.title); pdf.setProducer('easyCraft'); pdf.setCreator('easyCraft');
     for (let page = 0; page < pages; page++) {
       if (options.signal?.aborted) return cancelled();
       const composed = await composePage(snapshot, page, resolve, EXPORT_PIXELS_PER_POINT);

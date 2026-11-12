@@ -34,7 +34,7 @@ export function StartScreen({ note, loadRecent, onChoose, onOpen }: Props) {
   }, [loadRecent]);
 
   return <div className="home start">
-    <header className="topbar"><strong className="brand">CanvaCraft</strong></header>
+    <header className="topbar"><strong className="brand">easyCraft</strong></header>
     <main className="home-body">
       <p className="home-status" role="status">{status}</p>
       <h1 className="start-title">무엇을 만들까요?</h1>

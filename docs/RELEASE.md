@@ -6,7 +6,7 @@
 
 | 항목 | 판단 | 내용 |
 |---|---|---|
-| 이름과 화면 권리 | **확인 후 결정** | Canva와 비슷한 배치와 CanvaCraft라는 이름을 공개해도 되는지 검토하지 않았다. 저장소 이름은 easyPoint다. 소스와 실행 파일은 이 검토 전에 공개됐다 |
+| 이름과 화면 권리 | **확인 후 결정** | Canva와 비슷한 배치를 공개해도 되는지 검토하지 않았다. 앱 이름은 Canva와 겹치지 않게 2026-11-12에 CanvaCraft에서 easyCraft로 바꿨다(v0.0.6까지의 실행 파일은 `CanvaCraft.exe`). GitHub 저장소 이름도 같은 날 easyPoint에서 easyCraft로 바꿨다(예전 주소는 GitHub이 넘겨준다). 소스와 실행 파일은 이 검토 전에 공개됐다 |
 | 터치 기기·실제 호스트·8GB 기기 | **확인 후 결정** | [통합 시험 보고서](INTEGRATION_REPORT_2026-11-06.md)의 미확인 항목 |
 | 어린이 사용성 관찰 | **확인 후 결정** | 미실시 |
 
@@ -18,7 +18,7 @@
 npm run exe
 ```
 
-`artifacts/release/CanvaCraft.exe`(v0.0.6 약 64MB: 그림 배경 16장 약 39MB, 배경음악·효과음 약 8MB)가 생긴다. 앱 파일을 품고 있고, 실행하면 `http://127.0.0.1:47831/`을 기본 브라우저로 연다. 이 컴퓨터 안의 연결만 받으므로 방화벽 창이 뜨지 않고 사진이 밖으로 나가지 않는다. Windows 10·11에 기본으로 있는 .NET Framework 4로 돌아가며, 빌드에도 Windows 기본 C# 컴파일러만 쓴다.
+`artifacts/release/easyCraft.exe`(v0.0.6은 `CanvaCraft.exe`, 약 64MB: 그림 배경 16장 약 39MB, 배경음악·효과음 약 8MB)가 생긴다. 앱 파일을 품고 있고, 실행하면 `http://127.0.0.1:47831/`을 기본 브라우저로 연다. 이 컴퓨터 안의 연결만 받으므로 방화벽 창이 뜨지 않고 사진이 밖으로 나가지 않는다. Windows 10·11에 기본으로 있는 .NET Framework 4로 돌아가며, 빌드에도 Windows 기본 C# 컴파일러만 쓴다.
 
 | 항목 | 내용 |
 |---|---|
@@ -33,7 +33,7 @@ npm run exe
 실행 파일을 GitHub에 올릴 때:
 
 ```bash
-gh release create v<버전> artifacts/release/CanvaCraft.exe --target <커밋된 브랜치> --prerelease --title "CanvaCraft <버전>" --notes-file <안내 파일>
+gh release create v<버전> artifacts/release/easyCraft.exe --target <커밋된 브랜치> --prerelease --title "easyCraft <버전>" --notes-file <안내 파일>
 ```
 
 되돌리려면 `gh release delete v<버전> --cleanup-tag`로 지운다. 이미 받은 사람의 파일까지 지울 수는 없다.
@@ -79,7 +79,7 @@ Vercel은 GitHub 저장소를 연결하면 푸시할 때마다 직접 빌드해�
 **처음 한 번(사용자)**
 
 1. `vercel.json`이 main에 있는지 본다(2026-11-12에 합쳤다).
-2. vercel.com에 GitHub 계정으로 들어가 `Add New` → `Project`에서 `easyPoint` 저장소를 가져온다. Framework는 Vite로 잡히고 빌드 설정은 `vercel.json`을 따르므로 바꾸지 않는다.
+2. vercel.com에 GitHub 계정으로 들어가 `Add New` → `Project`에서 `easyCraft` 저장소(2026-11-12 전 이름 easyPoint)를 가져온다. Framework는 Vite로 잡히고 빌드 설정은 `vercel.json`을 따르므로 바꾸지 않는다.
 3. Vercel은 기본 브랜치(main)를 정식 주소로 올린다. 2026-11-12 영상·애니메이션·만화와 `vercel.json`을 main에 합쳤으므로 Production 브랜치는 바꾸지 않는다.
 4. 정식 주소에서 아래 "올린 뒤 확인"을 한다.
 

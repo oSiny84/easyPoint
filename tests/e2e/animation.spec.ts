@@ -176,7 +176,7 @@ test('원본 파일(.canvaanim) 왕복과 형식 구분', async ({ page }) => {
   await page.getByRole('button', { name: '시작 화면' }).click();
   await slideHome(page);
   await page.getByTestId('open-file').setInputFiles(await animationFile());
-  await expect(status(page)).toContainText('CanvaCraft 작품 파일이 아니에요');
+  await expect(status(page)).toContainText('슬라이드 작품 파일이 아니에요');
   await expect(page.getByTestId('paper')).toHaveCount(0);
 });
 

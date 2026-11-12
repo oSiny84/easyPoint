@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { chromium } from '@playwright/test';
 
-const EXE = 'artifacts/release/CanvaCraft.exe', PORT = 47831, URL = `http://127.0.0.1:${PORT}/`;
+const EXE = 'artifacts/release/easyCraft.exe', PORT = 47831, URL = `http://127.0.0.1:${PORT}/`;
 const wait = ms => new Promise(next => setTimeout(next, ms));
 const failures = [];
 const check = (name, ok, detail = '') => { console.log(`${ok ? 'ok  ' : 'FAIL'} ${name} ${detail}`); if (!ok) failures.push(name); };
@@ -26,7 +26,7 @@ async function ready() {
 
 // 사용자가 켜 둔 실행 파일이 있으면 시험이 그것을 보게 되므로 멈춘다. 대신 끄지 않는다.
 if (await fetch(URL).then(response => response.arrayBuffer().then(() => true), () => false)) {
-  console.error('CanvaCraft.exe가 이미 켜져 있어요. 알림 영역에서 끝내기를 누른 뒤 다시 시험해 주세요.');
+  console.error('easyCraft.exe가 이미 켜져 있어요. 알림 영역에서 끝내기를 누른 뒤 다시 시험해 주세요.');
   process.exit(1);
 }
 

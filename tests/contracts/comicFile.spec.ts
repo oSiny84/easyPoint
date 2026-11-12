@@ -59,7 +59,7 @@ test('형식 구분: 세 편집기는 서로의 원본 파일을 열지 않는�
   if (!slideFile.ok || !animationFile.ok || !comicFile.ok) return;
   expect(await deserializeComic(slideFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: '만화 작품 파일이 아니에요.' });
   expect(await deserializeComic(animationFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: '만화 작품 파일이 아니에요.' });
-  expect(await deserializeProject(comicFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: 'CanvaCraft 작품 파일이 아니에요.' });
+  expect(await deserializeProject(comicFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: '슬라이드 작품 파일이 아니에요.' });
   expect(await deserializeAnimation(comicFile.blob, nextId)).toMatchObject({ ok: false, code: 'INVALID_VALUE', message: '애니메이션 작품 파일이 아니에요.' });
 });
 

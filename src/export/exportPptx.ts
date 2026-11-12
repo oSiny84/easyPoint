@@ -79,7 +79,7 @@ export async function finishPptx(blob: Blob): Promise<Blob> {
 // mode='editable'은 글씨·사진을 개별 요소로, 'image'는 슬라이드 전체를 이미지로 넣는다. 자동으로 바꾸지 않는다.
 export async function exportPptx(snapshot: Project, resolve: BlobResolver, mode: 'editable' | 'image', options: ExportOptions = {}, signal?: AbortSignal): Promise<ExportResult> {
   try {
-    const pptx = new pptxgen(); pptx.layout = 'LAYOUT_WIDE'; pptx.author = 'CanvaCraft'; pptx.title = snapshot.title;
+    const pptx = new pptxgen(); pptx.layout = 'LAYOUT_WIDE'; pptx.author = 'easyCraft'; pptx.title = snapshot.title;
     // 모양 그대로 PPT는 PNG의 라이선스 정보가 사라지므로 첫 장 노트에 고지를 넣는다. 편집용은 PNG 바이트를 그대로 넣어 유지된다.
     const notice = mode === 'image' ? await licenseNotice(snapshot, resolve) : null;
     let done = 0;

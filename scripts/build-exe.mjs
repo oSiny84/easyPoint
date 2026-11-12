@@ -11,10 +11,10 @@ if (!existsSync(compiler)) throw new Error(`C# 컴파일러가 없어요: ${comp
 if (!existsSync('dist/index.html')) throw new Error('dist가 없어요. npm run build를 먼저 해 주세요.');
 
 // 실행 중인 파일은 덮어쓸 수 없다. 컴파일러의 알 수 없는 오류 대신 할 일을 알려 준다.
-const target = 'artifacts/release/CanvaCraft.exe';
+const target = 'artifacts/release/easyCraft.exe';
 if (existsSync(target)) {
   try { closeSync(openSync(target, 'r+')); }
-  catch { console.error('CanvaCraft.exe가 실행 중이에요. 오른쪽 아래 알림 영역의 CanvaCraft 아이콘에서 끝내기를 누른 뒤 다시 실행해 주세요.'); process.exit(1); }
+  catch { console.error('easyCraft.exe가 실행 중이에요. 오른쪽 아래 알림 영역의 easyCraft 아이콘에서 끝내기를 누른 뒤 다시 실행해 주세요.'); process.exit(1); }
 }
 
 const walk = dir => readdirSync(dir).flatMap(name => { const path = join(dir, name); return statSync(path).isDirectory() ? walk(path) : [path]; });
@@ -59,11 +59,11 @@ try {
   writeFileSync(join(work, 'build.txt'), createHash('sha256').update(app).digest('hex').slice(0, 16));
   writeFileSync(join(work, 'icon.ico'), iconFile([16, 32, 48]));
   mkdirSync('artifacts/release', { recursive: true });
-  const output = resolve('artifacts/release/CanvaCraft.exe');
+  const output = resolve('artifacts/release/easyCraft.exe');
   execFileSync(compiler, ['/nologo', '/target:winexe', '/optimize+', '/codepage:65001', `/out:${output}`, `/win32icon:${join(work, 'icon.ico')}`,
     `/resource:${join(work, 'app.zip')},app.zip`, `/resource:${join(work, 'build.txt')},build.txt`,
     '/r:System.IO.Compression.dll', '/r:System.Windows.Forms.dll', '/r:System.Drawing.dll', '/r:System.Core.dll',
     resolve('launcher/CanvaCraftLauncher.cs')], { stdio: 'inherit' });
   const bytes = readFileSync(output);
-  console.log(JSON.stringify({ file: 'artifacts/release/CanvaCraft.exe', megabytes: +(bytes.length / 1048576).toFixed(1), sha256: createHash('sha256').update(bytes).digest('hex') }));
+  console.log(JSON.stringify({ file: 'artifacts/release/easyCraft.exe', megabytes: +(bytes.length / 1048576).toFixed(1), sha256: createHash('sha256').update(bytes).digest('hex') }));
 } finally { rmSync(work, { recursive: true, force: true }); }

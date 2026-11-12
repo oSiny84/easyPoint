@@ -366,7 +366,7 @@ test('원본 파일: 내려받아 다시 열면 같은 작품이고, 다른 편�
   await page.getByRole('button', { name: '시작 화면' }).click();
   await page.getByRole('button', { name: '슬라이드 만들기' }).click();
   await page.getByTestId('open-file').setInputFiles({ name: '만화.canvacraft', mimeType: 'application/zip', buffer: saved });
-  await expect(status(page)).toHaveText('CanvaCraft 작품 파일이 아니에요.');
+  await expect(status(page)).toHaveText('슬라이드 작품 파일이 아니에요.');
 });
 
 test('내려받기 창에는 만화책 PDF와 그림 PNG만 있다', async ({ page }) => {

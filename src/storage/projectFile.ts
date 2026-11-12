@@ -98,7 +98,7 @@ export async function deserializeProject(source: Blob | Uint8Array, newId: () =>
   catch { return invalid('작품 파일을 읽지 못했어요.'); }
   if ('tooBig' in manifest || 'tooBig' in parsed) return fail('LIMIT_EXCEEDED', '작품 파일의 문서가 너무 커요.');
   const head = manifest.value as { format?: unknown; schemaVersion?: unknown } | undefined;
-  if (!head || head.format !== FORMAT || typeof head.schemaVersion !== 'number') return invalid('CanvaCraft 작품 파일이 아니에요.');
+  if (!head || head.format !== FORMAT || typeof head.schemaVersion !== 'number') return invalid('슬라이드 작품 파일이 아니에요.');
   if (head.schemaVersion > SCHEMA_VERSION) return fail('UNSUPPORTED_VERSION', '더 새로운 버전에서 만든 작품이라 열 수 없어요.');
 
   const checked = validateProject(parsed.value);

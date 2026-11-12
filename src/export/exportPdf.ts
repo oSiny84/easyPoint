@@ -9,7 +9,7 @@ const QUALITY = 0.88;
 
 export async function exportPdf(snapshot: Project, resolve: BlobResolver, options: ExportOptions = {}, signal?: AbortSignal): Promise<ExportResult> {
   try {
-    const pdf = await PDFDocument.create(); pdf.setTitle(snapshot.title); pdf.setProducer('CanvaCraft'); pdf.setCreator('CanvaCraft');
+    const pdf = await PDFDocument.create(); pdf.setTitle(snapshot.title); pdf.setProducer('easyCraft'); pdf.setCreator('easyCraft');
     let done = 0;
     for (const slide of snapshot.slides) {
       if (signal?.aborted) return fail('CANCELLED', '내보내기를 취소했어요.');
