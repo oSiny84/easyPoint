@@ -1,0 +1,20 @@
+{
+  "id": "art-character-dragon-gardener",
+  "label": "해바라기를 든 아기 용",
+  "category": "그림책 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "해바라기를 든 아기 용",
+    "그림책 친구",
+    "용",
+    "아기 용",
+    "해바라기",
+    "꽃",
+    "정원",
+    "캐릭터",
+    "일러스트"
+  ],
+  "prompt": "ONE isolated original adorable baby mint-green dragon gardener holding a tiny terracotta flowerpot with one golden sunflower. Rounded friendly snout, two little horns, small peach wings, curled tail, happy expression, no fire or fangs. Premium watercolor and gouache picture-book illustration with delicate scales and tactile soft colors. Full body visible, subject centered within 75% canvas leaving wide transparent padding all sides. Single character, transparent PNG background, no ground or external shadow, no lettering, logo, watermark or border.",
+  "sourceFile": "art-expansion-2026-11-12/element-06-dragon-gardener.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

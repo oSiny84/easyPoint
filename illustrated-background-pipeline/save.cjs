@@ -19,7 +19,10 @@ function crc32(bytes) {
   for (const b of bytes) { c ^= b; for (let i = 0; i < 8; i++) c = (c >>> 1) ^ ((c & 1) ? 0xedb88320 : 0); }
   return (c ^ 0xffffffff) >>> 0;
 }
-const notice = 'AI-generated illustration created for CanvaCraft with OpenAI image generation, 2026-11-06. No third-party reference artwork was supplied. This is a provenance notice, not a claim of exclusive copyright or a third-party software license.';
+// 생성한 날짜를 메타데이터의 date로 받는다. 처음 16장은 2026-11-06에 만들었다.
+const date = meta.date || '2026-11-06';
+if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('Invalid date');
+const notice = 'AI-generated illustration created for CanvaCraft with OpenAI image generation, ' + date + '. No third-party reference artwork was supplied. This is a provenance notice, not a claim of exclusive copyright or a third-party software license.';
 const data = Buffer.from('License\0' + notice, 'latin1');
 const typeData = Buffer.concat([Buffer.from('tEXt'), data]);
 const chunk = Buffer.alloc(data.length + 12);

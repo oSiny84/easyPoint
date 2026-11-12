@@ -1,0 +1,20 @@
+{
+  "id": "art-character-otter-scientist",
+  "label": "새싹을 관찰하는 수달",
+  "category": "그림책 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "새싹을 관찰하는 수달",
+    "그림책 친구",
+    "수달",
+    "과학",
+    "새싹",
+    "실험",
+    "동물",
+    "캐릭터",
+    "일러스트"
+  ],
+  "prompt": "ONE isolated original full-body character: adorable otter scientist wearing a simple cream lab coat and round glasses, holding a small potted sprout in both paws, curious warm smile. Premium watercolor/gouache children's book art, rich cocoa fur, mint accents, beautifully painted texture, readable at thumbnail size. Entire tail and feet visible with generous padding. Transparent background, no setting, no ground shadow, no words, logos, border, sticker outline or watermark. Square composition, single character.",
+  "sourceFile": "art-expansion-2026-11-12/element-02-otter-scientist.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

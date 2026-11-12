@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import { isHeic, readImageHeader, readPngText, sha256Hex } from '../../src/assets/imageHeader';
-import { categoriesOf, placeInCenter, searchLibrary, type Library, type ProvidedBackground, type TemplateItem } from '../../src/assets/library';
+import { categoriesOf, placeInCenter, searchLibrary, type Library, type LibraryItem, type ProvidedBackground, type TemplateItem } from '../../src/assets/library';
 import { deserializeProject } from '../../src/storage/projectFile';
 import { nextId } from './helpers';
 import { LIMITS } from '../../src/domain/limits';
@@ -10,6 +10,7 @@ const library: Library = JSON.parse(fs.readFileSync('public/library/manifest.jso
 const backgrounds: ProvidedBackground[] = JSON.parse(fs.readFileSync('public/backgrounds/manifest.json', 'utf8')).assets;
 const illustrated: ProvidedBackground[] = JSON.parse(fs.readFileSync('public/backgrounds-illustrated/manifest.json', 'utf8')).assets;
 const templates: TemplateItem[] = JSON.parse(fs.readFileSync('public/templates/manifest.json', 'utf8')).templates;
+const characters: (LibraryItem & { sourceFile: string })[] = JSON.parse(fs.readFileSync('public/characters-illustrated/manifest.json', 'utf8')).assets;
 const names = (query: string, kind: 'all' | 'shape' = 'all') => searchLibrary(library.assets, { query, kind }).map(item => item.id);
 
 test('라이브러리 수량: 도형 24, 캐릭터 60, 스티커 36', () => {
@@ -41,9 +42,9 @@ test('제공 배경 24종: 해시·크기·16:9·라이선스 정보', async () 
 });
 
 // 생성 도구의 크기 그대로라 정확한 16:9가 아니다(0.05% 차이). 화면과 출력은 가운데 맞춰 자른다.
-test('그림 배경 16종: 해시·크기·비율·출처 정보·작은 미리보기', async () => {
-  expect(illustrated.length).toBe(16);
-  expect(new Set([...illustrated, ...backgrounds].map(item => item.id)).size).toBe(40);
+test('그림 배경 20종: 해시·크기·비율·출처 정보·작은 미리보기', async () => {
+  expect(illustrated.length).toBe(20);
+  expect(new Set([...illustrated, ...backgrounds].map(item => item.id)).size).toBe(44);
   for (const item of illustrated) {
     const bytes = new Uint8Array(fs.readFileSync(`public${item.image}`));
     expect(await sha256Hex(bytes)).toBe(item.pngSha256);
@@ -60,6 +61,40 @@ test('그림 배경 16종: 해시·크기·비율·출처 정보·작은 미리�
     const thumbnail = new Uint8Array(fs.readFileSync(`public${item.thumbnail}`));
     expect(readImageHeader(thumbnail)).toMatchObject({ width: 320, height: 180 });
     expect(thumbnail.length).toBeLessThan(300 * 1024);
+  }
+});
+
+// 2026-11-12 추가한 그림 캐릭터 묶음. 기본 120개와 manifest를 따로 두고 loadLibrary가 합친다.
+test('그림 캐릭터 17종: 해시·투명 PNG·크기·출처 정보·작은 미리보기·분류', async () => {
+  expect(characters.length).toBe(17);
+  expect(new Set([...characters, ...library.assets].map(item => item.id)).size).toBe(137);
+  expect(new Set(characters.map(item => item.label)).size).toBe(17);
+  expect(characters.every(item => item.kind === 'character')).toBe(true);
+  expect(categoriesOf(characters, 'character')).toEqual(['그림책 친구', '몬스터 친구']);
+  expect(characters.filter(item => item.category === '그림책 친구').length).toBe(6);
+  expect(characters.filter(item => item.category === '몬스터 친구').length).toBe(11);
+  // 꽃잎도롱은 완성본만 쓴다.
+  expect(characters.some(item => item.sourceFile.includes('draft'))).toBe(false);
+  expect(characters.filter(item => item.sourceFile.includes('blossom-axolotl')).map(item => item.sourceFile)).toEqual(['creature-friends/08-blossom-axolotl.png']);
+  for (const item of characters) {
+    const bytes = new Uint8Array(fs.readFileSync(`public${item.image}`));
+    expect(await sha256Hex(bytes)).toBe(item.pngSha256);
+    expect(readImageHeader(bytes)).toEqual({ mime: 'image/png', width: item.width, height: item.height, animated: false });
+    // 색 형식 6(RGBA). 투명 배경이 아니면 슬라이드 위에 네모가 생긴다. 픽셀 검사는 e2e에서 한다.
+    expect(bytes[25]).toBe(6);
+    expect(bytes.length).toBeLessThan(LIMITS.assetBytesMax);
+    expect(Math.max(item.width, item.height)).toBeLessThanOrEqual(LIMITS.assetSideMax);
+    expect(item.license).toBe('AI-generated');
+    const notice = readPngText(bytes, 'License');
+    expect(notice).toContain('AI-generated');
+    expect(notice).not.toContain('MIT License');
+    expect(item.thumbnail).not.toBe(item.image);
+    const thumbnail = new Uint8Array(fs.readFileSync(`public${item.thumbnail}`));
+    expect(readImageHeader(thumbnail)).toMatchObject({ width: 160, height: 160 });
+    expect(thumbnail.length).toBeLessThan(64 * 1024);
+    const box = placeInCenter(item.width, item.height, item.defaultWidth, item.defaultHeight);
+    expect(box.x).toBeGreaterThanOrEqual(0); expect(box.y).toBeGreaterThanOrEqual(0);
+    expect(Math.abs(box.width / box.height - item.width / item.height) / (item.width / item.height)).toBeLessThan(LIMITS.imageAspectTolerance);
   }
 });
 

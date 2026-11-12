@@ -19,7 +19,11 @@ export const libraryUrl = (path: string) => `${import.meta.env?.BASE_URL ?? '/'}
 
 const once = <T,>(load: () => Promise<T>) => { let value: Promise<T> | undefined; return () => (value ??= load().catch(error => { value = undefined; throw error; })); };
 const fetchJson = async <T,>(path: string): Promise<T> => { const response = await fetch(libraryUrl(path)); if (!response.ok) throw new Error(String(response.status)); return response.json() as Promise<T>; };
-export const loadLibrary = once(() => fetchJson<Library>('/library/manifest.json'));
+// 그림 캐릭터 묶음(characters-illustrated)은 만드는 도구가 달라 manifest를 따로 두고 여기서 합친다. 그림 배경처럼 먼저 보여 준다.
+export const loadLibrary = once(async () => {
+  const [starter, illustrated] = await Promise.all([fetchJson<Library>('/library/manifest.json'), fetchJson<{ assets: LibraryItem[] }>('/characters-illustrated/manifest.json')]);
+  return { ...starter, assets: [...illustrated.assets, ...starter.assets] };
+});
 // 그림 배경을 먼저 보여 준다. 두 묶음은 만드는 도구가 달라 manifest를 따로 둔다.
 export const loadBackgrounds = once(async () => {
   const [illustrated, provided] = await Promise.all(['/backgrounds-illustrated/manifest.json', '/backgrounds/manifest.json'].map(path => fetchJson<{ assets: ProvidedBackground[] }>(path)));

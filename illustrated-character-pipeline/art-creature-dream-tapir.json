@@ -1,0 +1,20 @@
+{
+  "id": "art-creature-dream-tapir",
+  "label": "꿈꾸는꼬마맥",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "꿈꾸는꼬마맥",
+    "몬스터 친구",
+    "맥",
+    "꿈",
+    "달",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "꿈 속성"
+  ],
+  "prompt": "Original cute lilac dream-element baby tapir with ivory muzzle, crescent markings, cel-shaded clean contour, transparent background.",
+  "sourceFile": "creature-friends/10-dream-tapir.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

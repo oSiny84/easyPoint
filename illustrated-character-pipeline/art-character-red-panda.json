@@ -1,0 +1,20 @@
+{
+  "id": "art-character-red-panda",
+  "label": "탐험가 레서판다",
+  "category": "그림책 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "탐험가 레서판다",
+    "그림책 친구",
+    "레서판다",
+    "탐험",
+    "돋보기",
+    "가방",
+    "동물",
+    "캐릭터",
+    "일러스트"
+  ],
+  "prompt": "ONE isolated original character asset for a children's slide editor. A charming little red panda explorer standing upright holding a tiny magnifying glass, teal backpack, warm friendly smile, full body including tail and feet entirely visible, ample transparent padding on every side. Premium hand-painted gouache storybook illustration, refined soft fur details, russet orange cream and teal, elegant readable silhouette. Single character only, no ground, no scene, no shadows outside character, no text, logo, watermark, border or sticker outline. TRUE transparent background PNG. Square composition.",
+  "sourceFile": "art-expansion-2026-11-12/element-01-red-panda.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

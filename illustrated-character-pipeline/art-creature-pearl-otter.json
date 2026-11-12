@@ -1,0 +1,19 @@
+{
+  "id": "art-creature-pearl-otter",
+  "label": "물방울해달",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "물방울해달",
+    "몬스터 친구",
+    "해달",
+    "물방울",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "물 속성"
+  ],
+  "prompt": "ONE original adorable collectible water-element monster: a round sky-blue baby sea otter with cream muzzle and belly, small rounded fin-like ears, a translucent teardrop-shaped tuft on forehead, broad soft turquoise paddle tail curling beside body. Holding a single shiny pearl with both tiny paws, curious happy smile, large sparkling navy eyes. Clean polished Japanese creature-collecting game art, crisp deep blue outlines and soft cel shading, original memorable silhouette, not an existing franchise character. Full body centered using only 75% square canvas, generous transparent padding all sides. True transparent PNG background. Single character, no scene, ground, extra bubbles, text, logos, watermark, frame or sticker outline.",
+  "sourceFile": "creature-friends/03-pearl-otter.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

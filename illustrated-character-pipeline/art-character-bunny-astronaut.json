@@ -1,0 +1,19 @@
+{
+  "id": "art-character-bunny-astronaut",
+  "label": "손 흔드는 우주 토끼",
+  "category": "그림책 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "손 흔드는 우주 토끼",
+    "그림책 친구",
+    "토끼",
+    "우주",
+    "우주인",
+    "동물",
+    "캐릭터",
+    "일러스트"
+  ],
+  "prompt": "One original adorable small cream bunny astronaut waving, mint and ivory spacesuit, transparent spherical helmet with ears inside, little orange boots. Premium watercolor gouache children's picture-book art, carefully crafted textures, friendly expressive face, full body floating pose. IMPORTANT subject occupies ONLY middle 75% of square canvas leaving at least 12% fully transparent margin on EVERY side including ears and feet. Single isolated character, genuine transparent background, no ground, shadow, stars, lettering, logos, watermark or sticker border.",
+  "sourceFile": "art-expansion-2026-11-12/element-04-bunny-astronaut.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

@@ -1,0 +1,19 @@
+{
+  "id": "art-character-reading-bear",
+  "label": "책 읽는 곰",
+  "category": "그림책 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "책 읽는 곰",
+    "그림책 친구",
+    "곰",
+    "책",
+    "독서",
+    "동물",
+    "캐릭터",
+    "일러스트"
+  ],
+  "prompt": "ONE isolated cute original bear librarian sitting cross-legged reading a teal hardback book, tiny round glasses, cream cardigan and coral scarf, warm expressive face. Premium children's storybook watercolor/gouache art, refined honey fur and knitted fabric textures. No writing on book. Entire ears and feet visible, character occupies central 75% square canvas with ample transparent margins. True transparent PNG background, no scene or ground shadow, no logos, watermark or sticker border. One character only.",
+  "sourceFile": "art-expansion-2026-11-12/element-05-reading-bear.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

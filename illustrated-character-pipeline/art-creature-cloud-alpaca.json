@@ -1,0 +1,19 @@
+{
+  "id": "art-creature-cloud-alpaca",
+  "label": "몽실알파카",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "몽실알파카",
+    "몬스터 친구",
+    "알파카",
+    "구름",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "바람 속성"
+  ],
+  "prompt": "ONE original adorable wind-element collectible monster: a tiny round lavender baby alpaca with fluffy white cloud-shaped wool collar and cloud-shaped tail, short soft lilac ears, four tiny sky-blue hooves, a little spiral tuft, big sparkling violet eyes and gentle cheerful smile. Bouncy three-quarter standing pose, compact unique silhouette. Polished Japanese creature-collecting game character art, clean indigo outlines, soft cel shading and luminous highlights, not any existing franchise creature. Entire body fits central 75% square canvas, ample transparent margins. Genuine transparent PNG background, no ground shadow, clouds outside body, text, logos, watermark, sticker border or scenery.",
+  "sourceFile": "creature-friends/04-cloud-alpaca.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

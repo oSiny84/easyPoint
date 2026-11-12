@@ -1,0 +1,20 @@
+{
+  "id": "art-creature-honey-beetle",
+  "label": "꿀방울딱정",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "꿀방울딱정",
+    "몬스터 친구",
+    "딱정벌레",
+    "꿀",
+    "벌레",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "꿀 속성"
+  ],
+  "prompt": "Create ONE original adorable collectible fantasy creature, a plump tiny beetle with honey-amber translucent domed shell, buttery yellow face, two short curved antennae with teardrop tips, six tiny rounded feet, big shiny brown eyes, small smile. The shell has subtle honeycomb facets, NOT a ladybug pattern. Cheerful three-quarter stance. Premium polished cel-shaded anime game creature art, clean dark amber contour, a unique compact silhouette, not an existing franchise character. Isolated full body centered in square PNG with wide margin, TRUE transparent background, no glow, haze, scene, ground shadow, words, logo, watermark or sticker border.",
+  "sourceFile": "creature-friends/11-honey-beetle.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

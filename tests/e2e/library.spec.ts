@@ -155,8 +155,8 @@ test('요소 패널: 탭·검색·색 선택·최근 사용, 클릭으로 가운
   await rail(page, '요소').click();
   const panel = page.getByRole('region', { name: '요소 패널' });
   const list = panel.getByRole('region', { name: '요소 목록' });
-  await expect(list.getByRole('heading')).toHaveText('120개');
-  for (const [tab, count] of [['도형', 24], ['캐릭터', 60], ['스티커', 36], ['전체', 120]] as const) {
+  await expect(list.getByRole('heading')).toHaveText('137개');
+  for (const [tab, count] of [['도형', 24], ['캐릭터', 77], ['스티커', 36], ['전체', 137]] as const) {
     await panel.getByRole('tab', { name: tab }).click();
     await expect(list.getByRole('heading')).toHaveText(`${count}개`);
   }
@@ -281,7 +281,7 @@ test('배경 패널: 분류와 검색으로 찾는다', async ({ page }) => {
   if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
   const panel = page.getByRole('region', { name: '배경 패널' });
   const cards = panel.locator('.background-card');
-  await expect(cards).toHaveCount(40);
+  await expect(cards).toHaveCount(44);
   await panel.getByRole('button', { name: '계절' }).click();
   await expect(cards).toHaveCount(8);
   await panel.getByRole('button', { name: '계절' }).click();
@@ -458,7 +458,7 @@ test('라이브러리 그림·사진·배경 작품의 저장·열기·PPT·PDF 
   void ids;
 });
 
-test('그림 배경 16종: 패널은 작은 미리보기만 받고, 고른 배경은 저장·다시 열기·PPT·PDF까지 유지된다', async ({ page, browser }) => {
+test('그림 배경 20종: 패널은 작은 미리보기만 받고, 고른 배경은 저장·다시 열기·PPT·PDF까지 유지된다', async ({ page, browser }) => {
   test.setTimeout(240_000);
   await fs.mkdir(OUT, { recursive: true });
   const { assets } = JSON.parse(await fs.readFile('public/backgrounds-illustrated/manifest.json', 'utf8')) as { assets: { label: string; pngSha256: string; recommendedTextColor: string }[] };
@@ -480,15 +480,15 @@ test('그림 배경 16종: 패널은 작은 미리보기만 받고, 고른 배�
     await panel.getByRole('button', { name: `배경 ${asset.label}` }).click();
     await expect.poll(async () => (await current(page)).background.assetId).toBe(asset.pngSha256);
   }
-  expect(originals.length).toBe(16);
+  expect(originals.length).toBe(20);
   const project = await doc(page);
   expect(project.slides.map((slide: any) => slide.background.assetId)).toEqual(assets.map(asset => asset.pngSha256));
 
-  // 마지막 장은 흰 글씨를 권하는 어두운 배경이다.
-  expect(assets[15].recommendedTextColor).toBe('#FFFFFF');
+  // 마지막 장은 흰 글씨를 권하는 어두운 배경이다(책 속으로 떠나는 밤).
+  expect(assets.at(-1)!.recommendedTextColor).toBe('#FFFFFF');
   await rail(page, '텍스트').click();
   await page.getByRole('button', { name: '본문 추가' }).click();
-  await page.keyboard.type('음악');
+  await page.keyboard.type('책');
   await page.keyboard.press('Escape');
   expect((await current(page)).elements[0].color).toBe('#FFFFFF');
   const edited = await doc(page);
@@ -521,12 +521,126 @@ test('그림 배경 16종: 패널은 작은 미리보기만 받고, 고른 배�
     await page.keyboard.press('Escape');
     sizes[name] = (await fs.stat(path.join(OUT, name))).size;
   }
-  console.log('그림 배경 16장 출력 크기(MB)', Object.fromEntries(Object.entries(sizes).map(([key, value]) => [key, +(value / 1048576).toFixed(1)])));
+  console.log('그림 배경 20장 출력 크기(MB)', Object.fromEntries(Object.entries(sizes).map(([key, value]) => [key, +(value / 1048576).toFixed(1)])));
   const pptx = await JSZip.loadAsync(await fs.readFile(path.join(OUT, 'illustrated-editable.pptx')));
-  expect(Object.keys(pptx.files).filter(name => /^ppt\/slides\/slide\d+\.xml$/.test(name)).length).toBe(16);
+  expect(Object.keys(pptx.files).filter(name => /^ppt\/slides\/slide\d+\.xml$/.test(name)).length).toBe(20);
   // 이 그림들은 MIT가 아니므로 Microsoft 고지를 넣지 않는다.
   const pdf = await PDFDocument.load(await fs.readFile(path.join(OUT, 'illustrated.pdf')), { updateMetadata: false });
-  expect(pdf.getPageCount()).toBe(16);
+  expect(pdf.getPageCount()).toBe(20);
+  expect(pdf.getSubject() ?? '').not.toContain('licenses.txt');
+  expect(errors).toEqual([]);
+});
+
+test('그림 캐릭터 17종: 캐릭터 분류에서 넣고, 투명한 그대로 저장·다시 열기·PPT·PDF까지 유지된다', async ({ page, browser }) => {
+  test.setTimeout(240_000);
+  await fs.mkdir(OUT, { recursive: true });
+  type Character = { id: string; label: string; category: string; image: string; pngSha256: string };
+  const { assets } = JSON.parse(await fs.readFile('public/characters-illustrated/manifest.json', 'utf8')) as { assets: Character[] };
+  const groups = [['그림책 친구', assets.filter(item => item.category === '그림책 친구')], ['몬스터 친구', assets.filter(item => item.category === '몬스터 친구')]] as const;
+  const originals: string[] = [], errors: string[] = [];
+  page.on('request', request => { if (request.url().includes('/characters-illustrated/png/')) originals.push(request.url()); });
+  page.on('pageerror', error => errors.push(error.message));
+  await start(page);
+
+  // 원본 픽셀: 네 모서리는 투명하고 가장자리 2px 안에 그림이 없다(잘리지 않았다). 알파 16 이하는 눈에 보이지 않는 생성 잔여로 본다.
+  const pixels = await page.evaluate(async (paths: string[]) => Promise.all(paths.map(async path => {
+    const bitmap = await createImageBitmap(await (await fetch(path)).blob());
+    const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
+    const context = canvas.getContext('2d')!; context.drawImage(bitmap, 0, 0);
+    const data = context.getImageData(0, 0, bitmap.width, bitmap.height).data, w = bitmap.width, h = bitmap.height;
+    const alpha = (x: number, y: number) => data[(y * w + x) * 4 + 3];
+    let edge = 0;
+    for (let x = 0; x < w; x++) for (const y of [0, 1, h - 2, h - 1]) if (alpha(x, y) > 16) edge++;
+    for (let y = 0; y < h; y++) for (const x of [0, 1, w - 2, w - 1]) if (alpha(x, y) > 16) edge++;
+    return { corners: [alpha(0, 0), alpha(w - 1, 0), alpha(0, h - 1), alpha(w - 1, h - 1)].every(value => value <= 16), edge };
+  })), assets.map(item => item.image));
+  for (const result of pixels) expect(result).toEqual({ corners: true, edge: 0 });
+  originals.length = 0;
+
+  // 1장은 어두운 단색 배경 위에 그림책 친구, 2장은 몬스터 친구를 넣는다.
+  if (await rail(page, '배경').getAttribute('aria-pressed') !== 'true') await rail(page, '배경').click();
+  await page.getByRole('region', { name: '배경 패널' }).getByRole('button', { name: '배경 색 #334155' }).click();
+  await rail(page, '요소').click();
+  const panel = page.getByRole('region', { name: '요소 패널' });
+  const list = panel.getByRole('region', { name: '요소 목록' });
+  await panel.getByRole('tab', { name: '캐릭터' }).click();
+  // 새 그림 캐릭터가 먼저 나오고, 카드는 작은 미리보기만 받는다.
+  const first = list.locator('.element-card').first();
+  await expect(first).toHaveAttribute('aria-label', assets[0].label);
+  await expect.poll(() => first.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBe(160);
+  expect(originals).toEqual([]);
+  for (const [index, [category, items]] of groups.entries()) {
+    if (index) await page.getByRole('button', { name: '페이지 추가' }).click();
+    await expect.poll(async () => (await doc(page)).slides.length).toBe(index + 1);
+    await panel.getByRole('button', { name: category, exact: true }).click();
+    await expect(list.getByRole('heading')).toHaveText(`${items.length}개`);
+    for (const [count, item] of items.entries()) {
+      await list.getByRole('button', { name: item.label, exact: true }).click();
+      await expect.poll(async () => (await current(page)).elements.length).toBe(count + 1);
+    }
+    await panel.getByRole('button', { name: category, exact: true }).click();
+  }
+  expect(originals.length).toBe(17);
+  const edited = await doc(page);
+  expect(edited.slides.map((slide: any) => slide.elements.map((element: any) => element.assetId))).toEqual(groups.map(([, items]) => items.map(item => item.pngSha256)));
+  const box = edited.slides[0].elements[0];
+  expect(box.width).toBeCloseTo(320, 0);
+
+  // 원본 저장 → 새 프로필에서 캐릭터 파일 없이 연다.
+  const waiting = page.waitForEvent('download');
+  await page.getByRole('button', { name: '파일' }).click();
+  await page.getByRole('menuitem', { name: '원본 저장' }).click();
+  const original = path.join(OUT, 'characters.canvacraft');
+  await (await waiting).saveAs(original);
+  const other = await browser.newContext({ viewport: { width: 1440, height: 1000 } }); const otherPage = await other.newPage();
+  await otherPage.route('**/characters-illustrated/png/**', route => route.abort());
+  await newSlideProject(otherPage);
+  await otherPage.getByTestId('open-file').setInputFiles(original);
+  await expect(otherPage.getByRole('status')).toContainText('새 작품');
+  expect(contentOf(await doc(otherPage))).toEqual(contentOf(edited));
+  await other.close();
+  const zip = await JSZip.loadAsync(await fs.readFile(original));
+  for (const item of assets) expect(await sha256Hex(await zip.file(`assets/${item.pngSha256}.png`)!.async('uint8array'))).toBe(item.pngSha256);
+
+  const sizes: Record<string, number> = { 원본: (await fs.stat(original)).size };
+  for (const [label, name] of [['PowerPoint (.pptx)', 'characters-editable.pptx'], ['모양 그대로 PowerPoint', 'characters-image.pptx'], ['PDF', 'characters.pdf']]) {
+    const download = page.waitForEvent('download', { timeout: 120_000 });
+    await page.getByRole('button', { name: '공유' }).click();
+    await page.getByRole('menuitem', { name: '다운로드' }).click();
+    await page.getByRole('radio', { name: label }).check();
+    await page.getByRole('button', { name: '내려받기', exact: true }).click();
+    await (await download).saveAs(path.join(OUT, name));
+    await expect(status(page)).toContainText('내려받았어요');
+    await page.keyboard.press('Escape');
+    sizes[name] = (await fs.stat(path.join(OUT, name))).size;
+  }
+  console.log('그림 캐릭터 17개 출력 크기(MB)', Object.fromEntries(Object.entries(sizes).map(([key, value]) => [key, +(value / 1048576).toFixed(1)])));
+
+  // 편집용 PPT는 원본 PNG를 그대로 넣어 투명도가 남는다.
+  const editable = await JSZip.loadAsync(await fs.readFile(path.join(OUT, 'characters-editable.pptx')));
+  expect(Object.keys(editable.files).filter(name => /^ppt\/slides\/slide\d+\.xml$/.test(name)).length).toBe(2);
+  const media = await Promise.all(Object.keys(editable.files).filter(name => name.startsWith('ppt/media/') && !editable.files[name].dir).map(async name => sha256Hex(await editable.file(name)!.async('uint8array'))));
+  for (const item of assets) expect(media).toContain(item.pngSha256);
+
+  // 모양 그대로 PPT와 PDF는 같은 그리기(renderSlide)를 쓴다. 그림 상자의 모서리는 배경색, 가운데는 그림이다.
+  const image = await JSZip.loadAsync(await fs.readFile(path.join(OUT, 'characters-image.pptx')));
+  const rels = await image.file('ppt/slides/_rels/slide1.xml.rels')!.async('string');
+  const target = rels.match(/Target="\.\.\/media\/([^"]+)"/)![1];
+  const slideImage = (await image.file(`ppt/media/${target}`)!.async('nodebuffer')).toString('base64');
+  const sampled = await page.evaluate(async ({ data, points }) => {
+    const bitmap = await createImageBitmap(await (await fetch(`data:image/jpeg;base64,${data}`)).blob());
+    const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
+    const context = canvas.getContext('2d')!; context.drawImage(bitmap, 0, 0);
+    return points.map(([x, y]) => Array.from(context.getImageData(Math.round(x * bitmap.width / 1280), Math.round(y * bitmap.height / 720), 1, 1).data.slice(0, 3)));
+  }, { data: slideImage, points: [[box.x + 4, box.y + 4], [box.x + box.width - 4, box.y + box.height - 4], [box.x + box.width / 2, box.y + box.height / 2]] });
+  const near = (rgb: number[], target: number[]) => rgb.every((value, index) => Math.abs(value - target[index]) <= 12);
+  expect(near(sampled[0], [0x33, 0x41, 0x55])).toBe(true);
+  expect(near(sampled[1], [0x33, 0x41, 0x55])).toBe(true);
+  expect(near(sampled[2], [0x33, 0x41, 0x55])).toBe(false);
+
+  // 이 그림들은 MIT가 아니므로 Microsoft 고지를 넣지 않는다.
+  const pdf = await PDFDocument.load(await fs.readFile(path.join(OUT, 'characters.pdf')), { updateMetadata: false });
+  expect(pdf.getPageCount()).toBe(2);
   expect(pdf.getSubject() ?? '').not.toContain('licenses.txt');
   expect(errors).toEqual([]);
 });

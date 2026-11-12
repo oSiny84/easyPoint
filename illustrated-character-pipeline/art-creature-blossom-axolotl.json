@@ -1,0 +1,20 @@
+{
+  "id": "art-creature-blossom-axolotl",
+  "label": "꽃잎도롱",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "꽃잎도롱",
+    "몬스터 친구",
+    "우파루파",
+    "도롱뇽",
+    "꽃잎",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "꽃 속성"
+  ],
+  "prompt": "A single cute pink fantasy axolotl character as a clean game sprite on a TRUE fully transparent background. Smooth flat opaque pink body, petal-shaped external gills, mint green tail fin, large happy dark eyes, four short feet. Crisp solid dark plum contour line around body, simple flat cel shading inside silhouette ONLY. NO glow, NO haze, NO aura, NO shadow, NO watercolor wash, NO background color whatsoever. Original collectible creature design, charming anime game mascot, not an existing character. Full body centered, square canvas with wide empty transparent margins. No text, watermark, logos or frame.",
+  "sourceFile": "creature-friends/08-blossom-axolotl.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

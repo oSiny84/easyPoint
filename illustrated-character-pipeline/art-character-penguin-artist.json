@@ -1,0 +1,20 @@
+{
+  "id": "art-character-penguin-artist",
+  "label": "그림 그리는 펭귄",
+  "category": "그림책 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "그림 그리는 펭귄",
+    "그림책 친구",
+    "펭귄",
+    "그림",
+    "미술",
+    "붓",
+    "동물",
+    "캐릭터",
+    "일러스트"
+  ],
+  "prompt": "ONE isolated original cute little penguin artist with coral beret and mint apron holding a wooden paint palette and one paintbrush. Full body flippers and orange feet visible, cheerful curious smile. Sophisticated hand-painted watercolor gouache children's book art, tactile feathers and fabric, friendly readable silhouette, balanced square composition, generous empty padding. True transparent background PNG, no ground, no cast shadow outside character, no writing, logo, watermark, border or sticker outline.",
+  "sourceFile": "art-expansion-2026-11-12/element-03-penguin-artist.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

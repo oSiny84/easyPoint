@@ -1,0 +1,19 @@
+{
+  "id": "art-creature-ember-hedgehog",
+  "label": "불씨고슴",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "불씨고슴",
+    "몬스터 친구",
+    "고슴도치",
+    "불씨",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "불 속성"
+  ],
+  "prompt": "ONE original adorable collectible fantasy monster, fire element: a round baby hedgehog with cocoa face, cream belly, short stubby paws, back covered in soft rounded ember-shaped spines shaded apricot coral and warm gold, no real flames. Tiny glowing amber gem at forehead, sparkling warm brown eyes, confident happy smile, playful upright stance. Clean polished Japanese creature-collecting game illustration, soft cel shading and fine dark warm outlines, memorable compact silhouette. Original design not any existing franchise character. Full body visible with at least 12% transparent margin all sides, square canvas. True transparent PNG background, single character, no ground shadow, scene, text, logos, watermark, frame or sticker outline.",
+  "sourceFile": "creature-friends/02-ember-hedgehog.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

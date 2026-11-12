@@ -1,0 +1,19 @@
+{
+  "id": "art-creature-pebble-pangolin",
+  "label": "조약돌천산갑",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "조약돌천산갑",
+    "몬스터 친구",
+    "천산갑",
+    "조약돌",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "땅 속성"
+  ],
+  "prompt": "ONE original adorable earth-element collectible monster: a chubby baby pangolin with rounded sandstone-gold overlapping scales like smooth pebbles, cream snout and tummy, tiny rounded ears, four stubby feet, thick curled tail, a small mint sprout growing from one head scale. Big warm brown eyes, cheerful gentle smile. Standing three-quarter view, compact lovable silhouette. Polished Japanese creature game art with clean warm-brown outlines and soft cel shading, glossy stone highlights, not an existing franchise character. Full body central 75% of square image, transparent padding on all sides. True transparent PNG, single character, no scene, floor, shadow, letters, logos, watermark or sticker border.",
+  "sourceFile": "creature-friends/07-pebble-pangolin.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

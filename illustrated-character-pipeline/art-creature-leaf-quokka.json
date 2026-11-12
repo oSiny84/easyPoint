@@ -1,0 +1,19 @@
+{
+  "id": "art-creature-leaf-quokka",
+  "label": "새싹쿼카",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "새싹쿼카",
+    "몬스터 친구",
+    "쿼카",
+    "새싹",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "풀 속성"
+  ],
+  "prompt": "Create ONE original adorable collectible fantasy monster character, grass element, for a children's slide editor. A round mint-green baby quokka-like creature with two floppy leaf-shaped ears, cream oval belly, three tiny peach flower buds on its forehead, short chubby paws and a curled fern tail. Large sparkling dark eyes, delighted small open smile, inviting wave. Memorable simple silhouette, Japanese creature-collecting game charm, clean polished anime cel-shaded illustration with soft painterly highlights and crisp dark teal outlines. Original design, not an existing franchise character. Full body including tail and ears, centered, subject uses only middle 75% of square canvas with wide transparent padding on ALL sides. True transparent background PNG. No ground, cast shadow, scenery, text, name label, logo, watermark, border or sticker outline. Single character only.",
+  "sourceFile": "creature-friends/01-leaf-quokka.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

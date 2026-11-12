@@ -1,0 +1,19 @@
+{
+  "id": "art-creature-crystal-seal",
+  "label": "빙글물범",
+  "category": "몬스터 친구",
+  "date": "2026-11-12",
+  "tags": [
+    "빙글물범",
+    "몬스터 친구",
+    "물범",
+    "수정",
+    "몬스터",
+    "캐릭터",
+    "일러스트",
+    "얼음 속성"
+  ],
+  "prompt": "ONE original adorable ice-element collectible creature: a plump pale blue baby seal with tiny flippers, pearl-white face and tummy, three rounded translucent turquoise ice crystals on head like a little crown, a short fan-shaped icy tail. Huge shining navy eyes, tiny pink nose and friendly smile, sitting and waving one flipper. Compact bean silhouette, polished Japanese creature game character art, crisp soft navy outlines and clean cel shading with luminous highlights. Not an existing franchise character. Full body occupying only central 75% square canvas with transparent padding. True transparent PNG background, single character, no floor, shadow, snowflakes outside body, words, logos, watermark or sticker outline.",
+  "sourceFile": "creature-friends/05-crystal-seal.png",
+  "inspection": "2026-11-12 연결 전 검사: RGBA, 네 모서리 투명, 가장자리 2px 안에 그림 없음(알파 16 초과 기준). 검은 배경에서 직접 관찰, 잘림·뿌연 테두리 없음."
+}

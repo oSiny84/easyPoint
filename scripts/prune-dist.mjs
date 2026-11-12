@@ -4,8 +4,8 @@ import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 const REVIEW = ['preview.html', 'validation.json', 'browser-validation.json'];
 const paths = [
   'dist/library/svg', 'dist/backgrounds/svg', 'dist/comic/svg',
-  // 그림 배경의 생성 프롬프트는 앱에 필요 없다.
-  'dist/backgrounds-illustrated/prompts',
+  // 그림 배경·그림 캐릭터의 생성 프롬프트는 앱에 필요 없다.
+  'dist/backgrounds-illustrated/prompts', 'dist/characters-illustrated/prompts',
   // 템플릿은 .canvacraft 파일과 작은 미리보기만 있으면 열 수 있다.
   'dist/templates/assets', 'dist/templates/projects', 'dist/templates/previews',
   ...['library', 'backgrounds', 'templates'].flatMap(pack => REVIEW.map(name => `dist/${pack}/${name}`)),
