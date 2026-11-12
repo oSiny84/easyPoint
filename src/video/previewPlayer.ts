@@ -7,6 +7,7 @@ import { CANVAS } from '../domain/videoLimits';
 import type { Clip, VideoProject } from '../domain/videoTypes';
 import { drawContain } from './compose';
 import { readMedia } from './mediaStore';
+import { DRIFT_MS, newSync, trackSync, type SyncState } from './previewSync';
 
 export type Painter = (ctx: CanvasRenderingContext2D, timeMs: number, playing: boolean) => void;
 // 재생할 때 Web Audio로 같은 시계에 맞춰 낼 소리(계약 §8): 배경음악(0초부터 반복, 작품 끝에서 자름)과 효과음(밈이 보이기 시작할 때 1회).
@@ -15,9 +16,6 @@ export type SoundPlan = { music: { buffer: AudioBuffer; volume: number } | null;
 type Slot = { video: HTMLVideoElement; clipId: string | null; mediaId: string | null; ready: Promise<void> };
 export type FrameEvent = { at: number; clipIndex: number; mediaTime: number };
 export type PlayerState = { playing: boolean; timeMs: number };
-
-// 이보다 많이 어긋나면 <video> 위치를 다시 맞춘다.
-const DRIFT_MS = 150;
 
 export class PreviewPlayer {
   private project: VideoProject;
@@ -36,6 +34,12 @@ export class PreviewPlayer {
   private soundPlan: (() => SoundPlan) | null = null;
   private sources: AudioScheduledSourceNode[] = [];
   private lastVideo: HTMLVideoElement | null = null;
+  // 마지막으로 그린 영상 프레임. 재생 중 <video>가 잠깐 준비되지 않으면(위치를 옮기는 중 등) 검은 화면 대신 이것을 보여 준다.
+  private held = document.createElement('canvas');
+  private heldFrame = false;
+  // 지금 재생하는 <video>와 시계의 어긋남 추적(previewSync.ts). 재생을 시작하기 전과 조각을 싣는 동안은 null이다.
+  private sync: SyncState | null = null;
+  private seekCount = 0;
   // 화면에 붙어 있어야 프레임 표시 알림(requestVideoFrameCallback)이 온다. 보이지 않게 둔다.
   private holder = document.createElement('div');
   // 시험·조사용: 실제로 화면에 나온 영상 프레임 기록(requestVideoFrameCallback).
@@ -166,7 +170,18 @@ export class PreviewPlayer {
     const { width, height } = this.canvas;
     // 비율을 유지한 채 캔버스 안에 들어가도록 맞춘다(contain, 계약 §3).
     const ready = video && video.readyState >= 2 && video.videoWidth;
-    drawContain(ctx, ready ? video : null, ready ? video.videoWidth : 0, ready ? video.videoHeight : 0, width, height);
+    if (ready) {
+      drawContain(ctx, video, video.videoWidth, video.videoHeight, width, height);
+      if (this.held.width !== width || this.held.height !== height) { this.held.width = width; this.held.height = height; }
+      this.held.getContext('2d')!.drawImage(this.canvas, 0, 0);
+      this.heldFrame = true;
+    } else if (this.playing && video && this.heldFrame && this.held.width === width && this.held.height === height) {
+      // 재생 중에는 자막·밈이 시계를 따라 계속 바뀌어야 하므로 영상 프레임만 붙잡아 둔다.
+      ctx.drawImage(this.held, 0, 0);
+    } else {
+      this.heldFrame = false;
+      drawContain(ctx, null, 0, 0, width, height);
+    }
     if (totalMs(this.project.clips) > 0) this.painter?.(ctx, Math.floor(Math.min(this.time, totalMs(this.project.clips) - 1)), this.playing);
   }
 
@@ -206,14 +221,24 @@ export class PreviewPlayer {
   async seek(timeMs: number) {
     const total = totalMs(this.project.clips);
     this.time = Math.max(0, Math.min(timeMs, total));
-    if (this.playing) { this.workStart = this.time; this.clockStart = this.audio?.currentTime ?? 0; this.stopSounds(); this.startSounds(); }
+    const count = ++this.seekCount;
+    if (this.playing) { this.workStart = this.time; this.clockStart = this.audio?.currentTime ?? 0; this.stopSounds(); this.startSounds(); this.sync = null; }
     this.onState(this.state);
     const at = locate(this.project.clips, Math.min(this.time, total - 1));
     if (!at) { this.slots.forEach(slot => slot.video.pause()); this.draw(null); return; }
     const slot = this.slots[this.active];
     const wanted = this.time;
     await this.load(slot, at.clip, at.sourceMs);
-    if (this.destroyed || wanted !== this.time || this.playing) return;
+    if (this.destroyed) return;
+    if (this.playing) {
+      // 재생 중에 옮겼다. 싣는 동안 시계가 많이 지나갔으면 한 번만 따라잡고, 여기서부터 어긋남을 다시 잰다.
+      if (count !== this.seekCount || this.slots[this.active] !== slot || slot.clipId !== at.clip.id) return;
+      const now = locate(this.project.clips, this.time);
+      if (now && now.clip.id === at.clip.id && (now.sourceMs - at.sourceMs) / clipSpeed(at.clip) > DRIFT_MS) slot.video.currentTime = now.sourceMs / 1000;
+      this.sync = newSync(performance.now());
+      return;
+    }
+    if (wanted !== this.time) return;
     this.applyVolume(slot.video, at.clip);
     this.draw(slot.video);
   }
@@ -232,6 +257,7 @@ export class PreviewPlayer {
     this.applyVolume(slot.video, at.clip);
     await slot.video.play().catch(() => undefined);
     this.playing = true;
+    this.sync = newSync(performance.now());
     this.clockStart = this.audio.currentTime; this.workStart = this.time;
     this.startSounds();
     this.prepareNext(at.index);
@@ -241,6 +267,7 @@ export class PreviewPlayer {
 
   pause() {
     this.playing = false;
+    this.sync = null;
     this.stopSounds();
     cancelAnimationFrame(this.frame);
     for (const slot of this.slots) slot.video.pause();
@@ -271,12 +298,21 @@ export class PreviewPlayer {
       this.active = 1 - this.active; slot = other;
       this.note('swap', slot, at.sourceMs);
       this.applyVolume(slot.video, at.clip);
-      void slot.ready.then(() => { if (this.playing && this.slots[this.active] === slot) void slot.video.play().catch(() => undefined); });
+      this.sync = null;
+      void slot.ready.then(() => {
+        if (!this.playing || this.slots[this.active] !== slot || slot.clipId !== at.clip.id) return;
+        this.sync = newSync(performance.now());
+        void slot.video.play().catch(() => undefined);
+      });
       this.prepareNext(at.index);
     } else if (!slot.video.seeking && slot.video.readyState >= 2) {
-      // 시계와 많이 어긋나면 <video>를 다시 맞춘다.
-      const drift = slot.video.currentTime * 1000 - at.sourceMs;
-      if (Math.abs(drift) > DRIFT_MS) { this.note('drift', slot, drift); slot.video.currentTime = at.sourceMs / 1000; }
+      // 시작 지연을 뺀 어긋남이 크면 <video>를 다시 맞춘다(previewSync.ts).
+      const videoMs = slot.video.currentTime * 1000;
+      if (this.sync && trackSync(this.sync, performance.now(), videoMs, at.sourceMs, clipSpeed(at.clip)) === 'reseek') {
+        this.note('drift', slot, videoMs - at.sourceMs);
+        slot.video.currentTime = at.sourceMs / 1000;
+        this.sync = newSync(performance.now());
+      }
       if (slot.video.paused) void slot.video.play().catch(() => undefined);
     }
     this.draw(slot.video);
